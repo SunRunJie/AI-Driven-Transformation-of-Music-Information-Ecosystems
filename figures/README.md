@@ -4,9 +4,8 @@ All figures referenced in the research report, organized into two groups:
 
 - **Analysis figures (Figure 1-12)** — data visualizations produced by the
   analysis scripts (`src/visualization.py`), in `figures/analysis/`.
-- **Illustrative figures (Figure A-L)** — conceptual diagrams used to explain
-  the analytical framework, in `figures/decorative/` (provided as both
-  Mermaid source and PNG).
+- **Illustrative figures (Figure A-K)** — conceptual diagrams used to explain
+  the analytical framework, in `figures/decorative/`.
 
 ## Directory layout
 
@@ -14,7 +13,7 @@ All figures referenced in the research report, organized into two groups:
 figures/
 ├── README.md        ← this file
 ├── analysis/        ← analysis figures (Figure 1-12)
-└── decorative/      ← illustrative figures (Figure A-L, Mermaid + PNG)
+└── decorative/      ← illustrative figures (Figure A-K)
 ```
 
 ## Analysis figures (Figure 1-12)
@@ -28,18 +27,18 @@ Located in `figures/analysis/`.
 | 3 | `ai_vs_human_review_features.png` | AI vs human review features (radar + diverging bars, 11 features) | TF-IDF + Random Forest |
 | 4 | `rating_distribution_evolution.png` | Rating distribution before/after ChatGPT (KDE, K-S test) | KDE + K-S test |
 | 5 | `trust_threshold_model.png` | S-shaped trust curve + multi-scenario Monte Carlo | Logistic phase transition + network effects |
-| 6 | `heterogeneous_trust.png` | Heterogeneous trust curves for four user groups | Heterogeneity simulation |
-| 7 | `four_dimensions_framework.png` | Four-dimensional impact assessment + priority matrix | Institutional logic framework |
-| 8 | `policy_intervention.png` | Policy intervention comparison (4 strategies) | Scenario simulation |
-| 9 | `genre_impact_heatmap.png` | Genre x impact-dimension heatmap | Genre sensitivity analysis |
-| 10 | `competitive_landscape.png` | Four-quadrant bubble map (data depth x social experience) | Multi-dimensional competition analysis |
-| 11 | `sensitivity_analysis.png` | alpha/beta/gamma parameter sensitivity | Monte Carlo sensitivity |
+| 6 | `sensitivity_analysis.png` | alpha/beta/gamma parameter sensitivity | Monte Carlo sensitivity |
+| 7 | `heterogeneous_trust.png` | Heterogeneous trust curves for four user groups | Heterogeneity simulation |
+| 8 | `four_dimensions_framework.png` | Four-dimensional impact assessment + priority matrix | Institutional logic framework |
+| 9 | `policy_intervention.png` | Policy intervention comparison (4 strategies) | Scenario simulation |
+| 10 | `genre_impact_heatmap.png` | Genre x impact-dimension heatmap | Genre sensitivity analysis |
+| 11 | `competitive_landscape.png` | Four-quadrant bubble map (data depth x social experience) | Multi-dimensional competition analysis |
 | 12 | `feature_correlation_heatmap.png` | Pearson correlation matrix across 11 linguistic features | Feature engineering |
 
-## Illustrative figures (Figure A-L)
+## Illustrative figures (Figure A-K)
 
-Located in `figures/decorative/`, provided as both `.mermaid` source and
-`.png` renderings. Full placement guidance is in `docs/Research_Report.md`.
+Located in `figures/decorative/`. Full placement guidance is in
+`docs/Research_Report.md`.
 
 | # | PNG | Title |
 |:--|:----|:------|
@@ -51,10 +50,6 @@ Located in `figures/decorative/`, provided as both `.mermaid` source and
 | F | `fig_four_dimensions.png` | Four institutional logics of the AI shock |
 | G | `fig_strategy_matrix.png` | Platform strategic response matrix |
 | H | `fig_data_value_paradox.png` | Data asset revaluation |
-| I | `fig_competitive_map.png` | Competitive positioning map |
-| J | `fig_career_path.png` | Trust-economy career paths |
-| K | `fig_trust_pyramid.png` | Trust literacy capability model |
-| L | `fig_trust_curve.png` | Trust threshold curve (55.8% / 75% breakpoints) |
-
-`figures/decorative/generate_decorative_figures.py` reproduces the PNG
-renderings from the Mermaid sources.
+| I | `fig_career_path.png` | Trust-economy career paths |
+| J | `fig_trust_pyramid.png` | Trust literacy capability model |
+| K | `fig_trust_curve.png` | Trust threshold curve (55.8% / 75% breakpoints) |

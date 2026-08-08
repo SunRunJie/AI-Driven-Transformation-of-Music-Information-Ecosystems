@@ -178,7 +178,7 @@ A.7 Quantitative Scores of the Competitive Landscape
 
 I. Analysis Figures (Figure 1-Figure 12) 
 
-II. Illustrative Figures (Figure A-Figure L) 
+II. Illustrative Figures (Figure A-Figure K) 
 
 Data Ethics Statement 
 
@@ -962,7 +962,7 @@ Data limitations: the rating and review data are synthetic data generated based 
 | Figure 11 | Competitive Landscape Positioning Map | Four-quadrant bubble positioning map (data depth × social experience) | Multi-dimensional competitive analysis |
 | Figure 12 | Feature Correlation Heatmap | Pearson correlation matrix of 11-dimensional linguistic features | Feature engineering |
 
-### II. Illustrative Figures (Figure A-Figure L)
+### II. Illustrative Figures (Figure A-Figure K)
 
 | Number | Figure title | Purpose description |
 | --- | --- | --- |

@@ -102,17 +102,16 @@ Notable values:
 
 ## 5. Document decisions
 
-This repository is the international research edition of a project that was
-originally developed for a case-study competition. Two structuring decisions
-were made during conversion:
+One structuring decision was made during the preparation of this repository:
+only the final case study analysis is published. An earlier, intermediate
+analysis draft was deliberately excluded to keep a single, authoritative
+version; the published report corresponds to the final analysis.
 
-1. **Only the final case study analysis is published.** An earlier,
-   intermediate analysis draft was deliberately excluded to keep a single,
-   authoritative version. The published report corresponds to the final
-   analysis.
-2. **Competition-specific career-planning material was not included** in the
-   research report. The research conclusions, statistical appendices, and
-   reference list are retained in full.
+The report combines the research findings with a practitioner perspective.
+In addition to the empirical analysis, statistical appendices, and reference
+list, Part 2 examines industry employment and talent demand in the AI era,
+so that the institutional analysis carries through to implications for
+practitioners.
 
 ## 6. Limitations
 
