@@ -3,7 +3,7 @@
 Full Analysis Runner (Fast Version)
 ===================================
 Skip the time-consuming web scraping and use synthetic data directly,
-run all core analyses, generate all figures, and produce the report.
+run all core analyses, generate all figures, and export the results.
 """
 
 import sys
@@ -16,7 +16,10 @@ if _SRC not in sys.path:
 import numpy as np
 import pandas as pd
 
-from config import print_banner, CHATGPT_RELEASE_DATE, FIGURES_DIR, ANALYSIS_FIGURES_DIR, REPORT_META
+from config import (
+    print_banner, CHATGPT_RELEASE_DATE,
+    FIGURES_DIR, ANALYSIS_FIGURES_DIR, PROCESSED_DIR, REPORT_META,
+)
 
 
 def generate_base_data() -> pd.DataFrame:
@@ -122,13 +125,13 @@ def main():
         print(f"  - {p.name} ({p.stat().st_size // 1024}KB)")
 
     # ============================================================
-    # 6. Report
+    # 6. Export results
     # ============================================================
     print("\n" + "=" * 60)
-    print("== 6/6: Generate the analysis report")
+    print("== 6/6: Export analysis results")
     print("=" * 60)
 
-    from report_generator import generate_report
+    import json
 
     all_results = {
         "structural_break": break_results,
@@ -138,8 +141,11 @@ def main():
         "competitive": comp_results,
     }
 
-    report_path = generate_report(all_results)
-    print(f"\n[INFO] Report saved: {report_path}")
+    export_path = PROCESSED_DIR / "analysis_results.json"
+    export_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(export_path, "w", encoding="utf-8") as f:
+        json.dump(all_results, f, ensure_ascii=False, indent=2, default=str)
+    print(f"\n[INFO] Results exported: {export_path}")
 
     # ============================================================
     # Done
@@ -155,7 +161,7 @@ def main():
     print(f"=" * 60)
     print(f"\nAcademic-grade figure count: {n_figures} (target: 12)")
     print(f"Figure directory: {ANALYSIS_FIGURES_DIR}")
-    print(f"Report file: {report_path}")
+    print(f"Results export: {export_path}")
 
     # Print the figure list
     print(f"\nFigure list:")
@@ -163,14 +169,9 @@ def main():
         if "font" not in p.name.lower():
             print(f"  - {p.name} ({p.stat().st_size // 1024}KB)")
 
-    # Report preview
-    if report_path.exists():
-        content = report_path.read_text(encoding="utf-8")
-        lines = content.split("\n")[:30]
-        print(f"\nReport section preview:")
-        for line in lines:
-            if line.startswith("## "):
-                print(f"  {line.strip()}")
+    # Results preview
+    if export_path.exists():
+        print(f"\nResults digest keys: {list(all_results.keys())}")
 
     print(f"\nFont configuration: Chinese = SimSun, English/numbers = Times New Roman")
     print(f"Version: {REPORT_META['version']}")

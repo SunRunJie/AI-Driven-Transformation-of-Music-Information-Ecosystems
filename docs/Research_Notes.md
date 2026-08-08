@@ -78,11 +78,13 @@ heterogeneous thresholds across user types.
 Scores platforms on data depth, social engagement, technical/data/community
 moats, and AI risk, and derives composite vulnerability rankings.
 
-### 3.5 Visualization and reporting
+### 3.5 Visualization
 
 `src/visualization.py` produces all 12 analysis figures (300 dpi, academic
-style). `src/report_generator.py` assembles the markdown report from pipeline
-results.
+style). The pipeline also exports a machine-generated results digest
+(`docs/analysis_results.md`) listing the key statistics and figures. The
+narrative research report (`docs/Research_Report.md`) is authored by hand on
+top of that evidence.
 
 ## 4. Key parameters
 

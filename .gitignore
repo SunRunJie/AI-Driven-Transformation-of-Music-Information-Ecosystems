@@ -31,3 +31,6 @@ Thumbs.db
 
 # Generated artifacts (figures are committed; logs are not)
 *.log
+
+# Auto-generated results exports
+data/processed/*.json

@@ -235,9 +235,9 @@ FILES: Dict[str, str] = {
     "figure_sensitivity": "sensitivity_analysis.png",
     "figure_correlation": "feature_correlation_heatmap.png",
 
-    # -- Report outputs --
-    "report": "analysis_report.md",
-    "report_pdf": "analysis_report.pdf",
+    # -- Results digest (auto-generated evidence; the narrative research
+    #    report is authored by hand in docs/Research_Report.md) --
+    "results_digest": "analysis_results.md",
 }
 
 # Figure descriptions (used in the report appendix)
@@ -327,7 +327,6 @@ REPORT_META = {
     "title_cn": "Generative AI and the Transformation of Music Information Ecosystems",
     "title_en": "Generative AI and the Transformation of Music Information Ecosystems",
     "subtitle": "A Dual-Case Study of AOTY (Album of The Year) and RYM (RateYourMusic)",
-    "competition": "Undergraduate Research Project - Management Science / Information Systems",
     "framework": "Signal-Institution Framework",
     "core_theory": "Signaling Theory - Lemons Market - Institutional Change - Second-Order Observation - Trust Paradox",
     "version": "v2.0",
@@ -394,7 +393,6 @@ def print_banner():
   {REPORT_META['title_cn']}
   {REPORT_META['subtitle']}
   ------------------------------------------------------------------
-  {REPORT_META['competition']}
   Version: {REPORT_META['version']} | Framework: {REPORT_META['framework']}
   Cases: AOTY & RYM | Time span: {STUDY_START_YEAR}-{STUDY_END_YEAR}
 ====================================================================

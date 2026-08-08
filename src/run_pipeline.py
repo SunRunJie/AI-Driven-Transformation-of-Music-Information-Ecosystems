@@ -11,7 +11,7 @@ Running this script completes:
   5. Trust threshold model simulation
   6. Competitive landscape quantitative analysis
   7. Generate all visualization figures
-  8. Output a complete analysis report
+  8. Export a results digest (key statistics + figure inventory)
 
 Usage:
   python src/run_pipeline.py
@@ -43,7 +43,7 @@ import pandas as pd
 
 from config import (
     RANDOM_SEED, CHATGPT_RELEASE_DATE, YEAR_RANGE,
-    RAW_DIR, PROCESSED_DIR, FIGURES_DIR, ANALYSIS_FIGURES_DIR,
+    RAW_DIR, PROCESSED_DIR, FIGURES_DIR, ANALYSIS_FIGURES_DIR, REPORT_DIR,
     FILES, print_banner
 )
 
@@ -88,7 +88,7 @@ class ResearchPipeline:
         # Stage 7: visualization
         self.stage_visualization()
 
-        # Stage 8: report generation
+        # Stage 8: results digest export
         self.stage_report()
 
         # Done
@@ -380,36 +380,83 @@ class ResearchPipeline:
             traceback.print_exc()
 
     # ----------------------------------------------------------
-    # Stage 8: report
+    # Stage 8: results digest
     # ----------------------------------------------------------
 
     def stage_report(self):
-        """Generate the analysis report"""
+        """Export a results digest: key statistics + figure inventory
+
+        The narrative research report (docs/Research_Report.md) is authored
+        by hand. This stage only exports the reproducible evidence produced
+        by the pipeline (statistics and figures), so the numbers in the
+        report can always be traced back to a script run.
+        """
         print("\n" + "=" * 60)
-        print("=== Stage 8/8: Generate Analysis Report")
+        print("=== Stage 8/8: Export Results Digest")
         print("=" * 60)
 
         try:
-            from report_generator import generate_report
+            digest_path = REPORT_DIR / FILES["results_digest"]
 
-            report_path = generate_report(self.results)
-            self.results["report_path"] = str(report_path)
+            def pct(value):
+                return f"{value:.1%}" if isinstance(value, (int, float)) else "N/A"
+
+            with open(digest_path, "w", encoding="utf-8") as f:
+                f.write("# Analysis Results Digest (auto-generated)\n\n")
+                f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                f.write("This file is produced by the pipeline and lists the reproducible "
+                        "evidence (key statistics and figures). The narrative research "
+                        "report is authored separately in `docs/Research_Report.md`.\n\n")
+
+                # Structural break analysis
+                sb = self.results.get("structural_break", {}) or {}
+                summary = sb.get("summary", {}) or {}
+                if summary:
+                    f.write("## 1. Structural break analysis\n\n")
+                    f.write(f"- Metrics analyzed: {summary.get('total_metrics_analyzed', 'N/A')}\n")
+                    f.write(f"- Significant breaks: {summary.get('significant_breaks', 'N/A')} "
+                            f"({summary.get('break_detection_rate', 'N/A')}%)\n\n")
+
+                # AI review detection
+                ai = self.results.get("ai_detection", {}) or {}
+                model = ai.get("model", {}) or {}
+                if model:
+                    f.write("## 2. AI review detection\n\n")
+                    f.write(f"- Accuracy: {pct(model.get('accuracy'))}\n")
+                    f.write(f"- AUC: {model.get('auc', 'N/A')}\n\n")
+
+                # Trust threshold model
+                tm = self.results.get("trust_model", {}) or {}
+                cp = tm.get("collapse_point", {}) or {}
+                if cp:
+                    f.write("## 3. Trust threshold model\n\n")
+                    f.write(f"- Collapse-triggering AI penetration: "
+                            f"{pct(cp.get('collapse_penetration'))}\n\n")
+
+                # Figure inventory
+                f.write("## 4. Generated figures\n\n")
+                figures = sorted(ANALYSIS_FIGURES_DIR.glob("*.png"))
+                if figures:
+                    for p in figures:
+                        f.write(f"- {p.name} ({p.stat().st_size // 1024}KB)\n")
+                else:
+                    f.write("(none)\n")
+
+            self.results["report_path"] = str(digest_path)
+            print(f"  [OK] Results digest saved: {digest_path}")
 
         except Exception as e:
-            print(f"[WARN] Report generation failed: {e}")
+            print(f"[WARN] Results digest generation failed: {e}")
             self._generate_minimal_report()
 
     def _generate_minimal_report(self):
-        """Generate a minimal report"""
-        print("\n  Generating a minimal report...")
-        report_path = FIGURES_DIR.parent / FILES["report"]
+        """Fallback: minimal results digest when the full export fails"""
+        print("\n  Generating a minimal results digest...")
+        digest_path = FIGURES_DIR.parent / FILES["results_digest"]
 
-        with open(report_path, "w", encoding="utf-8") as f:
-            f.write("# Data Analysis Report\n\n")
+        with open(digest_path, "w", encoding="utf-8") as f:
+            f.write("# Analysis Results Digest (auto-generated, minimal)\n\n")
             f.write(f"Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-
-            f.write("## Executive Summary\n\n")
-            f.write("The full data analysis pipeline has been executed.\n\n")
 
             f.write("## Analysis Modules\n\n")
             for module in ["Data Collection", "Data Preprocessing", "Time-Series Structural Break Analysis",
@@ -422,7 +469,7 @@ class ResearchPipeline:
             for p in ANALYSIS_FIGURES_DIR.glob("*.png"):
                 f.write(f"- {p.name}\n")
 
-        print(f"  [OK] Report saved: {report_path}")
+        print(f"  [OK] Results digest saved: {digest_path}")
 
 
 # ============================================================
