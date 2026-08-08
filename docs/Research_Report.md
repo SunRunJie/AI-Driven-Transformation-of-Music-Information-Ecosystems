@@ -4,183 +4,183 @@
 
 ## Table of Contents
 
-Part 1 In-Depth Industry Insight 3
+## Part 1 In-Depth Industry Insight 
 
-I. Industry Overview and Development Assessment 3
+### I. Industry Overview and Development Assessment 
 
-1.1 Industry Overview 3
+1.1 Industry Overview 
 
-1.1.1 Industry Definition and Boundaries 3
+1.1.1 Industry Definition and Boundaries 
 
-1.1.2 Development History 4
+1.1.2 Development History 
 
-1.1.3 Market Size and Industry Chain Structure 7
+1.1.3 Market Size and Industry Chain Structure 
 
-1.2 Core Characteristics and Trends 7
+1.2 Core Characteristics and Trends 
 
-1.2.1 Business Model 7
+1.2.1 Business Model 
 
-1.2.2 Technology Development Stages 9
+1.2.2 Technology Development Stages 
 
-1.2.3 Competitive Landscape 10
+1.2.3 Competitive Landscape 
 
-II. Macro-Environmental Impact Analysis 11
+### II. Macro-Environmental Impact Analysis 
 
-2.1 The Structural Tension between Economic Fundamentals and Cultural Consumption 11
+2.1 The Structural Tension between Economic Fundamentals and Cultural Consumption 
 
-2.1.1 The Expansion and Structural Differentiation of the Macro Demand Side 11
+2.1.1 The Expansion and Structural Differentiation of the Macro Demand Side 
 
-2.1.2 The Institutional Game of Industrial Policy and First-Mover Advantage 11
+2.1.2 The Institutional Game of Industrial Policy and First-Mover Advantage 
 
-2.2 Institutional Imbalance under Technological Shock 12
+2.2 Institutional Imbalance under Technological Shock 
 
-2.2.1 The Empirical Test of Lemons-Marketization: From Statistical Breakpoint to Institutional Crisis 12
+2.2.1 The Empirical Test of Lemons-Marketization: From Statistical Breakpoint to Institutional Crisis 
 
-2.2.2 The Heterogeneity of Trust and the Logic of Core-Asset Erosion 15
+2.2.2 The Heterogeneity of Trust and the Logic of Core-Asset Erosion 
 
-2.2.3 The Causal Chain of Technology, Institution, and Value: The Integration of the Four-Fold Effects 17
+2.2.3 The Causal Chain of Technology, Institution, and Value: The Integration of the Four-Fold Effects 
 
-2.3 The Strategic Choice Space under Environmental Pressure 20
+2.3 The Strategic Choice Space under Environmental Pressure 
 
-III. Market and Competitive Landscape Analysis 21
+### III. Market and Competitive Landscape Analysis 
 
-3.1 The Deep Logic of Market Structure 21
+3.1 The Deep Logic of Market Structure 
 
-3.1.1 Differentiated Growth Drivers of Market Segments and Their Strategic Implications 21
+3.1.1 Differentiated Growth Drivers of Market Segments and Their Strategic Implications 
 
-3.1.2 The Competitive Space along the Genre Dimension 22
+3.1.2 The Competitive Space along the Genre Dimension 
 
-3.2 The Dynamic Evolution of the Competitive Landscape 23
+3.2 The Dynamic Evolution of the Competitive Landscape 
 
-3.2.1 The Structural Positioning of Strategic Groups and AI Vulnerability 23
+3.2.1 The Structural Positioning of Strategic Groups and AI Vulnerability 
 
-3.2.2 The Erosion of Market Concentration and Restructuring Opportunities 25
+3.2.2 The Erosion of Market Concentration and Restructuring Opportunities 
 
-3.3 Strategic Depth Analysis of Leading Firms 26
+3.3 Strategic Depth Analysis of Leading Firms 
 
-3.3.1 RYM: The Attack-and-Defense Logic of the Data Fortress 26
+3.3.1 RYM: The Attack-and-Defense Logic of the Data Fortress 
 
-3.3.2 AOTY: The Buffering Effect and Limitations of the Social Moat 27
+3.3.2 AOTY: The Buffering Effect and Limitations of the Social Moat 
 
-3.3.3 Douban Music: The Greatest Exposure to Structural Risk 27
+3.3.3 Douban Music: The Greatest Exposure to Structural Risk 
 
-3.3.4 Cross-Case Comparison: Common Patterns and Structural Divergence 28
+3.3.4 Cross-Case Comparison: Common Patterns and Structural Divergence 
 
-Part 2 Industry Career Exploration and Job Search Planning 29
+## Part 2 Industry Career Exploration and Job Search Planning 
 
-IV. Industry Employment Prospects and Talent Demand 29
+### IV. Industry Employment Prospects and Talent Demand 
 
-4.1 Employment Opportunities and Challenges 29
+4.1 Employment Opportunities and Challenges 
 
-4.1.1 Changes in the Employment Structure 29
+4.1.1 Changes in the Employment Structure 
 
-4.1.2 Employment Opportunities 29
+4.1.2 Employment Opportunities 
 
-4.1.3 Employment Challenges 30
+4.1.3 Employment Challenges 
 
-4.2 Talent Demand Trends 30
+4.2 Talent Demand Trends 
 
-4.2.1 Changes in Corporate Recruitment Preferences 30
+4.2.1 Changes in Corporate Recruitment Preferences 
 
-4.2.2 Emerging Roles 31
+4.2.2 Emerging Roles 
 
-V. Core Occupations and Competency Systems 32
+### V. Core Occupations and Competency Systems 
 
-5.1 Typical Roles and Development Paths 32
+5.1 Typical Roles and Development Paths 
 
-5.1.1 Career Development Routes 32
+5.1.1 Career Development Routes 
 
-5.1.2 Comparison of Enterprise Types 32
+5.1.2 Comparison of Enterprise Types 
 
-5.1.3 Job Substitution Risk Assessment 33
+5.1.3 Job Substitution Risk Assessment 
 
-5.2 Essential Skills 33
+5.2 Essential Skills 
 
-5.2.1 The Trust Literacy Competency Model 33
+5.2.1 The Trust Literacy Competency Model 
 
-5.2.2 Core Soft Skills 34
+5.2.2 Core Soft Skills 
 
-VI. Personal Career Planning and Job Search Strategies 35
+### VI. Personal Career Planning and Job Search Strategies 
 
-6.1 Competitiveness Enhancement 35
+6.1 Competitiveness Enhancement 
 
-6.1.1 The Three-Year Competency Improvement Plan 35
+6.1.1 The Three-Year Competency Improvement Plan 
 
-6.1.2 Internship and Project Selection 36
+6.1.2 Internship and Project Selection 
 
-6.1.3 Professional Network Building 36
+6.1.3 Professional Network Building 
 
-6.2 Job Search Actions 36
+6.2 Job Search Actions 
 
-6.2.1 Target Company Selection 37
+6.2.1 Target Company Selection 
 
-6.2.2 Interview Preparation 37
+6.2.2 Interview Preparation 
 
-6.2.3 Job Application Materials 38
+6.2.3 Job Application Materials 
 
-6.3 Personal Positioning and Development 38
+6.3 Personal Positioning and Development 
 
-6.3.1 The Three Stages of Long-Term Development 38
+6.3.1 The Three Stages of Long-Term Development 
 
-6.3.2 Path Selection 39
+6.3.2 Path Selection 
 
-VII. Career Development Risks and Responses 39
+### VII. Career Development Risks and Responses 
 
-7.1 Risk Identification 39
+7.1 Risk Identification 
 
-7.1.1 Industry-Level Risks 39
+7.1.1 Industry-Level Risks 
 
-7.1.2 Individual-Level Risks 40
+7.1.2 Individual-Level Risks 
 
-7.2 Response Strategies 40
+7.2 Response Strategies 
 
-7.2.1 Improving Career Adaptability 40
+7.2.1 Improving Career Adaptability 
 
-7.2.2 Crisis Response 40
+7.2.2 Crisis Response 
 
-7.2.3 Learning Strategies 41
+7.2.3 Learning Strategies 
 
-Part 3 Summary 42
+## Part 3 Summary 
 
-VIII. Core Conclusions and Recommendations 42
+### VIII. Core Conclusions and Recommendations 
 
-8.1 Core Conclusions 42
+8.1 Core Conclusions 
 
-8.2 Industry Strategic Recommendations 43
+8.2 Industry Strategic Recommendations 
 
-8.3 Recommendations for Practitioners 44
+8.3 Recommendations for Practitioners 
 
-Part 4 Appendices 45
+## Part 4 Appendices 
 
-Appendix A Detailed Tables of Research Data and Statistical Analysis 45
+### Appendix A Detailed Tables of Research Data and Statistical Analysis 
 
-A.1 Key Statistics of the RYM Rating Time Series 45
+A.1 Key Statistics of the RYM Rating Time Series 
 
-A.2 Structural Breakpoint Test Results 45
+A.2 Structural Breakpoint Test Results 
 
-A.3 AI Review Detection Classifier Performance 46
+A.3 AI Review Detection Classifier Performance 
 
-A.4 Ranking of Linguistic Feature Discriminative Power 46
+A.4 Ranking of Linguistic Feature Discriminative Power 
 
-A.5 Trust Threshold Model Parameters 46
+A.5 Trust Threshold Model Parameters 
 
-A.6 User-Group Trust Thresholds 47
+A.6 User-Group Trust Thresholds 
 
-A.7 Quantitative Scores of the Competitive Landscape 47
+A.7 Quantitative Scores of the Competitive Landscape 
 
-Appendix B Minutes of Community Discussions 48
+### Appendix B Minutes of Community Discussions 
 
-Appendix C Methodology and Technical Route 48
+### Appendix C Methodology and Technical Route 
 
-Appendix D References 49
+### Appendix D References 
 
-Appendix E List of Figures and Tables 50
+### Appendix E List of Figures and Tables 
 
-I. Analysis Figures (Figure 1-Figure 12) 50
+I. Analysis Figures (Figure 1-Figure 12) 
 
-II. Illustrative Figures (Figure A-Figure L) 51
+II. Illustrative Figures (Figure A-Figure L) 
 
-Data Ethics Statement 52
+Data Ethics Statement 
 
 # Part 1 In-Depth Industry Insight
 
