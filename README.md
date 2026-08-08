@@ -47,6 +47,36 @@ Current outputs include:
 - Data analysis and visualization
 
 
+## Current Results
+
+### Dataset
+
+Collected:
+- xxx albums
+- xxx artists
+- xxx tags
+- xxx user ratings
+
+
+### Platform Comparison
+
+Compared RYM and AOTY based on:
+
+- metadata richness
+- tagging systems
+- community participation
+- recommendation mechanisms
+
+
+### Visualization
+
+Generated:
+
+- music genre network
+- artist similarity graph
+- platform metadata comparison
+
+  
 ## Future Work
 
 Future research will explore:
