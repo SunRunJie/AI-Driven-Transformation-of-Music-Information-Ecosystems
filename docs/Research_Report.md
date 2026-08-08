@@ -6,7 +6,7 @@
 
 ## Part 1 In-Depth Industry Insight 
 
-# I. Industry Overview and Development Assessment 
+### I. Industry Overview and Development Assessment 
 
 1.1 Industry Overview 
 
@@ -24,7 +24,7 @@
 
 1.2.3 Competitive Landscape 
 
-# II. Macro-Environmental Impact Analysis 
+### II. Macro-Environmental Impact Analysis 
 
 2.1 The Structural Tension between Economic Fundamentals and Cultural Consumption 
 
@@ -42,7 +42,7 @@
 
 2.3 The Strategic Choice Space under Environmental Pressure 
 
-# III. Market and Competitive Landscape Analysis 
+### III. Market and Competitive Landscape Analysis 
 
 3.1 The Deep Logic of Market Structure 
 
@@ -68,7 +68,7 @@
 
 ## Part 2 Industry Career Exploration and Job Search Planning 
 
-# IV. Industry Employment Prospects and Talent Demand 
+### IV. Industry Employment Prospects and Talent Demand 
 
 4.1 Employment Opportunities and Challenges 
 
@@ -84,7 +84,7 @@
 
 4.2.2 Emerging Roles 
 
-# V. Core Occupations and Competency Systems 
+### V. Core Occupations and Competency Systems 
 
 5.1 Typical Roles and Development Paths 
 
@@ -100,7 +100,7 @@
 
 5.2.2 Core Soft Skills 
 
-# VI. Personal Career Planning and Job Search Strategies 
+### VI. Personal Career Planning and Job Search Strategies 
 
 6.1 Competitiveness Enhancement 
 
@@ -124,7 +124,7 @@
 
 6.3.2 Path Selection 
 
-# VII. Career Development Risks and Responses 
+### VII. Career Development Risks and Responses 
 
 7.1 Risk Identification 
 
@@ -142,7 +142,7 @@
 
 ## Part 3 Summary 
 
-# VIII. Core Conclusions and Recommendations 
+### VIII. Core Conclusions and Recommendations 
 
 8.1 Core Conclusions 
 
@@ -152,7 +152,7 @@
 
 ## Part 4 Appendices 
 
-# Appendix A Detailed Tables of Research Data and Statistical Analysis 
+### Appendix A Detailed Tables of Research Data and Statistical Analysis 
 
 A.1 Key Statistics of the RYM Rating Time Series 
 
@@ -168,13 +168,13 @@ A.6 User-Group Trust Thresholds
 
 A.7 Quantitative Scores of the Competitive Landscape 
 
-# Appendix B Minutes of Community Discussions 
+### Appendix B Minutes of Community Discussions 
 
-# Appendix C Methodology and Technical Route 
+### Appendix C Methodology and Technical Route 
 
-# Appendix D References 
+### Appendix D References 
 
-# Appendix E List of Figures and Tables 
+### Appendix E List of Figures and Tables 
 
 I. Analysis Figures (Figure 1-Figure 12) 
 
