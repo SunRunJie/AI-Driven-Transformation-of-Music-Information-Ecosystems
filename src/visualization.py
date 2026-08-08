@@ -281,9 +281,13 @@ def plot_structural_break(
                  bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                            alpha=0.8))
 
+    # Add headroom so the max-|CUSUM| annotation never collides with the title
+    ymin_c, ymax_c = ax3.get_ylim()
+    ax3.set_ylim(ymin_c, max(ymax_c, max_cusum + 2.2))
+
     ax3.set_xlabel("Date", fontsize=11)
     ax3.set_ylabel("CUSUM statistic", fontsize=11)
-    ax3.set_title(f"C  Cumulative sum (CUSUM) test - threshold +/-{cusum_threshold} (95% confidence level)",
+    ax3.set_title(f"C  CUSUM test - threshold +/-{cusum_threshold} (95% Confidence Level)",
                   fontsize=13, fontweight="bold", loc="left")
     ax3.legend(loc="upper right", fontsize=8,
                handles=[
@@ -755,7 +759,7 @@ def plot_four_dimensions(save: bool = True) -> plt.Figure:
     future_scores = [9, 9, 8, 9]
     readiness = [4, 3, 6, 3]
 
-    fig = plt.figure(figsize=(18, 8))
+    fig = plt.figure(figsize=(20, 8))
     gs = GridSpec(1, 2, figure=fig, width_ratios=[1, 1], wspace=0.3)
 
     ax1 = fig.add_subplot(gs[0])
@@ -776,7 +780,8 @@ def plot_four_dimensions(save: bool = True) -> plt.Figure:
                     edgecolor="white", linewidth=0.5, zorder=3)
 
     ax1.set_xticks(x)
-    ax1.set_xticklabels(dimensions, fontsize=10, fontweight="bold")
+    ax1.set_xticklabels(dimensions, fontsize=8.5, fontweight="bold")
+    ax1.tick_params(axis="x", pad=8)
     ax1.set_ylabel("Score - 1 (low) to 10 (high)", fontsize=11)
     ax1.set_title("A  Four-dimensional AI impact framework - impact and readiness assessment",
                   fontsize=13, fontweight="bold", loc="left")
@@ -844,7 +849,7 @@ def plot_four_dimensions(save: bool = True) -> plt.Figure:
 
     fig.suptitle("Four institutional logics of the generative AI shock",
                  fontsize=15, fontweight="bold", y=0.98)
-    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.tight_layout(rect=[0, 0.05, 1, 0.95])
 
     if save:
         return _save_figure(fig, FILES["figure_four_dimensions"])
