@@ -14,10 +14,12 @@ Methodology:
   - Feature importance analysis to reveal the "machine-like" quality of AI reviews
   - Temporal analysis: does detector accuracy decline over time?
 
-Data serving the logic:
-  If classifier accuracy is high -> AI and human reviews have detectable differences
-  If classifier accuracy declines over time -> AI models are improving at imitating humans
-  This in itself is a valuable longitudinal finding
+Evidence boundary:
+  The human side uses a deterministic sample of published critic excerpts
+  from the documented AOTY/Metacritic archive when it is available. The AI
+  side remains a small set of manually authored assistant-style controls.
+  This supports a controlled feature comparison, not a prevalence estimate
+  or a production detector claim.
 """
 
 import re
@@ -38,8 +40,9 @@ import matplotlib.pyplot as plt
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import (
-    train_test_split, cross_val_score, StratifiedKFold
+    cross_val_predict, cross_val_score, StratifiedKFold
 )
+from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (
     classification_report, confusion_matrix,
@@ -47,7 +50,7 @@ from sklearn.metrics import (
 )
 
 from config import (
-    PROCESSED_DIR, FIGURES_DIR, RANDOM_SEED,
+    PROCESSED_DIR, FIGURES_DIR, EXTERNAL_DIR, RANDOM_SEED,
     TFIDF_MAX_FEATURES, NGRAM_RANGE, RF_N_ESTIMATORS,
     FILES
 )
@@ -59,8 +62,8 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 # High-quality English and Chinese music reviews
 # ============================================================
 
-# High-quality real reviews written by humans (based on real platform review styles)
-HUMAN_REVIEWS = [
+# Fallback examples used only when the external review archive is unavailable.
+FALLBACK_HUMAN_REVIEWS = [
     # English reviews (in RYM/AOTY style)
     "This album completely changed my perspective on what indie rock can be. "
     "The way the guitar riff builds in track 3 at exactly 2:15 is pure magic. "
@@ -138,7 +141,41 @@ HUMAN_REVIEWS = [
     "guitarist finally cuts loose on this one; that solo gave me goosebumps.",
 ]
 
-# Typical AI-generated reviews (based on ChatGPT/Claude output style)
+
+def load_human_review_excerpts(max_examples: int = 15) -> Tuple[List[str], str]:
+    """Return a reproducible, publication-diverse human-review sample."""
+    path = (
+        EXTERNAL_DIR
+        / "aoty_metacritic_30000"
+        / "Review excerpts for NLP"
+        / "train.csv"
+    )
+    if not path.exists():
+        return FALLBACK_HUMAN_REVIEWS[:max_examples], "manual fallback examples"
+
+    try:
+        reviews = pd.read_csv(path, usecols=["Source", "Review"])
+        reviews = reviews.dropna(subset=["Source", "Review"]).drop_duplicates("Review")
+        lengths = reviews["Review"].astype(str).str.len()
+        reviews = reviews.loc[lengths.between(120, 600)].copy()
+        one_per_source = (
+            reviews.sort_values(["Source", "Review"])
+            .groupby("Source", group_keys=False)
+            .sample(n=1, random_state=RANDOM_SEED)
+        )
+        if len(one_per_source) < max_examples:
+            return FALLBACK_HUMAN_REVIEWS[:max_examples], "manual fallback examples"
+        sample = one_per_source.sample(
+            n=max_examples, random_state=RANDOM_SEED
+        )["Review"].astype(str).tolist()
+        return sample, "15 published critic excerpts from the AOTY/Metacritic archive"
+    except (OSError, ValueError, KeyError, pd.errors.ParserError):
+        return FALLBACK_HUMAN_REVIEWS[:max_examples], "manual fallback examples"
+
+
+HUMAN_REVIEWS, HUMAN_CORPUS_LABEL = load_human_review_excerpts()
+
+# Manually authored examples intended to resemble generic assistant prose.
 AI_REVIEWS = [
     # English AI reviews
     "This album presents a compelling fusion of genres that demonstrates the "
@@ -230,7 +267,6 @@ class AIReviewAnalyzer:
         self.vectorizer = TfidfVectorizer(
             max_features=TFIDF_MAX_FEATURES,
             ngram_range=NGRAM_RANGE,
-            stop_words="english",
             analyzer="char_wb",
             sublinear_tf=True,
         )
@@ -407,7 +443,7 @@ class AIReviewAnalyzer:
     def prepare_data(self,
                      human_reviews: Optional[List[str]] = None,
                      ai_reviews: Optional[List[str]] = None,
-                     expand_factor: int = 50) -> Tuple:
+                     expand_factor: int = 1) -> Tuple:
         """
         Prepare training data, expanding the sample with slight perturbations.
 
@@ -425,16 +461,17 @@ class AIReviewAnalyzer:
         texts = []
         labels = []
 
-        # Expansion: generate variants by adding random noise
+        # Optional augmentation is for demonstrations only. Evaluation calls
+        # this with expand_factor=1 so every source example appears once.
         for review in human_reviews:
-            for _ in range(expand_factor):
-                variant = self._create_variant(review, noise_level=0.05)
+            for variant_idx in range(expand_factor):
+                variant = review if variant_idx == 0 else self._create_variant(review, noise_level=0.05)
                 texts.append(variant)
                 labels.append(0)
 
         for review in ai_reviews:
-            for _ in range(expand_factor):
-                variant = self._create_variant(review, noise_level=0.03)
+            for variant_idx in range(expand_factor):
+                variant = review if variant_idx == 0 else self._create_variant(review, noise_level=0.03)
                 texts.append(variant)
                 labels.append(1)
 
@@ -473,46 +510,53 @@ class AIReviewAnalyzer:
         print("[INFO] Training AI review detection classifier")
         print("=" * 50)
 
-        texts, labels = self.prepare_data(human_reviews, ai_reviews)
-
-        # TF-IDF vectorization
-        print("\n[1/3] TF-IDF vectorization...")
-        X = self.vectorizer.fit_transform(texts)
+        texts, labels = self.prepare_data(human_reviews, ai_reviews, expand_factor=1)
         y = np.array(labels)
-        print(f"  Feature matrix: {X.shape}")
 
-        # Split
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.25, random_state=RANDOM_SEED, stratify=y
-        )
+        print("\n[1/3] Leakage-safe cross-validation on original examples...")
+        cv = StratifiedKFold(5, shuffle=True, random_state=RANDOM_SEED)
+        evaluation_model = Pipeline([
+            ("tfidf", TfidfVectorizer(
+                max_features=TFIDF_MAX_FEATURES,
+                ngram_range=NGRAM_RANGE,
+                analyzer="char_wb",
+                sublinear_tf=True,
+            )),
+            ("classifier", RandomForestClassifier(
+                n_estimators=RF_N_ESTIMATORS,
+                max_depth=20,
+                min_samples_split=5,
+                min_samples_leaf=2,
+                class_weight="balanced",
+                random_state=RANDOM_SEED,
+                n_jobs=-1,
+            )),
+        ])
+        y_pred = cross_val_predict(evaluation_model, texts, y, cv=cv, method="predict")
+        y_prob = cross_val_predict(
+            evaluation_model, texts, y, cv=cv, method="predict_proba"
+        )[:, 1]
 
-        # Train
-        print("[2/3] Training Random Forest classifier...")
-        self.classifier.fit(X_train, y_train)
-        self.is_trained = True
+        accuracy = accuracy_score(y, y_pred)
+        auc = roc_auc_score(y, y_prob)
 
-        # Evaluate
-        print("[3/3] Model evaluation...")
-        y_pred = self.classifier.predict(X_test)
-        y_prob = self.classifier.predict_proba(X_test)[:, 1]
-
-        accuracy = accuracy_score(y_test, y_pred)
-        auc = roc_auc_score(y_test, y_prob)
-
-        print(f"\n[INFO] Model performance:")
+        print(f"\n[INFO] Controlled-corpus cross-validated performance:")
         print(f"  Accuracy: {accuracy:.4f}")
-        print(f"  AUC:    {auc:.4f}")
+        print(f"  AUC:      {auc:.4f}")
         print(f"\nClassification report:")
-        print(classification_report(y_test, y_pred,
+        print(classification_report(y, y_pred,
               target_names=["Human review", "AI review"]))
 
-        # Cross-validation
         cv_scores = cross_val_score(
-            self.classifier, X, y,
-            cv=StratifiedKFold(5, shuffle=True, random_state=RANDOM_SEED),
+            evaluation_model, texts, y, cv=cv,
             scoring="accuracy"
         )
-        print(f"\n5-fold cross-validation accuracy: {cv_scores.mean():.4f} (±{cv_scores.std():.4f})")
+        print(f"\n5-fold accuracy: {cv_scores.mean():.4f} (+/-{cv_scores.std():.4f})")
+
+        print("[2/3] Fitting the demonstrator on all original examples...")
+        X = self.vectorizer.fit_transform(texts)
+        self.classifier.fit(X, y)
+        self.is_trained = True
 
         # Feature importance
         self.feature_importance_ = pd.DataFrame({
@@ -526,10 +570,16 @@ class AIReviewAnalyzer:
             print(f"  {row['feature']:20s} importance={row['importance']:.4f}  {direction}")
 
         return {
-            "accuracy": accuracy,
-            "auc": auc,
-            "cv_mean": cv_scores.mean(),
-            "cv_std": cv_scores.std(),
+            "accuracy": float(accuracy),
+            "auc": float(auc),
+            "cv_mean": float(cv_scores.mean()),
+            "cv_std": float(cv_scores.std()),
+            "n_original_examples": int(len(texts)),
+            "evaluation_design": (
+                "5-fold out-of-fold evaluation on 15 archived critic excerpts "
+                "and 15 manually authored AI-style controls"
+            ),
+            "external_validation": False,
             "feature_importance": self.feature_importance_,
         }
 
@@ -634,21 +684,37 @@ class AIReviewAnalyzer:
         summary = {}
         for col in compare_cols:
             if col in df.columns:
-                human_mean = df[df["source"] == "Human review"][col].mean()
-                ai_mean = df[df["source"] == "AI review"][col].mean()
-                diff_pct = ((ai_mean - human_mean) / max(abs(human_mean), 0.001)) * 100
+                human_values = df[df["source"] == "Human review"][col]
+                ai_values = df[df["source"] == "AI review"][col]
+                human_mean = human_values.mean()
+                ai_mean = ai_values.mean()
+                pooled_std = np.sqrt(
+                    (human_values.std(ddof=1) ** 2 + ai_values.std(ddof=1) ** 2) / 2
+                )
+                standardized_difference = (
+                    (ai_mean - human_mean) / pooled_std if pooled_std > 1e-9 else 0.0
+                )
+                if standardized_difference > 0:
+                    direction = "higher in AI-style controls"
+                elif standardized_difference < 0:
+                    direction = "higher in critic excerpts"
+                else:
+                    direction = "no difference in sample"
                 summary[col] = {
                     "human_mean": round(float(human_mean), 3),
                     "ai_mean": round(float(ai_mean), 3),
-                    "diff_pct": round(float(diff_pct), 1),
-                    "direction": "more in AI" if diff_pct > 0 else "less in AI",
+                    "standardized_difference": round(
+                        float(standardized_difference), 3
+                    ),
+                    "direction": direction,
                 }
 
         print("\n[INFO] AI vs human review feature differences:")
         for feat, vals in summary.items():
             print(f"  {feat:25s}: human={vals['human_mean']:.3f}  "
                   f"AI={vals['ai_mean']:.3f}  "
-                  f"({vals['direction']}, {vals['diff_pct']:+.1f}%)")
+                  f"(SMD={vals['standardized_difference']:+.3f}; "
+                  f"{vals['direction']})")
 
         return summary
 

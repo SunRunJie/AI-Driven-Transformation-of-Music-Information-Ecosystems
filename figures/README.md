@@ -1,55 +1,27 @@
-# Figures
+# Figure Inventory
 
-All figures referenced in the research report, organized into two groups:
+Every analysis figure prints its evidence class in the upper-right corner.
+The current set combines observed archive results, a hybrid text comparison,
+one synthetic method check, and explicit scenario analyses.
 
-- **Analysis figures (Figure 1-12)** — data visualizations produced by the
-  analysis scripts (`src/visualization.py`), in `figures/analysis/`.
-- **Illustrative figures (Figure A-K)** — conceptual diagrams used to explain
-  the analytical framework, in `figures/decorative/`.
+| Figure | Evidence class | Correct interpretation |
+|:--|:--|:--|
+| `structural_break_analysis.png` | Illustrative synthetic data | Method benchmark around a prespecified date |
+| `rating_distribution_evolution.png` | Third-party observed archives | Score agreement and calibration across 4,102 exact AOTY-RYM matches |
+| `ai_vs_human_review_features.png` | Observed human text + controlled AI text | Standardized feature differences in 15+15 texts |
+| `feature_correlation_heatmap.png` | Observed human text + controlled AI text | Exploratory correlations in the same hybrid corpus |
+| `trust_threshold_model.png` | Assumption-driven scenario | Logistic trust mechanism under default parameters |
+| `heterogeneous_trust.png` | Assumption-driven scenario | Parameterized user-group differences |
+| `policy_intervention.png` | Assumption-driven scenario | Outcomes implied by assumed intervention multipliers |
+| `sensitivity_analysis.png` | Assumption-driven scenario | One-at-a-time parameter sensitivity |
+| `competitive_landscape.png` | Assumption-driven scenario | Analyst-coded ordinal positioning rubric |
+| `four_dimensions_framework.png` | Assumption-driven scenario | Analyst-coded strategic framework |
+| `genre_impact_heatmap.png` | Third-party observed archives | Shared-genre score, attention, review density, and coverage profiles |
+| `ai_impact_timeline.png` | Official dates + observed archives | Policy and AOTY product dates beside the available evidence base |
 
-## Directory layout
+The structural-break and rating-distribution functions can accept future
+empirical data. Their titles, sample sizes, and source notes come from the
+input provenance. Platform claims are not hard-coded.
 
-```
-figures/
-├── README.md        ← this file
-├── analysis/        ← analysis figures (Figure 1-12)
-└── decorative/      ← illustrative figures (Figure A-K)
-```
-
-## Analysis figures (Figure 1-12)
-
-Located in `figures/analysis/`.
-
-| # | File | Description | Method |
-|:--|:-----|:------------|:-------|
-| 1 | `ai_impact_timeline.png` | Serpentine timeline with AI penetration S-curve | Event history analysis |
-| 2 | `structural_break_analysis.png` | Three-panel break analysis (series, rolling stats, CUSUM) | Bai-Perron + CUSUM + Chow |
-| 3 | `ai_vs_human_review_features.png` | AI vs human review features (radar + diverging bars, 11 features) | TF-IDF + Random Forest |
-| 4 | `rating_distribution_evolution.png` | Rating distribution before/after ChatGPT (KDE, K-S test) | KDE + K-S test |
-| 5 | `trust_threshold_model.png` | S-shaped trust curve + multi-scenario Monte Carlo | Logistic phase transition + network effects |
-| 6 | `sensitivity_analysis.png` | alpha/beta/gamma parameter sensitivity | Monte Carlo sensitivity |
-| 7 | `heterogeneous_trust.png` | Heterogeneous trust curves for four user groups | Heterogeneity simulation |
-| 8 | `four_dimensions_framework.png` | Four-dimensional impact assessment + priority matrix | Institutional logic framework |
-| 9 | `policy_intervention.png` | Policy intervention comparison (4 strategies) | Scenario simulation |
-| 10 | `genre_impact_heatmap.png` | Genre x impact-dimension heatmap | Genre sensitivity analysis |
-| 11 | `competitive_landscape.png` | Four-quadrant bubble map (data depth x social experience) | Multi-dimensional competition analysis |
-| 12 | `feature_correlation_heatmap.png` | Pearson correlation matrix across 11 linguistic features | Feature engineering |
-
-## Illustrative figures (Figure A-K)
-
-Located in `figures/decorative/`. Full placement guidance is in
-`docs/Research_Report.md`.
-
-| # | PNG | Title |
-|:--|:----|:------|
-| A | `fig_value_chain.png` | Music information service value chain |
-| B | `fig_evolution_timeline.png` | Evolution timeline (Web 1.0 to generative AI) |
-| C | `fig_flywheel_compare.png` | UGC incentive structure comparison |
-| D | `fig_lemons_market.png` | Lemons-market mechanism in review markets |
-| E | `fig_heterogeneous_trust.png` | Heterogeneous trust curves |
-| F | `fig_four_dimensions.png` | Four institutional logics of the AI shock |
-| G | `fig_strategy_matrix.png` | Platform strategic response matrix |
-| H | `fig_data_value_paradox.png` | Data asset revaluation |
-| I | `fig_career_path.png` | Trust-economy career paths |
-| J | `fig_trust_pyramid.png` | Trust literacy capability model |
-| K | `fig_trust_curve.png` | Trust threshold curve (55.8% / 75% breakpoints) |
+Files under `figures/decorative/` are conceptual illustrations and should not
+be presented as quantitative results.

@@ -1,6 +1,6 @@
 """
-Quantitative analysis of the competitive landscape
-==================================================
+Assumption-driven competitive landscape analysis
+=================================================
 
 Research questions:
   1. What is the strategic positioning of RYM/AOTY among music information service platforms?
@@ -36,7 +36,8 @@ warnings.filterwarnings("ignore")
 # Platform data
 # ============================================================
 
-# Competitive data for music information service platforms (based on public information and reasonable estimates)
+# Analyst-coded ordinal inputs for scenario exploration. These values are not
+# observations, audited platform metrics, or externally validated rankings.
 PLATFORM_DATA = {
     "RYM": {
         "data_depth": 9.5,          # database size, metadata granularity
@@ -166,10 +167,10 @@ class CompetitiveAnalyzer:
         self.df = self.df.reset_index()
 
     def get_platform_summary(self) -> pd.DataFrame:
-        """Get a summary of the platform data"""
+        """Get a summary of the analyst-coded scenario inputs."""
         return self.df[[
             "platform", "data_depth", "social_engagement",
-            "monthly_users_m", "ai_risk_score", "business_model",
+            "ai_risk_score", "business_model",
             "founded_year"
         ]].sort_values("ai_risk_score", ascending=False)
 
@@ -251,7 +252,7 @@ class CompetitiveAnalyzer:
             "description"
         ]].sort_values("vulnerability_score", ascending=False)
 
-        print("\n[WARN] AI disruption vulnerability ranking:")
+        print("\n[SCENARIO] Scores under the selected vulnerability rubric:")
         for _, row in result.iterrows():
             print(f"  {row['platform']:10s} risk={row['ai_risk_score']:.1f} "
                   f"defense={row['defense_score']:.2f} "
@@ -286,7 +287,7 @@ class CompetitiveAnalyzer:
             "total_moat", ascending=False
         )
 
-        print("\n[INFO] Moat ranking:")
+        print("\n[SCENARIO] Analyst-coded platform capability scores:")
         for _, row in result.iterrows():
             print(f"  {row['platform']:10s} total={row['total_moat']:.1f} "
                   f"(data={row['data_moat']:.1f} "
@@ -340,12 +341,11 @@ class CompetitiveAnalyzer:
             "competitive_change", "competitive_change_pct"
         ]].sort_values("competitive_change", ascending=False)
 
-        print("\n[INFO] Competitive changes under AI impact:")
+        print("\n[SCENARIO] Changes under the selected AI-impact multipliers:")
         for _, row in result.iterrows():
-            symbol = "+" if row["competitive_change"] > 0 else ""
             print(f"  {row['platform']:10s} "
                   f"{row['pre_ai_total']:.1f} -> {row['post_ai_total']:.1f} "
-                  f"({symbol}{row['competitive_change_pct']:+.1f}%)")
+                  f"({row['competitive_change_pct']:+.1f}%)")
 
         return result
 
@@ -356,10 +356,16 @@ class CompetitiveAnalyzer:
     def run_full_analysis(self) -> Dict:
         """Run the complete competitive landscape analysis"""
         print("\n" + "=" * 60)
-        print("[INFO] Quantitative analysis of the competitive landscape - start")
+        print("[INFO] Analyst-coded platform comparison - start")
         print("=" * 60)
 
-        results = {}
+        results = {
+            "evidence_status": {
+                "class": "analyst-coded assumption-driven scenario",
+                "observed_platform_metrics": False,
+                "validated_ranking": False,
+            }
+        }
 
         # 1. Platform overview
         print("\n[Stage 1] Platform data summary...")
@@ -396,13 +402,10 @@ class CompetitiveAnalyzer:
     def _generate_conclusions(self, results: Dict) -> List[str]:
         """Generate analysis conclusions"""
         conclusions = [
-            "1. RYM and AOTY sit in the top-right quadrant of 'high data + high social', with a distinctive but fragile strategic position",
-            "2. RYM's data moat (9.5/10) is its core advantage, but the AI disruption will substantially weaken data moats",
-            "3. AOTY's community moat (8.0/10) is relatively stable, but the social experience itself is also threatened by AI social bots",
-            "4. The closest competitors, Discogs and Last.fm, have an edge in data depth but lack in social experience",
-            "5. Streaming platforms like Spotify face the lowest AI disruption risk (4.0/10) because their core value does not depend on UGC",
-            "6. Douban Music faces an AI trust crisis similar to RYM/AOTY, but with weaker content moderation",
-            "7. The AI disruption will accelerate divergence in the industry: platforms with community moats survive, while pure data platforms get commoditized",
+            "1. Under the chosen rubric, data depth and social engagement define useful comparison dimensions.",
+            "2. The assumed weights make community and moderation capacity offset some modeled AI vulnerability.",
+            "3. Rankings are outputs of analyst-assigned scores and should be treated as hypotheses for validation.",
+            "4. Claims about users, platform readiness, or actual risk require sourced platform metrics and documented coding procedures.",
         ]
         for c in conclusions:
             print(f"  {c}")

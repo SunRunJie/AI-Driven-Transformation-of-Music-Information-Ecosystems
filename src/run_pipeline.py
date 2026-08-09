@@ -9,7 +9,7 @@ Running this script completes:
   3. Time-series structural break analysis
   4. AI review detection and feature analysis
   5. Trust threshold model simulation
-  6. Competitive landscape quantitative analysis
+  6. Analyst-coded platform comparison
   7. Generate all visualization figures
   8. Export a results digest (key statistics + figure inventory)
 
@@ -25,15 +25,13 @@ Design principles:
 
 import sys
 import time
+import argparse
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Optional
 
 # Make the src root importable so that `from config import ...`
 # and the sibling subpackage imports resolve
-import sys
-from pathlib import Path
-
 _SRC = str(Path(__file__).resolve().parent)
 if _SRC not in sys.path:
     sys.path.insert(0, _SRC)
@@ -51,7 +49,11 @@ from config import (
 class ResearchPipeline:
     """Research data analysis pipeline - end-to-end execution"""
 
-    def __init__(self):
+    def __init__(self, mode: str = "empirical", collect: bool = False):
+        if mode not in {"empirical", "demo"}:
+            raise ValueError("mode must be 'empirical' or 'demo'")
+        self.mode = mode
+        self.collect = collect
         self.rng = np.random.default_rng(RANDOM_SEED)
         self.start_time = None
         self.results = {}
@@ -65,10 +67,15 @@ class ResearchPipeline:
         print(f"\n[INFO] Start time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"[INFO] Data directory: {RAW_DIR}")
         print(f"[INFO] Output directory: {ANALYSIS_FIGURES_DIR}")
+        print(f"[INFO] Evidence mode: {self.mode}")
         print("=" * 60)
 
-        # Stage 1: data collection
-        self.stage_data_collection()
+        # Stage 1: data collection is explicit because it has external side
+        # effects and may be blocked or rate-limited.
+        if self.collect:
+            self.stage_data_collection()
+        else:
+            print("\n[INFO] Stage 1/8 skipped: pass --collect to request public pages")
 
         # Stage 2: data preprocessing
         self.stage_preprocessing()
@@ -134,7 +141,7 @@ class ResearchPipeline:
             print("\n[OK] Data collection complete")
         except Exception as e:
             print(f"[WARN] Data collection stage failed: {e}")
-            print("  Continuing with existing or synthetic data...")
+            print("  Continuing with the provenance audit of existing data...")
 
     # ----------------------------------------------------------
     # Stage 2: preprocessing
@@ -147,29 +154,58 @@ class ResearchPipeline:
         print("=" * 60)
 
         try:
+            from analysis.observed_archive_analysis import load_observed_archives
+
+            archives = load_observed_archives(export=True)
+            self.datasets["observed_archives"] = archives
+            self.results["observed_archives"] = archives["summary"]
+            source_counts = archives["summary"]["sources"]
+            print(
+                "  [OK] Observed archives loaded: "
+                f"AOTY history {source_counts['aoty_history_rows']:,}, "
+                f"AOTY snapshot {source_counts['aoty_top5000_rows']:,}, "
+                f"RYM snapshot {source_counts['rym_top5000_rows']:,} rows"
+            )
+        except Exception as e:
+            print(f"[WARN] Observed archive integration failed: {e}")
+            self.results["observed_archives"] = {
+                "status": "unavailable",
+                "reason": str(e),
+            }
+
+        try:
             from preprocessing.data_preprocessing import DataPreprocessor
 
-            preprocessor = DataPreprocessor()
+            preprocessor = DataPreprocessor(empirical_only=self.mode == "empirical")
             merged_data, quality_report = preprocessor.run_pipeline()
 
             self.datasets["merged"] = merged_data
             self.results["quality_report"] = quality_report
 
-            # If no real data, generate a synthetic comprehensive dataset
-            if merged_data.empty:
-                print("\n[WARN] No collected data available, generating a comprehensive synthetic dataset...")
+            if merged_data.empty and self.mode == "demo":
+                print("\n[INFO] Demo mode: generating an explicitly synthetic benchmark...")
                 merged_data = self._generate_comprehensive_dataset()
                 self.datasets["merged"] = merged_data
 
-                path = PROCESSED_DIR / FILES["merged_ratings"]
+                path = PROCESSED_DIR / "demo_synthetic_ratings.csv"
                 merged_data.to_csv(path, index=False, encoding="utf-8-sig")
-                print(f"  [OK] Synthetic dataset saved: {path}")
+                print(f"  [OK] Demo dataset saved: {path}")
+            elif merged_data.empty:
+                self.results["evidence_status"] = {
+                    "status": "descriptive_archives_available",
+                    "reason": (
+                        "observed cross-sectional archives are available, but no repeated "
+                        "platform time series can support a structural-break estimate"
+                    ),
+                }
 
         except Exception as e:
             print(f"[WARN] Preprocessing stage failed: {e}")
-            print("  Generating a comprehensive synthetic dataset...")
-            merged_data = self._generate_comprehensive_dataset()
-            self.datasets["merged"] = merged_data
+            self.datasets["merged"] = pd.DataFrame()
+            self.results["evidence_status"] = {
+                "status": "failed",
+                "reason": str(e),
+            }
 
     def _generate_comprehensive_dataset(self) -> pd.DataFrame:
         """Generate a comprehensive synthetic dataset (to demonstrate the analysis framework)"""
@@ -244,6 +280,8 @@ class ResearchPipeline:
             ).astype(int),
             "is_verified_user": self.rng.choice([True, False], n_ratings, p=[0.6, 0.4]),
             "source_dataset": "comprehensive_synthetic",
+            "is_synthetic": True,
+            "provenance_status": "illustrative_simulation",
         })
 
         return df_ratings
@@ -263,27 +301,18 @@ class ResearchPipeline:
 
             data = self.datasets.get("merged")
             if data is not None and not data.empty and "date" in data.columns:
-                results = run_full_analysis(data)
+                results = run_full_analysis(
+                    data,
+                    allow_non_empirical=self.mode == "demo",
+                )
                 self.results["structural_break"] = results
             else:
-                print("[WARN] No usable time-series data, using synthetic data...")
-                dates = pd.date_range("2020-01-01", "2026-07-01", freq="7D")
-                n = len(dates)
-                metric = np.where(
-                    dates < pd.Timestamp(CHATGPT_RELEASE_DATE),
-                    3.5 + 0.3 * self.rng.standard_normal(n),
-                    3.2 + 0.5 * self.rng.standard_normal(n)
-                )
-                sim_data = pd.DataFrame({
-                    "date": dates,
-                    "avg_rating": np.clip(metric, 1, 5),
-                    "rating_count": self.rng.poisson(100, n).astype(float),
-                    "review_ratio": np.clip(
-                        0.3 + 0.1 * self.rng.standard_normal(n), 0.05, 0.6
-                    ),
-                })
-                results = run_full_analysis(sim_data)
-                self.results["structural_break"] = results
+                reason = "no empirical time series passed the provenance gate"
+                print(f"[WARN] Structural break analysis not testable: {reason}")
+                self.results["structural_break"] = {
+                    "status": "not_testable",
+                    "reason": reason,
+                }
 
         except Exception as e:
             print(f"[WARN] Structural break analysis failed: {e}")
@@ -319,20 +348,16 @@ class ResearchPipeline:
         print("=" * 60)
 
         try:
-            from analysis.trust_threshold_analysis import (
-                TrustThresholdModel, estimate_time_to_collapse
-            )
+            from analysis.trust_threshold_analysis import TrustThresholdModel
 
             model = TrustThresholdModel()
             results = model.full_analysis()
             self.results["trust_model"] = results
 
-            # Time estimate
-            print("\n[INFO] Collapse time estimate:")
-            timeline = estimate_time_to_collapse(model)
-            for k, v in timeline.items():
-                print(f"  {k}: {v}")
-            self.results["collapse_timeline"] = timeline
+            self.results["trust_model_status"] = {
+                "status": "scenario_model",
+                "reason": "parameters are assumptions and have not been calibrated to platform observations",
+            }
 
         except Exception as e:
             print(f"[WARN] Trust threshold model failed: {e}")
@@ -344,7 +369,7 @@ class ResearchPipeline:
     def stage_competitive_analysis(self):
         """Quantitative competitive landscape analysis"""
         print("\n" + "=" * 60)
-        print("=== Stage 6/8: Competitive Landscape Quantitative Analysis")
+        print("=== Stage 6/8: Analyst-Coded Platform Comparison")
         print("=" * 60)
 
         try:
@@ -371,7 +396,10 @@ class ResearchPipeline:
             from visualization import generate_all_figures
 
             data = self.datasets.get("merged")
-            generated = generate_all_figures(data=data)
+            generated = generate_all_figures(
+                data=data,
+                observed_archives=self.datasets.get("observed_archives"),
+            )
             self.results["figures"] = [str(p) for p in generated]
 
         except Exception as e:
@@ -408,33 +436,64 @@ class ResearchPipeline:
                         "evidence (key statistics and figures). The narrative research "
                         "report is authored separately in `docs/Research_Report.md`.\n\n")
 
+                f.write("## Evidence status\n\n")
+                f.write(f"- Pipeline mode: {self.mode}\n")
+                evidence = self.results.get("evidence_status", {})
+                if evidence:
+                    f.write(f"- Empirical status: {evidence.get('status')}\n")
+                    f.write(f"- Reason: {evidence.get('reason')}\n")
+                else:
+                    f.write("- Empirical status: available\n")
+                f.write("- Trust and competition outputs are assumption-driven scenario analyses.\n\n")
+
+                observed = self.results.get("observed_archives", {}) or {}
+                cross = observed.get("cross_platform", {}) or {}
+                attention = observed.get("attention", {}) or {}
+                critic_user = observed.get("aoty_critic_user", {}) or {}
+                if cross:
+                    f.write("## 1. Observed archive evidence\n\n")
+                    f.write("- Sources: third-party AOTY and RYM archive snapshots with documented dates.\n")
+                    f.write(f"- Exact artist-title-year matches: {cross.get('exact_matches', 'N/A'):,}\n")
+                    f.write(f"- AOTY-RYM user-score Pearson correlation: {cross.get('pearson_r', float('nan')):.3f}\n")
+                    f.write(f"- Share of matched albums within 0.5 points on a 0-5 scale: {pct(cross.get('share_within_half_point'))}\n")
+                    f.write(f"- AOTY critic-user pairs: {critic_user.get('n', 'N/A'):,}; Pearson r = {critic_user.get('pearson_r', float('nan')):.3f}\n")
+                    f.write(f"- RYM ratings represented in its top-5,000 snapshot: {attention.get('rym_top5000_total_ratings', 'N/A'):,}\n")
+                    f.write("- These are selected cross-sections, so totals are not platform-size estimates and do not identify post-2022 change.\n\n")
+
                 # Structural break analysis
                 sb = self.results.get("structural_break", {}) or {}
                 summary = sb.get("summary", {}) or {}
                 if summary:
-                    f.write("## 1. Structural break analysis\n\n")
+                    f.write("## 2. Structural break analysis\n\n")
                     f.write(f"- Metrics analyzed: {summary.get('total_metrics_analyzed', 'N/A')}\n")
                     f.write(f"- Significant breaks: {summary.get('significant_breaks', 'N/A')} "
                             f"({summary.get('break_detection_rate', 'N/A')}%)\n\n")
+                elif sb.get("status") == "not_testable":
+                    f.write("## 2. Structural break analysis\n\n")
+                    f.write(f"- Status: not testable\n- Reason: {sb.get('reason')}\n\n")
 
                 # AI review detection
                 ai = self.results.get("ai_detection", {}) or {}
                 model = ai.get("model", {}) or {}
                 if model:
-                    f.write("## 2. AI review detection\n\n")
-                    f.write(f"- Accuracy: {pct(model.get('accuracy'))}\n")
-                    f.write(f"- AUC: {model.get('auc', 'N/A')}\n\n")
+                    f.write("## 3. AI review detection\n\n")
+                    f.write("- Data basis: 15 observed critic excerpts and 15 controlled AI-style texts; no external validation\n")
+                    f.write(f"- Cross-validated accuracy: {pct(model.get('accuracy'))}\n")
+                    auc = model.get("auc")
+                    auc_text = f"{auc:.3f}" if isinstance(auc, (int, float)) else "N/A"
+                    f.write(f"- Cross-validated AUC: {auc_text}\n\n")
 
                 # Trust threshold model
                 tm = self.results.get("trust_model", {}) or {}
                 cp = tm.get("collapse_point", {}) or {}
                 if cp:
-                    f.write("## 3. Trust threshold model\n\n")
-                    f.write(f"- Collapse-triggering AI penetration: "
+                    f.write("## 4. Trust threshold model\n\n")
+                    f.write("- Data basis: uncalibrated scenario assumptions\n")
+                    f.write(f"- Assumption-implied threshold crossing: "
                             f"{pct(cp.get('collapse_penetration'))}\n\n")
 
                 # Figure inventory
-                f.write("## 4. Generated figures\n\n")
+                f.write("## 5. Generated figures\n\n")
                 figures = sorted(ANALYSIS_FIGURES_DIR.glob("*.png"))
                 if figures:
                     for p in figures:
@@ -477,5 +536,20 @@ class ResearchPipeline:
 # ============================================================
 
 if __name__ == "__main__":
-    pipeline = ResearchPipeline()
+    parser = argparse.ArgumentParser(description="Run the music ecosystem research pipeline")
+    parser.add_argument(
+        "--demo",
+        action="store_true",
+        help="run an explicitly synthetic demonstration instead of empirical mode",
+    )
+    parser.add_argument(
+        "--collect",
+        action="store_true",
+        help="attempt live public-page collection before preprocessing",
+    )
+    args = parser.parse_args()
+    pipeline = ResearchPipeline(
+        mode="demo" if args.demo else "empirical",
+        collect=args.collect,
+    )
     pipeline.run()

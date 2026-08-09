@@ -1,7 +1,7 @@
 """
-Academic-grade data visualization system
-=========================================
-Professional report figure generation engine that outputs Nature/Science-quality figures.
+Data visualization system with source notes
+==========================================
+Report figure generation with explicit provenance and scenario labels.
 
 Design principles:
   1. Academic standards: SimSun (Chinese) + Times New Roman (English/numbers) + STIX (math)
@@ -38,6 +38,7 @@ if _SRC not in sys.path:
 import numpy as np
 import pandas as pd
 import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import matplotlib.ticker as mticker
@@ -53,6 +54,7 @@ from config import (
     COLORBLIND_PALETTE, FIGURE_DESCRIPTIONS,
     GENRE_EN_CN, METHOD_EN_CN,
 )
+from data_provenance import dataframe_label
 
 warnings.filterwarnings("ignore")
 
@@ -135,6 +137,15 @@ def _add_stat_annotation(ax, x, y, text, color="#333333", fontsize=8):
     )
 
 
+def _add_evidence_banner(fig, label: str):
+    """Place the input source where it remains visible in exported PNGs."""
+    color = COLORS["red"] if "synthetic" in label or "scenario" in label else "#555555"
+    fig.text(
+        0.995, 0.995, f"Source: {label}",
+        ha="right", va="top", fontsize=8, color=color, fontweight="bold",
+    )
+
+
 # ================================================================
 # 2. Figure 1: structural break analysis (three panels)
 # ================================================================
@@ -146,14 +157,25 @@ def plot_structural_break(
     save: bool = True,
 ) -> plt.Figure:
     """
-    Three-panel structural break analysis figure in a top-tier academic journal style
-    Top: raw time series + break annotation + segment means
-    Middle: rolling statistics + confidence band
-    Bottom: CUSUM test + Chow test results
+    Descriptive pre/post figure around a prespecified candidate break date.
+
+    Formal Chow and multiple-break statistics are produced by
+    StructuralBreakAnalyzer; this figure does not label the candidate date as
+    a detected or causal break.
     """
     print("\n [1/12] Generating structural break analysis figure...")
 
-    df = data.sort_values("date").reset_index(drop=True)
+    if data is None or data.empty:
+        raise ValueError("structural-break figure requires a non-empty dataset")
+    if "date" not in data.columns or metric_col not in data.columns:
+        raise ValueError(f"required columns are date and {metric_col}")
+
+    df = data[[c for c in data.columns if c in {"date", metric_col, "is_synthetic", "source_dataset", "provenance_status"}]].copy()
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    df[metric_col] = pd.to_numeric(df[metric_col], errors="coerce")
+    df = df.dropna(subset=["date", metric_col]).sort_values("date").reset_index(drop=True)
+    if len(df) < 20:
+        raise ValueError("at least 20 complete observations are required")
     dates = pd.to_datetime(df["date"])
     metric = df[metric_col].values
     n = len(metric)
@@ -226,7 +248,7 @@ def plot_structural_break(
                                      linewidth=1.5, alpha=0.6))
 
     ax1.set_ylabel(f"{metric_col} (rating)", fontsize=11)
-    ax1.set_title("A  Rating time series - structural break detection",
+    ax1.set_title("A  Rating time series - pre/post comparison at candidate date",
                   fontsize=13, fontweight="bold", loc="left")
     ax1.legend(loc="upper right", fontsize=8, ncol=2, framealpha=0.85)
     ax1.set_xlim(dates.iloc[0], dates.iloc[-1])
@@ -239,7 +261,7 @@ def plot_structural_break(
                      rolling_mean - 1.96 * rolling_std,
                      rolling_mean + 1.96 * rolling_std,
                      color=COLORS["blue"], alpha=0.08,
-                     label="95% confidence band")
+                     label="Rolling mean +/- 1.96 rolling SD")
     ax2.axvline(x=chatgpt_date, color=COLORS["red"], linestyle="--",
                 linewidth=2, alpha=0.7, zorder=4)
 
@@ -250,7 +272,7 @@ def plot_structural_break(
     ax2_twin.tick_params(axis="y", labelcolor=COLORS["orange"], labelsize=8)
 
     ax2.set_ylabel("Rolling mean", fontsize=11)
-    ax2.set_title("B  Rolling trend - 30-day window mean with 95% confidence band",
+    ax2.set_title("B  Rolling trend - descriptive mean and variability envelope",
                   fontsize=13, fontweight="bold", loc="left")
     ax2.legend(loc="upper left", fontsize=8, ncol=2, framealpha=0.85)
 
@@ -287,7 +309,7 @@ def plot_structural_break(
 
     ax3.set_xlabel("Date", fontsize=11)
     ax3.set_ylabel("CUSUM statistic", fontsize=11)
-    ax3.set_title(f"C  CUSUM test - threshold +/-{cusum_threshold} (95% Confidence Level)",
+    ax3.set_title(f"C  Standardized cumulative deviation - reference +/-{cusum_threshold}",
                   fontsize=13, fontweight="bold", loc="left")
     ax3.legend(loc="upper right", fontsize=8,
                handles=[
@@ -299,11 +321,13 @@ def plot_structural_break(
                framealpha=0.85)
 
     fig.text(0.5, 0.01,
-             "Data: RYM/AOTY rating time series (2020-2026) | Break: 2022-11-01 (ChatGPT) | Method: CUSUM + rolling statistics",
+             f"Data class: {dataframe_label(df)} | N={n} complete observations | "
+             f"Candidate date: {break_date} | Descriptive CUSUM path and rolling statistics",
              ha="center", fontsize=7, color="#888888", style="italic")
 
-    fig.suptitle("Structural break analysis of rating patterns before and after the ChatGPT release",
+    fig.suptitle("Pre/post rating comparison at a prespecified candidate date",
                  fontsize=15, fontweight="bold", y=0.97)
+    _add_evidence_banner(fig, dataframe_label(df))
     plt.tight_layout(rect=[0, 0.02, 1, 0.95])
     # Add extra spacing between subplots
     plt.subplots_adjust(hspace=0.30)
@@ -359,9 +383,15 @@ def plot_ai_feature_comparison(
 
     human_means = feature_df[feature_df["source"] == "Human review"][compare_cols].mean()
     ai_means = feature_df[feature_df["source"] == "AI review"][compare_cols].mean()
-
-    diffs = ((ai_means.values - human_means.values)
-             / np.maximum(np.abs(human_means.values), 0.001)) * 100
+    human_std = feature_df[feature_df["source"] == "Human review"][compare_cols].std(ddof=1)
+    ai_std = feature_df[feature_df["source"] == "AI review"][compare_cols].std(ddof=1)
+    pooled_std = np.sqrt((human_std.values ** 2 + ai_std.values ** 2) / 2)
+    diffs = np.divide(
+        ai_means.values - human_means.values,
+        pooled_std,
+        out=np.zeros_like(ai_means.values, dtype=float),
+        where=pooled_std > 1e-9,
+    )
     sort_idx = np.argsort(np.abs(diffs))[::-1]
     n_features = len(compare_cols)
 
@@ -449,25 +479,29 @@ def plot_ai_feature_comparison(
 
     for bar, diff in zip(bars, diffs_sorted):
         x_pos = bar.get_width()
-        label_x = x_pos + 1.5 if x_pos >= 0 else x_pos - 14
+        label_x = x_pos + max_abs * 0.035 if x_pos >= 0 else x_pos - max_abs * 0.035
         ha = "left" if x_pos >= 0 else "right"
         clr = "#C0392B" if x_pos > 0 else "#2980B9"
         ax2.text(label_x, bar.get_y() + bar.get_height() / 2,
-                f"{diff:+.1f}%", va="center", ha=ha,
+                f"{diff:+.2f}", va="center", ha=ha,
                 fontsize=9, fontweight="bold", color=clr)
 
-    ax2.set_xlabel("Difference from Human (%)", fontsize=11)
-    ax2.set_title("B  Difference (sorted by |diff|)", fontsize=14,
+    ax2.set_xlabel("Standardized mean difference (AI - human)", fontsize=11)
+    ax2.set_title("B  Standardized difference (sorted by magnitude)", fontsize=14,
                   fontweight="bold", loc="left")
     ax2.grid(True, alpha=0.12, axis="x")
     ax2.spines["top"].set_visible(False)
     ax2.spines["right"].set_visible(False)
     ax2.set_xlim(-max_abs * 1.3, max_abs * 1.3)
 
+    from analysis.ai_review_analysis import HUMAN_CORPUS_LABEL
+
     # Bottom source note
     fig.text(0.5, 0.01,
-             "Data: AIReviewAnalyzer | N=30 reviews (15 human, 15 AI) | 11 linguistic features",
+             f"Controlled comparison | Human: {HUMAN_CORPUS_LABEL} | "
+             "AI: 15 manually authored assistant-style controls | No external detector validation",
              ha="center", fontsize=7, color="#888888", style="italic")
+    _add_evidence_banner(fig, "observed human text + controlled AI text")
 
     plt.tight_layout(rect=[0, 0.02, 1, 0.95])
 
@@ -485,8 +519,7 @@ def plot_trust_threshold(
     save: bool = True,
 ) -> plt.Figure:
     """
-    Trust threshold S-shaped phase transition model + multi-scenario dynamic simulation
-    Includes sensitivity analysis and a current-status annotation
+    Uncalibrated trust-threshold scenario model and deterministic scenarios.
     """
     print("\n [3/12] Generating trust threshold model figure...")
 
@@ -507,22 +540,22 @@ def plot_trust_threshold(
              linewidth=3.5, label="Trust function T(p)", zorder=4)
     ax1.axhline(y=threshold, color=COLORS["red"], linestyle="--",
                 linewidth=2, alpha=0.8, zorder=3)
-    ax1.annotate(f"Collapse threshold = {threshold}",
+    ax1.annotate(f"Selected reference = {threshold}",
                  xy=(0.75, threshold + 0.02), fontsize=9,
                  color=COLORS["red"], fontweight="bold",
                  ha="left", va="bottom")
     ax1.fill_between(penetration_range, trust_values, 0,
                      where=trust_values > threshold,
-                     color=COLORS["green"], alpha=0.06, label="Trust zone")
+                     color=COLORS["green"], alpha=0.06, label="Above reference")
     ax1.fill_between(penetration_range, trust_values, 0,
                      where=trust_values <= threshold,
-                     color=COLORS["red"], alpha=0.06, label="Collapse zone")
+                     color=COLORS["red"], alpha=0.06, label="Below reference")
 
     critical = model.find_critical_point()
     ax1.scatter([critical["critical_penetration"]], [critical["critical_trust"]],
                 color=COLORS["orange"], s=120, zorder=5,
                 edgecolors="black", linewidth=1.5)
-    ax1.annotate(f"Critical point\nPenetration = {critical['critical_penetration']:.1%}\nTrust = {critical['critical_trust']:.2f}",
+    ax1.annotate(f"Steepest modeled slope\nPenetration = {critical['critical_penetration']:.1%}\nTrust = {critical['critical_trust']:.2f}",
                  xy=(critical["critical_penetration"], critical["critical_trust"]),
                  xytext=(critical["critical_penetration"] + 0.15,
                          critical["critical_trust"] + 0.15),
@@ -531,21 +564,6 @@ def plot_trust_threshold(
                                  linewidth=1.5),
                  bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
                            edgecolor=COLORS["orange"], alpha=0.9))
-
-    # Current-status annotation
-    current_penetration = 0.01
-    current_trust = model.user_trust_function(current_penetration)
-    ax1.scatter([current_penetration], [current_trust],
-                color=COLORS["dark"], s=150, zorder=6,
-                marker="*", edgecolors="gold", linewidth=2)
-    ax1.annotate("Current state\nAI penetration ~ 1%",
-                 xy=(current_penetration, current_trust),
-                 xytext=(0.08, current_trust - 0.05),
-                 fontsize=9, fontweight="bold", color=COLORS["dark"],
-                 arrowprops=dict(arrowstyle="->", color=COLORS["dark"],
-                                 linewidth=1.5),
-                 bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
-                           edgecolor=COLORS["dark"], alpha=0.9))
 
     ax1_twin = ax1.twinx()
     ax1_twin.plot(penetration_range, derivatives, color=COLORS["purple"],
@@ -557,7 +575,7 @@ def plot_trust_threshold(
 
     ax1.set_xlabel("AI content penetration rate", fontsize=11)
     ax1.set_ylabel("User trust", fontsize=11)
-    ax1.set_title("A  Trust threshold hypothesis - S-shaped phase transition model",
+    ax1.set_title("A  Trust curve under selected assumptions",
                   fontsize=13, fontweight="bold", loc="left")
     ax1.set_xlim(-0.02, 1.02)
     ax1.set_ylim(-0.02, 1.08)
@@ -580,13 +598,13 @@ def plot_trust_threshold(
 
     ax2.axhline(y=threshold, color=COLORS["red"], linestyle=":",
                 linewidth=1.5, alpha=0.6, zorder=2)
-    ax2.annotate(f"Threshold = {threshold}",
+    ax2.annotate(f"Selected reference = {threshold}",
                  xy=(0, threshold), fontsize=8, color=COLORS["red"],
                  ha="right", va="bottom", fontweight="bold")
 
     ax2.set_xlabel("Time steps", fontsize=11)
     ax2.set_ylabel("User trust", fontsize=11)
-    ax2.set_title("B  Multi-scenario trust dynamics simulation",
+    ax2.set_title("B  Five parameter settings over 100 steps",
                   fontsize=13, fontweight="bold", loc="left")
     ax2.legend(loc="lower left", fontsize=8, ncol=1, framealpha=0.85)
     ax2.set_ylim(-0.05, 1.05)
@@ -596,13 +614,14 @@ def plot_trust_threshold(
 
     fig.text(0.5, 0.01,
              "Model parameters: alpha(preference)={0}, beta(discrimination)={1}, gamma(network)={2}, threshold={3}  "
-             "| Method: S-shaped logistic function + Monte Carlo simulation".format(
+             "| Method: deterministic logistic scenario analysis; parameters are not empirically calibrated".format(
                  model.params["alpha"], model.params["beta"],
                  model.params["gamma"], model.params["trust_threshold"]),
              ha="center", fontsize=7, color="#888888", style="italic")
 
-    fig.suptitle("Trust threshold hypothesis - AI penetration vs. platform credibility",
+    fig.suptitle("Trust response under selected assumptions",
                  fontsize=15, fontweight="bold", y=0.98)
+    _add_evidence_banner(fig, "uncalibrated assumptions")
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
     if save:
@@ -618,7 +637,8 @@ def plot_competitive_landscape(save: bool = True) -> plt.Figure:
     """
     Enhanced competitive landscape quadrant bubble chart
     Horizontal axis: data depth  Vertical axis: social engagement
-    Bubble size: monthly active users (log scale)  Color: AI risk score
+    Points and colors are analyst-coded ordinal scenario inputs, not measured
+    platform metrics.
     """
     print("\n [4/12] Generating competitive landscape positioning figure...")
 
@@ -629,12 +649,11 @@ def plot_competitive_landscape(save: bool = True) -> plt.Figure:
 
     fig, ax = plt.subplots(figsize=(14, 10))
 
-    sizes = np.log10(df["monthly_users_m"] + 1) * 150 + 80
     colors = df["ai_risk_score"]
 
     scatter = ax.scatter(
         df["data_depth"], df["social_engagement"],
-        s=sizes, c=colors, cmap="RdYlGn_r",
+        s=260, c=colors, cmap="RdYlGn_r",
         alpha=0.8, edgecolors="#333333", linewidth=1.2, zorder=4,
     )
 
@@ -676,7 +695,7 @@ def plot_competitive_landscape(save: bool = True) -> plt.Figure:
             row["platform"],
             (row["data_depth"], row["social_engagement"] - 1.0),
         )
-        ax.annotate("[WARN] High risk",
+        ax.annotate("Higher coded risk",
                     (row["data_depth"], row["social_engagement"]),
                     xytext=(lx, ly),
                     textcoords="data",
@@ -706,22 +725,9 @@ def plot_competitive_landscape(save: bool = True) -> plt.Figure:
     cbar.set_label("AI risk score", fontsize=10)
     cbar.ax.tick_params(labelsize=8)
 
-    legend_sizes = [3, 50, 500]
-    legend_labels = ["3M", "50M", "500M (MAU)"]
-    legend_elements = [
-        plt.scatter([], [], s=np.log10(s + 1) * 150 + 80,
-                    c="#888888", alpha=0.4, edgecolors="#333333",
-                    linewidth=0.5, label=l)
-        for s, l in zip(legend_sizes, legend_labels)
-    ]
-    ax.legend(handles=legend_elements, title="User base (MAU)",
-              loc="upper left", fontsize=9, title_fontsize=10,
-              handletextpad=1.5, labelspacing=1.5,
-              borderpad=0.8, framealpha=0.9)
-
     ax.set_xlabel("Data depth - database size / metadata granularity", fontsize=12)
     ax.set_ylabel("Social engagement - community interaction / UGC activity", fontsize=12)
-    ax.set_title("Competitive positioning of music information service platforms\nBubble size = monthly active users (MAU) | Color = AI risk score",
+    ax.set_title("Analyst-coded platform positioning scenario\nColor = assumed AI-risk score (ordinal, 1-10)",
                  fontsize=14, fontweight="bold")
     ax.set_xlim(2, 10.5)
     ax.set_ylim(1.5, 10)
@@ -730,8 +736,9 @@ def plot_competitive_landscape(save: bool = True) -> plt.Figure:
     ax.spines["right"].set_visible(False)
 
     fig.text(0.5, 0.01,
-             "Data sources: public platform data and reasonable estimates | Scoring: 1 (lowest) to 10 (highest) | Bubble size on a log scale (log10)",
+             "Analyst-authored rubric for hypothesis generation | Scores are assumptions, not observed measurements or rankings",
              ha="center", fontsize=7, color="#888888", style="italic")
+    _add_evidence_banner(fig, "analyst assumptions")
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.97])
 
@@ -844,11 +851,12 @@ def plot_four_dimensions(save: bool = True) -> plt.Figure:
     ax2.spines["right"].set_visible(False)
 
     fig.text(0.5, 0.01,
-             "Assessment: composite scores based on impact, future trend, and platform readiness | Gap = current impact - platform readiness",
+             "Illustrative analyst-coded rubric | Ordinal scores are assumptions for discussion, not measured effects or forecasts",
              ha="center", fontsize=7, color="#888888", style="italic")
 
-    fig.suptitle("Four institutional logics of the generative AI shock",
+    fig.suptitle("Four dimensions considered in the AI scenario",
                  fontsize=15, fontweight="bold", y=0.98)
+    _add_evidence_banner(fig, "analyst assumptions")
     plt.tight_layout(rect=[0, 0.05, 1, 0.95])
 
     if save:
@@ -860,73 +868,99 @@ def plot_four_dimensions(save: bool = True) -> plt.Figure:
 # 7. Figure 6: genre impact heatmap
 # ================================================================
 
-def plot_genre_impact_heatmap(save: bool = True) -> plt.Figure:
-    """
-    Genre x impact dimension heatmap + marginal sensitivity ranking
-    """
-    print("\n [6/12] Generating genre impact heatmap...")
+def plot_genre_impact_heatmap(
+    observed_archives: Optional[Dict] = None,
+    save: bool = True,
+) -> plt.Figure:
+    """Observed genre profiles across the AOTY and RYM snapshots."""
+    print("\n [6/12] Generating observed genre profile heatmap...")
 
-    rng = np.random.default_rng(RANDOM_SEED)
-    genres = ["Pop", "Indie Rock", "Electronic",
-              "Hip-Hop", "R&B", "Rock",
-              "Experimental", "Metal",
-              "Folk", "Jazz", "Classical"]
-    base_sensitivity = [0.90, 0.85, 0.75, 0.70, 0.65, 0.55,
-                        0.55, 0.45, 0.35, 0.30, 0.20]
-    dimensions = ["Rating mean\nchange", "Review quality\ndecline", "Distribution\nshift",
-                  "AI penetration\nlevel", "User trust\nimpact"]
+    if observed_archives is None:
+        from analysis.observed_archive_analysis import load_observed_archives
+        observed_archives = load_observed_archives(export=False)
+    genre = observed_archives["genre_summary"].copy()
 
-    impact_matrix = np.array([
-        [s * (0.7 + 0.3 * rng.random()) for _ in dimensions] for s in base_sensitivity
-    ])
-    sort_idx = np.argsort(base_sensitivity)[::-1]
-    genres_sorted = [genres[i] for i in sort_idx]
-    matrix_sorted = impact_matrix[sort_idx]
+    raw_columns = [
+        "aoty_median_score", "aoty_median_ratings", "rym_median_score",
+        "rym_median_ratings", "rym_median_review_share",
+    ]
+    labels = [
+        "AOTY median\nscore (0-5)", "AOTY median\nratings",
+        "RYM median\nscore (0-5)", "RYM median\nratings",
+        "RYM reviews per\n100 ratings",
+    ]
+    display = genre[raw_columns].copy()
+    display["rym_median_review_share"] *= 100
+    standardised = (display - display.mean()) / display.std(ddof=0)
 
-    fig = plt.figure(figsize=(14, 9))
-    gs = GridSpec(1, 2, figure=fig, width_ratios=[4, 1], wspace=0.05)
+    annotations = np.empty(display.shape, dtype=object)
+    for row in range(len(display)):
+        annotations[row, 0] = f"{display.iloc[row, 0]:.2f}"
+        annotations[row, 1] = f"{display.iloc[row, 1]:,.0f}"
+        annotations[row, 2] = f"{display.iloc[row, 2]:.2f}"
+        annotations[row, 3] = f"{display.iloc[row, 3]:,.0f}"
+        annotations[row, 4] = f"{display.iloc[row, 4]:.2f}%"
 
+    fig = plt.figure(figsize=(15, 9))
+    gs = GridSpec(1, 2, figure=fig, width_ratios=[4.4, 1.1], wspace=0.08)
     ax1 = fig.add_subplot(gs[0])
-    cmap = sns.diverging_palette(10, 130, s=80, l=55, as_cmap=True)
-    im = ax1.imshow(matrix_sorted, cmap=cmap, aspect="auto", vmin=0, vmax=1)
-
-    ax1.set_xticks(range(len(dimensions)))
-    ax1.set_xticklabels(dimensions, fontsize=10, fontweight="bold")
-    ax1.set_yticks(range(len(genres_sorted)))
-    ax1.set_yticklabels(genres_sorted, fontsize=9)
-
-    for i in range(len(genres_sorted)):
-        for j in range(len(dimensions)):
-            val = matrix_sorted[i, j]
-            text_color = "white" if val > 0.6 else "#333333"
-            ax1.text(j, i, f"{val:.2f}", ha="center", va="center",
-                    fontsize=9, fontweight="bold", color=text_color)
-
-    cbar = plt.colorbar(im, ax=ax1, shrink=0.6, pad=0.02)
-    cbar.set_label("Impact level", fontsize=10)
-    cbar.ax.tick_params(labelsize=8)
-    ax1.set_title("Genre-differentiated impact of the AI shock", fontsize=13, fontweight="bold")
-    ax1.spines["top"].set_visible(False)
-    ax1.spines["right"].set_visible(False)
+    cmap = sns.diverging_palette(250, 15, s=75, l=55, as_cmap=True)
+    sns.heatmap(
+        standardised,
+        cmap=cmap,
+        center=0,
+        vmin=-2,
+        vmax=2,
+        annot=annotations,
+        fmt="",
+        linewidths=0.6,
+        linecolor="white",
+        cbar_kws={"label": "Within-column standard deviations", "shrink": 0.68},
+        ax=ax1,
+    )
+    ax1.set_xticklabels(labels, rotation=0, fontsize=9, fontweight="bold")
+    ax1.set_yticklabels(genre["genre"], rotation=0, fontsize=9)
+    ax1.set_xlabel("")
+    ax1.set_ylabel("")
+    ax1.set_title(
+        "A  Observed score, attention, and review profiles by shared genre",
+        fontsize=13,
+        fontweight="bold",
+        loc="left",
+    )
 
     ax2 = fig.add_subplot(gs[1])
-    avg_impact = np.mean(matrix_sorted, axis=1)
-    colors_bar = plt.cm.RdYlGn_r(avg_impact)
-    ax2.barh(range(len(genres_sorted)), avg_impact, color=colors_bar, alpha=0.8, height=0.6)
-    ax2.set_yticks(range(len(genres_sorted)))
+    y = np.arange(len(genre))
+    ax2.barh(
+        y - 0.18, genre["aoty_albums"], height=0.34,
+        color=COLORS["blue"], label="AOTY", alpha=0.85,
+    )
+    ax2.barh(
+        y + 0.18, genre["rym_albums"], height=0.34,
+        color=COLORS["orange"], label="RYM", alpha=0.85,
+    )
+    ax2.set_yticks(y)
     ax2.set_yticklabels([])
-    ax2.set_xlabel("Composite", fontsize=8, color="#555555")
-    ax2.invert_xaxis()
-    ax2.set_xlim(1, 0)
-    ax2.spines["top"].set_visible(False)
-    ax2.spines["right"].set_visible(False)
-    ax2.spines["left"].set_visible(False)
-    ax2.tick_params(left=False)
+    ax2.invert_yaxis()
+    ax2.set_xlabel("Albums in snapshot", fontsize=9)
+    ax2.set_title("B  Coverage", fontsize=13, fontweight="bold", loc="left")
+    ax2.legend(fontsize=9, framealpha=0.85)
+    ax2.grid(True, axis="x", alpha=0.15)
 
-    fig.text(0.5, 0.01,
-             "Data sources: genre feature analysis + expert assessment | Scoring: 0 (no impact) to 1 (severe impact) | Genres sorted by AI sensitivity in descending order",
-             ha="center", fontsize=7, color="#888888", style="italic")
-    plt.tight_layout(rect=[0, 0.03, 1, 0.97])
+    fig.suptitle(
+        "Genre structure in observed AOTY and RYM archive snapshots",
+        fontsize=15,
+        fontweight="bold",
+        y=0.98,
+    )
+    fig.text(
+        0.5, 0.01,
+        "AOTY high-rated snapshot (2024-10-20) and RYM most-popular snapshot (2022-03-11) | "
+        "Cells show raw medians; colour is standardised within each metric | Selection rules differ",
+        ha="center", fontsize=7, color="#777777", style="italic",
+    )
+    _add_evidence_banner(fig, "third-party observed archives")
+    plt.tight_layout(rect=[0, 0.04, 1, 0.95])
 
     if save:
         return _save_figure(fig, FILES["figure_genre_impact"])
@@ -937,85 +971,87 @@ def plot_genre_impact_heatmap(save: bool = True) -> plt.Figure:
 # 8. Figure 7: rating distribution evolution
 # ================================================================
 
-def plot_rating_distribution_evolution(save: bool = True) -> plt.Figure:
-    """
-    Rating distribution comparison before and after ChatGPT (KDE density + histogram + statistical test)
-    """
-    print("\n [7/12] Generating rating distribution evolution figure...")
+def plot_rating_distribution_evolution(
+    data: Optional[pd.DataFrame] = None,
+    rating_col: Optional[str] = None,
+    observed_archives: Optional[Dict] = None,
+    save: bool = True,
+) -> plt.Figure:
+    """Cross-platform score agreement among exact album matches."""
+    print("\n [7/12] Generating cross-platform rating comparison...")
 
-    rng = np.random.default_rng(RANDOM_SEED)
-    n_samples = 10000
-    before_ratings = np.clip(rng.normal(7.2, 1.8, n_samples), 1, 10)
+    if observed_archives is None:
+        from analysis.observed_archive_analysis import load_observed_archives
+        observed_archives = load_observed_archives(export=False)
+    matched = observed_archives["cross_platform_matches"].dropna(
+        subset=["aoty_user_score_5", "avg_rating", "aoty_minus_rym"]
+    )
+    x = matched["aoty_user_score_5"].to_numpy()
+    y = matched["avg_rating"].to_numpy()
+    difference = matched["aoty_minus_rym"].to_numpy()
+    pearson = stats.pearsonr(x, y).statistic
+    spearman = stats.spearmanr(x, y).statistic
+    within_half = np.mean(np.abs(difference) <= 0.5)
 
-    ai_contamination = 0.25
-    after_ratings = np.zeros(n_samples)
-    for i in range(n_samples):
-        if rng.random() < ai_contamination:
-            after_ratings[i] = np.clip(rng.normal(7.0, 0.8), 1, 10)
-        else:
-            after_ratings[i] = np.clip(rng.normal(7.0, 2.0), 1, 10)
-
-    ks_stat, ks_p = stats.ks_2samp(before_ratings, after_ratings)
-    before_mean, before_std = np.mean(before_ratings), np.std(before_ratings)
-    after_mean, after_std = np.mean(after_ratings), np.std(after_ratings)
-    before_skew = stats.skew(before_ratings)
-    after_skew = stats.skew(after_ratings)
-
-    fig, axes = plt.subplots(1, 2, figsize=(16, 7), sharey=True)
-
-    # Left panel
+    fig, axes = plt.subplots(1, 2, figsize=(16, 7))
     ax = axes[0]
-    ax.hist(before_ratings, bins=35, color=COLORS["blue"], alpha=0.6,
-            edgecolor="white", linewidth=0.5, density=True, zorder=3)
-    kde_x = np.linspace(1, 10, 200)
-    kde_vals = stats.gaussian_kde(before_ratings)(kde_x)
-    ax.plot(kde_x, kde_vals, color=COLORS["dark"], linewidth=2, zorder=4)
-    ax.axvline(x=before_mean, color=COLORS["dark"], linestyle="--", linewidth=2, alpha=0.8)
-    ax.annotate(f"Mean = {before_mean:.2f}\nSD = {before_std:.2f}\nSkew = {before_skew:.2f}",
-                xy=(before_mean, ax.get_ylim()[1] * 0.85),
-                fontsize=9, color=COLORS["dark"], ha="left",
-                bbox=dict(boxstyle="round", facecolor="white", alpha=0.8, edgecolor=COLORS["blue"]))
-    ax.set_xlabel("Rating (1-10)", fontsize=11)
-    ax.set_ylabel("Probability density", fontsize=11)
-    ax.set_title("A  Pre-AI era (2020-2022)\nRating distribution - heavy-tailed, diverse",
-                 fontsize=13, fontweight="bold")
-    ax.set_xlim(0.5, 10.5)
-    ax.grid(True, alpha=0.15)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
+    hb = ax.hexbin(x, y, gridsize=38, mincnt=1, cmap="Blues", linewidths=0.1)
+    ax.plot([2, 5], [2, 5], color=COLORS["red"], linestyle="--", linewidth=1.5,
+            label="Equal score after rescaling")
+    fit = np.polyfit(x, y, 1)
+    grid = np.linspace(max(2, x.min()), min(5, x.max()), 100)
+    ax.plot(grid, fit[0] * grid + fit[1], color=COLORS["orange"], linewidth=2,
+            label="Observed linear fit")
+    cbar = fig.colorbar(hb, ax=ax, shrink=0.72)
+    cbar.set_label("Matched albums per hexagon", fontsize=9)
+    ax.set_xlabel("AOTY user score, rescaled to 0-5", fontsize=11)
+    ax.set_ylabel("RYM average rating, 0-5", fontsize=11)
+    ax.set_xlim(2.2, 5.0)
+    ax.set_ylim(2.2, 5.0)
+    ax.set_title("A  The same albums are ranked similarly", fontsize=13,
+                 fontweight="bold", loc="left")
+    ax.text(
+        0.04, 0.95,
+        f"Exact matches: {len(matched):,}\nPearson r = {pearson:.3f}\nSpearman rho = {spearman:.3f}",
+        transform=ax.transAxes, va="top", fontsize=10,
+        bbox=dict(boxstyle="round,pad=0.35", facecolor="white", alpha=0.9,
+                  edgecolor="#999999"),
+    )
+    ax.legend(loc="lower right", fontsize=9)
 
-    # Right panel
     ax = axes[1]
-    ax.hist(after_ratings, bins=35, color=COLORS["red"], alpha=0.6,
-            edgecolor="white", linewidth=0.5, density=True, zorder=3)
-    kde_vals_after = stats.gaussian_kde(after_ratings)(kde_x)
-    ax.plot(kde_x, kde_vals_after, color=COLORS["dark"], linewidth=2, zorder=4)
-    ax.axvline(x=after_mean, color=COLORS["dark"], linestyle="--", linewidth=2, alpha=0.8)
-    ax.annotate(f"Mean = {after_mean:.2f}\nSD = {after_std:.2f}\nSkew = {after_skew:.2f}",
-                xy=(after_mean, ax.get_ylim()[1] * 0.85),
-                fontsize=9, color=COLORS["dark"], ha="left",
-                bbox=dict(boxstyle="round", facecolor="white", alpha=0.8, edgecolor=COLORS["red"]))
-    ax.annotate("Extreme ratings decline\ndistribution converges\n(feature of AI-generated content)",
-                xy=(8.5, 0.10), fontsize=9, color=COLORS["red"], fontweight="bold",
-                bbox=dict(boxstyle="round", facecolor="white", alpha=0.85, edgecolor=COLORS["red"]),
-                arrowprops=dict(arrowstyle="->", color=COLORS["red"], alpha=0.5))
-    ax.set_xlabel("Rating (1-10)", fontsize=11)
-    ax.set_title("B  AI era (2023-2026)\nRating distribution - concentrated, de-extremized",
-                 fontsize=13, fontweight="bold")
-    ax.set_xlim(0.5, 10.5)
-    ax.grid(True, alpha=0.15)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
+    ax.hist(difference, bins=45, color=COLORS["orange"], alpha=0.82,
+            edgecolor="white", linewidth=0.5)
+    ax.axvspan(-0.5, 0.5, color=COLORS["green"], alpha=0.10,
+               label="Within 0.5 points")
+    ax.axvline(0, color="#333333", linestyle="--", linewidth=1.5)
+    ax.axvline(np.median(difference), color=COLORS["red"], linewidth=2,
+               label=f"Median AOTY - RYM = {np.median(difference):+.2f}")
+    ax.set_xlabel("AOTY score minus RYM score (0-5 scale)", fontsize=11)
+    ax.set_ylabel("Matched albums", fontsize=11)
+    ax.set_title("B  Agreement remains high despite a scale offset", fontsize=13,
+                 fontweight="bold", loc="left")
+    ax.text(
+        0.96, 0.95,
+        f"{within_half:.1%} within 0.5 points\nMean offset = {difference.mean():+.2f}",
+        transform=ax.transAxes, va="top", ha="right", fontsize=10,
+        bbox=dict(boxstyle="round,pad=0.35", facecolor="white", alpha=0.9,
+                  edgecolor="#999999"),
+    )
+    ax.legend(loc="upper left", fontsize=9)
 
-    fig.text(0.5, 0.005,
-             f"K-S test: D={ks_stat:.4f}, p={ks_p:.2e} "
-             f"{'(*** p<0.001)' if ks_p < 0.001 else '(** p<0.01)' if ks_p < 0.01 else '(* p<0.05)' if ks_p < 0.05 else '(n.s.)'}  "
-             f"| Mean: {before_mean:.2f} -> {after_mean:.2f} ({after_mean-before_mean:+.2f})  "
-             f"| SD: {before_std:.2f} -> {after_std:.2f} ({after_std-before_std:+.2f})",
-             ha="center", fontsize=8, style="italic", color="#666666")
-    fig.suptitle("Structural change in rating distribution before and after the ChatGPT release",
-                 fontsize=15, fontweight="bold", y=0.98)
-    plt.tight_layout(rect=[0, 0.05, 1, 0.95])
+    fig.suptitle(
+        "Cross-platform agreement and score calibration",
+        fontsize=15, fontweight="bold", y=0.98,
+    )
+    fig.text(
+        0.5, 0.012,
+        "Exact artist-title-year matches between the AOTY archive (through 2020-10) and "
+        "RYM popularity snapshot (2022-03-11) | Descriptive association; snapshots use different selection rules",
+        ha="center", fontsize=7, color="#777777", style="italic",
+    )
+    _add_evidence_banner(fig, "third-party observed archives")
+    plt.tight_layout(rect=[0, 0.045, 1, 0.95])
 
     if save:
         return _save_figure(fig, FILES["figure_rating_dist"])
@@ -1026,7 +1062,10 @@ def plot_rating_distribution_evolution(save: bool = True) -> plt.Figure:
 # 9. Figure 8: AI impact timeline overview
 # ================================================================
 
-def plot_ai_impact_timeline(save: bool = True) -> plt.Figure:
+def plot_ai_impact_timeline(
+    observed_archives: Optional[Dict] = None,
+    save: bool = True,
+) -> plt.Figure:
     """
     Serpentine timeline - events alternate left/right + large text on separate lines
     Left: serpentine wavy timeline, events alternate left and right, title and description
@@ -1036,16 +1075,14 @@ def plot_ai_impact_timeline(save: bool = True) -> plt.Figure:
     print("\n[8/12] Generating AI impact timeline overview figure (serpentine version)...")
 
     events = [
-        ("2022-11", "ChatGPT Release", "AI content generation leaps", "#0077BB", True),
-        ("2023-Q1", "First AI Reviews", "Detected on RYM/AOTY", "#0077BB", True),
-        ("2023-Q2", "Community Explosion", "Discussions on detecting AI", "#0077BB", True),
-        ("2023-Q3", "Platform Awareness", "Moderators address AI", "#0077BB", True),
-        ("2024-Q1", "GPT-4 Upgrade", "AI review quality surges", "#0077BB", True),
-        ("2024-Q2", "Trust Anxiety", "Meta-evaluation crisis emerges", "#0077BB", True),
-        ("2025",   "AI Acceleration", "AI reviews ~15-25%", "#EE7733", True),
-        ("2026",   "Threshold Looming", "Near collapse threshold", "#EE7733", True),
-        ("2027-Q3","Threshold Hit!", "Trust system collapse risk", "#CC3311", False),
-        ("2028+",  "Trust Rebuilding", "Platforms restructure institutions", "#AA3377", False),
+        ("2022-11", "ChatGPT public release", "Prespecified external event", "#0077BB", True),
+        ("2024-08", "EU AI Act enters into force", "Staged obligations begin", "#228833", True),
+        ("2024-10", "AOTY top-5,000 snapshot", "Observed archive updated", "#228833", True),
+        ("2025-09", "China labelling rules take effect", "Synthetic-content labels", "#228833", True),
+        ("2025-10", "AOTY genre charts reweighted", "Score and rating count both matter", "#EE7733", True),
+        ("2026-04", "AOTY adds CSV export", "Users can export their ratings", "#EE7733", True),
+        ("2026-06", "AOTY critic charts reweighted", "Low-count scores receive less rank", "#EE7733", True),
+        ("2026-07", "AOTY user charts reweighted", "Weighted score becomes default", "#CC3311", True),
     ]
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 12),
@@ -1098,67 +1135,61 @@ def plot_ai_impact_timeline(save: bool = True) -> plt.Figure:
     ax1.set_xlim(-3.5, 3.5)
     ax1.set_ylim(0.2, 12)
     ax1.axis("off")
-    ax1.set_title("AI Impact Timeline", fontsize=20, fontweight="bold", pad=15)
+    ax1.set_title("Evidence-building sequence", fontsize=20, fontweight="bold", pad=15)
 
-    # -- Right: penetration S-curve (enlarged) --
-    x_smooth = np.linspace(0, 1, 100)
-    penetration = 0.005 + 0.45 / (1 + np.exp(-8 * (x_smooth - 0.55)))
-    y_min, y_max = 0, 10
-    y_smooth = y_min + penetration * (y_max - y_min)
-
-    ax2.plot(x_smooth, y_smooth, color="#CC3311", linewidth=3.5, alpha=0.85, zorder=3)
-    ax2.fill_between(x_smooth, y_min, y_smooth, color="#CC3311", alpha=0.07, zorder=1)
-
-    for p0, p1, label, clr in [
-        (0, 0.25, "Observation", "#228833"),
-        (0.25, 0.55, "Concern", "#EE7733"),
-        (0.55, 0.85, "Action", "#CC3311"),
-        (0.85, 1.05, "Transformation", "#AA3377"),
-    ]:
-        ax2.axvspan(p0, p1, alpha=0.08, color=clr, zorder=0)
-        ax2.text((p0 + p1) / 2, 10.0, label, fontsize=11,
-                color=clr, ha="center", va="bottom", fontweight="bold")
-
-    ax2.axhline(y=2.0, xmin=0, xmax=0.85, color="#EE7733",
-                linewidth=2.5, linestyle="--", alpha=0.7)
-    ax2.annotate("Trust Threshold ~ 20%", xy=(0.88, 2.0),
-                fontsize=11, color="#EE7733", ha="left", va="center", fontweight="bold")
-
-    ci = 45
-    ax2.scatter([x_smooth[ci]], [y_smooth[ci]], color="#222222",
-                s=280, zorder=5, marker="*", edgecolors="gold", linewidth=2.5)
-    ax2.annotate("Current (2026)", xy=(x_smooth[ci], y_smooth[ci]),
-                xytext=(x_smooth[ci] + 0.18, y_smooth[ci] + 1.8),
-                fontsize=12, fontweight="bold", color="#222222",
-                arrowprops=dict(arrowstyle="->", color="#222222", lw=1.8))
-
-    ax2.set_xlim(-0.05, 1.2)
-    ax2.set_ylim(-0.5, 12.5)
-    ax2.set_title("AI Penetration S-Curve", fontsize=16, fontweight="bold")
-    ax2.set_xlabel("Time", fontsize=13, color="#444444")
-    ax2.set_ylabel("Penetration", fontsize=13, color="#444444")
-    ax2.spines["top"].set_visible(False)
-    ax2.spines["right"].set_visible(False)
-    ax2.tick_params(colors="#444444", labelsize=10)
-    ax2.set_xticks([])
-
-    for pct, yv in [("5%", 0.5), ("10%", 1.0), ("20%", 2.0),
-                    ("30%", 3.0), ("40%", 4.0)]:
-        ax2.text(1.10, yv, pct, fontsize=9, color="#888888", ha="left", va="center")
-
-    legend_elements = [
-        plt.Line2D([], [], color="#CC3311", linewidth=4, label="Penetration"),
-        plt.Line2D([], [], color="#EE7733", linewidth=3, linestyle="--", label="Threshold"),
-        plt.Line2D([], [], marker="o", color="w", markerfacecolor="#0077BB",
-                   markersize=16, label="Past Events"),
-        plt.Line2D([], [], marker="D", color="w", markerfacecolor="#CC3311",
-                   markersize=16, label="Forecast"),
+    # -- Right: evidence now available --
+    if observed_archives is None:
+        from analysis.observed_archive_analysis import load_observed_archives
+        observed_archives = load_observed_archives(export=False)
+    summary = observed_archives["summary"]
+    sample_labels = [
+        "Published critic excerpts", "AOTY historical albums",
+        "AOTY high-rated snapshot", "RYM popular snapshot",
+        "Exact cross-platform matches",
     ]
-    fig.legend(handles=legend_elements, loc="lower center",
-              ncol=4, fontsize=12, framealpha=0.85)
+    sample_values = [
+        116384,
+        summary["sources"]["aoty_history_rows"],
+        summary["sources"]["aoty_top5000_rows"],
+        summary["sources"]["rym_top5000_rows"],
+        summary["cross_platform"]["exact_matches"],
+    ]
+    y_bar = np.arange(len(sample_labels))
+    bars = ax2.barh(
+        y_bar, sample_values,
+        color=[COLORS["green"], COLORS["blue"], COLORS["blue"],
+               COLORS["orange"], COLORS["purple"]],
+        alpha=0.84, height=0.62,
+    )
+    ax2.set_yticks(y_bar)
+    ax2.set_yticklabels(sample_labels, fontsize=11)
+    ax2.invert_yaxis()
+    ax2.set_xscale("log")
+    ax2.set_xlabel("Records represented (log scale)", fontsize=12)
+    ax2.set_title("Observed evidence now in hand", fontsize=17, fontweight="bold")
+    ax2.grid(True, axis="x", alpha=0.18)
+    for bar, value in zip(bars, sample_values):
+        ax2.text(
+            value * 1.05, bar.get_y() + bar.get_height() / 2,
+            f"{value:,}", va="center", fontsize=10, fontweight="bold",
+        )
+    ax2.text(
+        0.03, 0.03,
+        f"AOTY-RYM matched scores: r = {summary['cross_platform']['pearson_r']:.3f}\n"
+        f"Within 0.5 points: {summary['cross_platform']['share_within_half_point']:.1%}\n"
+        f"AOTY critic-user scores: r = {summary['aoty_critic_user']['pearson_r']:.3f}\n"
+        f"RYM median review share: {summary['attention']['rym_median_review_share']:.2%}",
+        transform=ax2.transAxes, fontsize=11, va="bottom",
+        bbox=dict(boxstyle="round,pad=0.5", facecolor="white", alpha=0.92,
+                  edgecolor="#888888"),
+    )
 
-    fig.suptitle("AI Impact Timeline: From ChatGPT to Trust Crisis",
+    fig.suptitle("From an external shock to a documented evidence base",
                 fontsize=19, fontweight="bold", y=0.96)
+    fig.text(0.5, 0.015,
+             "Sources: official policy dates, AOTY changelog, and documented third-party AOTY/RYM archives | Archive counts are not platform totals",
+             ha="center", fontsize=8, color="#666666", style="italic")
+    _add_evidence_banner(fig, "official dates + observed archives")
     plt.tight_layout(rect=[0, 0.05, 1, 0.94])
 
     if save:
@@ -1172,7 +1203,7 @@ def plot_ai_impact_timeline(save: bool = True) -> plt.Figure:
 
 def plot_heterogeneous_trust(save: bool = True) -> plt.Figure:
     """
-    Heterogeneous trust curves for four user types + safe/warning/collapse zone division
+    Heterogeneous trust curves for four assumed user profiles.
     """
     print("\n [9/12] Generating heterogeneous user trust curves...")
 
@@ -1194,11 +1225,11 @@ def plot_heterogeneous_trust(save: bool = True) -> plt.Figure:
     ax.axvspan(0, 0.10, alpha=0.06, color=COLORS["green"], zorder=0)
     ax.axvspan(0.10, 0.30, alpha=0.06, color=COLORS["orange"], zorder=0)
     ax.axvspan(0.30, 1, alpha=0.06, color=COLORS["red"], zorder=0)
-    ax.text(0.05, 0.02, "Safe", fontsize=11, color=COLORS["green"],
+    ax.text(0.05, 0.02, "Assumed low-risk zone", fontsize=9, color=COLORS["green"],
            ha="center", fontweight="bold", alpha=0.5)
-    ax.text(0.20, 0.02, "Warning", fontsize=11, color=COLORS["orange"],
+    ax.text(0.20, 0.02, "Assumed transition zone", fontsize=9, color=COLORS["orange"],
            ha="center", fontweight="bold", alpha=0.5)
-    ax.text(0.65, 0.02, "Collapse", fontsize=11, color=COLORS["red"],
+    ax.text(0.65, 0.02, "Assumed low-trust zone", fontsize=9, color=COLORS["red"],
            ha="center", fontweight="bold", alpha=0.5)
 
     for user in user_types:
@@ -1216,7 +1247,7 @@ def plot_heterogeneous_trust(save: bool = True) -> plt.Figure:
         ax.scatter([cross_penetration], [user["threshold"]],
                   color=user["color"], s=60, zorder=4,
                   edgecolors="black", linewidth=0.5)
-        ax.annotate(f"{user['name'].split('(')[0].strip()}\nThreshold = {user['threshold']:.2f}",
+        ax.annotate(f"{user['name'].split('(')[0].strip()}\nReference = {user['threshold']:.2f}",
                    xy=(cross_penetration, user["threshold"]),
                    xytext=(cross_penetration + 0.12, user["threshold"] + 0.08),
                    fontsize=8, color=user["color"], fontweight="bold",
@@ -1237,8 +1268,9 @@ def plot_heterogeneous_trust(save: bool = True) -> plt.Figure:
     ax.spines["right"].set_visible(False)
 
     fig.text(0.5, 0.01,
-             "Model differences: power users (high discrimination beta=4.0, low tolerance) vs casual browsers (low discrimination beta=0.6, high tolerance) | The lower the threshold, the higher the tolerance for AI penetration",
+             "Uncalibrated heterogeneous-user scenarios | Group parameters and zone boundaries are assumptions for sensitivity analysis",
              ha="center", fontsize=7, color="#888888", style="italic")
+    _add_evidence_banner(fig, "analyst assumptions")
     plt.tight_layout(rect=[0, 0.03, 1, 0.97])
 
     if save:
@@ -1264,10 +1296,10 @@ def plot_policy_intervention(save: bool = True) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(14, 8))
 
     policy_styles = {
-        "No Intervention": {"color": COLORS["red"], "ls": "-", "lw": 2.5},
-        "AI Detection": {"color": COLORS["orange"], "ls": "--", "lw": 2},
-        "User Education": {"color": COLORS["blue"], "ls": "-.", "lw": 2},
-        "Combined Strategy": {"color": COLORS["green"], "ls": "-", "lw": 3},
+        "No intervention": {"color": COLORS["red"], "ls": "-", "lw": 2.5},
+        "AI content detection": {"color": COLORS["orange"], "ls": "--", "lw": 2},
+        "User education program": {"color": COLORS["blue"], "ls": "-.", "lw": 2},
+        "Dual intervention (detection + education)": {"color": COLORS["green"], "ls": "-", "lw": 3},
     }
 
     for policy_name in policy_df["policy"].unique():
@@ -1280,17 +1312,17 @@ def plot_policy_intervention(save: bool = True) -> plt.Figure:
     threshold = model.params["trust_threshold"]
     ax.axhline(y=threshold, color=COLORS["red"], linestyle=":",
                linewidth=1.5, alpha=0.6, zorder=2)
-    ax.annotate(f"Trust collapse threshold = {threshold}",
+    ax.annotate(f"Selected trust reference = {threshold}",
                xy=(0.65, threshold + 0.02), fontsize=10,
                color=COLORS["red"], fontweight="bold")
 
-    combined = policy_df[policy_df["policy"] == "Combined Strategy"]
+    combined = policy_df[policy_df["policy"] == "Dual intervention (detection + education)"]
     if not combined.empty:
         last_row = combined.iloc[-1]
         ax.scatter([last_row["effective_penetration"]], [last_row["trust"]],
                   color=COLORS["green"], s=150, zorder=5,
                   marker="*", edgecolors="gold", linewidth=2)
-        ax.annotate("Combined Strategy\nHighest Trust Retention",
+        ax.annotate("Highest modeled retention\n(by assumed multipliers)",
                    xy=(last_row["effective_penetration"], last_row["trust"]),
                    xytext=(0.6, 0.75),
                    fontsize=10, fontweight="bold", color=COLORS["green"],
@@ -1309,8 +1341,9 @@ def plot_policy_intervention(save: bool = True) -> plt.Figure:
     ax.spines["right"].set_visible(False)
 
     fig.text(0.5, 0.01,
-             "Efficacy ranking: Combined > User Education > AI Detection > No Intervention",
+             "Deterministic policy scenarios | Relative ordering follows assumed efficacy multipliers; no observed intervention effects",
              ha="center", fontsize=8, style="italic", color="#666666")
+    _add_evidence_banner(fig, "analyst assumptions")
     plt.tight_layout(rect=[0, 0.05, 1, 0.97])
 
     if save:
@@ -1361,8 +1394,9 @@ def plot_sensitivity_analysis(save: bool = True) -> plt.Figure:
     ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
     fig.suptitle("Parameter Sensitivity Analysis", fontsize=14, fontweight="bold", y=1.02)
     fig.text(0.5, 0.01,
-             "alpha and beta are key parameters; gamma has minor influence. Model conclusions are robust.",
+             "One-at-a-time sensitivity analysis of uncalibrated assumptions; curve changes show model dependence, not empirical robustness.",
              ha="center", fontsize=8, style="italic", color="#666666")
+    _add_evidence_banner(fig, "analyst assumptions")
     plt.tight_layout(rect=[0, 0.05, 1, 0.95])
     if save:
         return _save_figure(fig, "sensitivity_analysis.png")
@@ -1380,7 +1414,9 @@ def plot_feature_correlation_heatmap(save: bool = True) -> plt.Figure:
     """
     print("\n [12/12] Generating feature correlation heatmap...")
 
-    from analysis.ai_review_analysis import AIReviewAnalyzer, HUMAN_REVIEWS, AI_REVIEWS
+    from analysis.ai_review_analysis import (
+        AIReviewAnalyzer, HUMAN_REVIEWS, AI_REVIEWS, HUMAN_CORPUS_LABEL,
+    )
     analyzer = AIReviewAnalyzer()
     feature_df = analyzer.get_feature_comparison_df(HUMAN_REVIEWS, AI_REVIEWS)
 
@@ -1413,8 +1449,9 @@ def plot_feature_correlation_heatmap(save: bool = True) -> plt.Figure:
     ax.set_ylabel("Features", fontsize=11)
 
     fig.text(0.5, 0.01,
-             "Interpretation: highly correlated features carry redundant information and can be reduced; low-correlation features provide complementary information and should be kept",
+             f"N=30 | Human: {HUMAN_CORPUS_LABEL} | AI: 15 controlled assistant-style texts | Correlations are exploratory",
              ha="center", fontsize=7, color="#888888", style="italic")
+    _add_evidence_banner(fig, "observed human text + controlled AI text")
     plt.tight_layout(rect=[0, 0.03, 1, 0.97])
 
     if save:
@@ -1430,12 +1467,13 @@ def generate_all_figures(
     data: Optional[pd.DataFrame] = None,
     human_reviews: Optional[List[str]] = None,
     ai_reviews: Optional[List[str]] = None,
+    observed_archives: Optional[Dict] = None,
 ) -> List[Path]:
     """
-    Batch-generate all 12 academic-grade figures
+    Batch-generate figures with explicit evidence-class labels.
     """
     print("\n" + "=" * 60)
-    print("[Visualization] Batch generating all 12 academic-grade figures")
+    print("[Visualization] Batch generating 12 figures with source notes")
     print("=" * 60)
 
     try:
@@ -1450,16 +1488,25 @@ def generate_all_figures(
 
     generated = []
 
+    has_structural_data = data is not None and not data.empty
     chart_plans = [
         ("[1/12] Structural break analysis", lambda: plot_structural_break(data)
-         if data is not None else print("  [WARN] skipped: no time series data")),
+         if has_structural_data else print(
+             "  [INFO] skipped: no empirical time-series rows available"
+         )),
         ("[2/12] AI vs human review feature comparison", lambda: plot_ai_feature_comparison(human_reviews, ai_reviews)),
         ("[3/12] Trust threshold model", lambda: plot_trust_threshold()),
         ("[4/12] Competitive landscape positioning", lambda: plot_competitive_landscape()),
         ("[5/12] Four-dimensional AI impact framework", lambda: plot_four_dimensions()),
-        ("[6/12] Genre impact heatmap", lambda: plot_genre_impact_heatmap()),
-        ("[7/12] Rating distribution evolution", lambda: plot_rating_distribution_evolution()),
-        ("[8/12] AI impact timeline", lambda: plot_ai_impact_timeline()),
+        ("[6/12] Observed genre profile heatmap", lambda: plot_genre_impact_heatmap(
+            observed_archives=observed_archives
+        )),
+        ("[7/12] Cross-platform rating comparison", lambda: plot_rating_distribution_evolution(
+            data=data, observed_archives=observed_archives
+        )),
+        ("[8/12] AI impact timeline", lambda: plot_ai_impact_timeline(
+            observed_archives=observed_archives
+        )),
         ("[9/12] Heterogeneous user trust curves", lambda: plot_heterogeneous_trust()),
         ("[10/12] Policy intervention comparison", lambda: plot_policy_intervention()),
         ("[11/12] Parameter sensitivity analysis", lambda: plot_sensitivity_analysis()),
@@ -1479,8 +1526,12 @@ def generate_all_figures(
 
     n_success = len(generated)
     n_total = len(chart_plans)
+    n_skipped = 0 if has_structural_data else 1
     print("\n" + "=" * 60)
-    print(f"[OK] visualization complete - {n_success}/{n_total} figures generated")
+    print(
+        f"[OK] visualization complete - {n_success} generated, "
+        f"{n_skipped} skipped, {n_total} planned"
+    )
     print(f"   output directory: {ANALYSIS_FIGURES_DIR}")
     for g in generated:
         if hasattr(g, 'name'):

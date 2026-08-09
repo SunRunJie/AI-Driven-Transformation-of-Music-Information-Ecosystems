@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """
-Full Analysis Runner (Fast Version)
-===================================
-Skip the time-consuming web scraping and use synthetic data directly,
-run all core analyses, generate all figures, and export the results.
+Complete Showcase Analysis Runner
+=================================
+Run observed archive analyses, the controlled text study, scenario modules,
+and an explicitly synthetic structural-break method check.
 """
 
 import sys
@@ -39,11 +39,16 @@ def generate_base_data() -> pd.DataFrame:
         "avg_rating": np.clip(metric, 1, 5),
         "rating_count": rng.poisson(100, n).astype(float),
         "review_ratio": np.clip(0.3 + 0.1 * rng.standard_normal(n), 0.05, 0.6),
+        "is_synthetic": True,
+        "source_dataset": "illustrative_structural_break_benchmark",
+        "provenance_status": "illustrative_simulation",
     })
 
 
 def main():
     # Initialize matplotlib fonts (must be after seaborn)
+    import matplotlib
+    matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
     plt.rcParams['font.family'] = 'serif'
@@ -53,10 +58,12 @@ def main():
 
     print_banner()
     print("\n" + "=" * 60)
-    print("[INFO] Starting the full analysis pipeline (fast mode)")
+    print("[INFO] Starting the complete analysis pipeline")
     print("=" * 60)
 
     data = generate_base_data()
+    from analysis.observed_archive_analysis import load_observed_archives
+    observed_archives = load_observed_archives(export=True)
 
     # ============================================================
     # 1. Time series structural breakpoint analysis
@@ -66,7 +73,7 @@ def main():
     print("=" * 60)
 
     from analysis.structural_break_analysis import run_full_analysis
-    break_results = run_full_analysis(data)
+    break_results = run_full_analysis(data, allow_non_empirical=True)
 
     # ============================================================
     # 2. AI review detection and feature analysis
@@ -86,10 +93,9 @@ def main():
     print("== 3/6: Trust threshold model")
     print("=" * 60)
 
-    from analysis.trust_threshold_analysis import TrustThresholdModel, estimate_time_to_collapse
+    from analysis.trust_threshold_analysis import TrustThresholdModel
     model = TrustThresholdModel()
     trust_results = model.full_analysis()
-    timeline = estimate_time_to_collapse(model)
 
     # ============================================================
     # 4. Competitive landscape analysis
@@ -109,15 +115,13 @@ def main():
     print("== 5/6: Generate visualization figures")
     print("=" * 60)
 
-    from visualization import (
-        generate_all_figures, plot_structural_break
-    )
+    from visualization import generate_all_figures
 
     # Generate all standard figures
-    generated = generate_all_figures(data=data)
-
-    # Additionally generate the structural break plot (using our data)
-    plot_structural_break(data, metric_col="avg_rating", save=True)
+    generated = generate_all_figures(
+        data=data,
+        observed_archives=observed_archives,
+    )
 
     # List all figures
     print(f"\n[INFO] Figure list ({ANALYSIS_FIGURES_DIR}):")
@@ -134,10 +138,17 @@ def main():
     import json
 
     all_results = {
+        "observed_archives": observed_archives["summary"],
         "structural_break": break_results,
         "ai_detection": ai_results,
         "trust_model": trust_results,
-        "collapse_timeline": timeline,
+        "evidence_status": {
+            "observed_archives": "documented third-party observed cross-sections",
+            "structural_break": "illustrative synthetic benchmark",
+            "ai_detection": "observed critic excerpts plus controlled AI-style texts",
+            "trust_model": "uncalibrated assumption-driven scenario",
+            "competitive": "analyst-coded assumption-driven scenario",
+        },
         "competitive": comp_results,
     }
 
@@ -159,7 +170,7 @@ def main():
     print(f"\n" + "=" * 60)
     print(f"[DONE] All analyses complete!")
     print(f"=" * 60)
-    print(f"\nAcademic-grade figure count: {n_figures} (target: 12)")
+    print(f"\nFigures with source notes: {n_figures} (target: 12)")
     print(f"Figure directory: {ANALYSIS_FIGURES_DIR}")
     print(f"Results export: {export_path}")
 

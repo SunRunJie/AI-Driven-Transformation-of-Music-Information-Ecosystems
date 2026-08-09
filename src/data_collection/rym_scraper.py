@@ -4,14 +4,16 @@ RYM (RateYourMusic) data collection framework
 
 Core design principles:
 1. **Respect the platform** - control request frequency, follow the spirit of robots.txt
-2. **Robustness first** - multi-layer fallback strategy: API -> HTML parsing -> cache -> synthetic data
+2. **Robustness first** - multi-layer fallback strategy: API -> HTML
+   parsing -> cache -> explicit unavailable metadata. Synthetic fallback is
+   opt-in and never silently mixed into real research data.
 3. **Reproducible research** - all collected data is timestamped and carries metadata
 4. **Incremental collection** - support resuming from breakpoints, avoid duplicate requests
 
 Data collection strategy (by priority):
   A. Request RYM public pages directly (HTML parsing)
   B. Use cached local data (avoid duplicate requests)
-  C. Generate high-quality synthetic data (when the remote is unreachable, based on known statistical distributions)
+  C. Record an explicit unavailable event when collection cannot proceed
 
 Target data:
 1. Album rating distributions (by year/genre)
@@ -23,12 +25,13 @@ Target data:
 import time
 import json
 import hashlib
+import re
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple
 from pathlib import Path
+from urllib.parse import urljoin
 
 import sys
-from pathlib import Path
 
 _SRC = str(Path(__file__).resolve().parent.parent)
 if _SRC not in sys.path:
@@ -50,6 +53,16 @@ from config import (
 # Utility functions
 # ============================================================
 
+def _looks_blocked(html: str) -> bool:
+    blocked_markers = [
+        "Enable JavaScript and cookies to continue",
+        "cf_chl_opt",
+        "challenge-platform",
+        "Just a moment",
+    ]
+    return any(marker in html for marker in blocked_markers)
+
+
 def _make_request(url: str, session: requests.Session,
                   delay: float = REQUEST_DELAY) -> Optional[str]:
     """HTTP request with polite delay and retries"""
@@ -58,6 +71,9 @@ def _make_request(url: str, session: requests.Session,
         try:
             resp = session.get(url, timeout=REQUEST_TIMEOUT)
             resp.raise_for_status()
+            if _looks_blocked(resp.text or ""):
+                print(f"  [WARN] Request was blocked by an interstitial challenge: {url}")
+                return None
             return resp.text
         except requests.exceptions.RequestException as e:
             if attempt < MAX_RETRIES - 1:
@@ -99,11 +115,11 @@ def _cached_request(url: str, session: requests.Session,
 # ============================================================
 
 class RYMDataCollector:
-    """RYM data collector - supports both real scraping and synthetic data fallback"""
+    """RYM collector with auditable, opt-in synthetic fixture generation."""
 
     def __init__(self, delay: float = REQUEST_DELAY,
                  use_cache: bool = True,
-                 fallback_to_synthetic: bool = True):
+                 fallback_to_synthetic: bool = False):
         """
         Parameters:
         -----------
@@ -122,6 +138,7 @@ class RYMDataCollector:
         })
         self.rng = np.random.default_rng(RANDOM_SEED)
         self._data_version = datetime.now().isoformat()
+        self.collection_events: List[Dict] = []
 
     # ----------------------------------------------------------
     # Core collection methods
@@ -139,18 +156,21 @@ class RYMDataCollector:
         year : int - year
         genre : Optional[str] - genre filter
         """
-        params = {
-            "type": chart_type,
-            "year": year,
-        }
+        # RYM's public chart pages use path-based URLs. The older query-style
+        # URL often lands on a blocked or non-chart page.
+        chart_path = "top" if chart_type in {"top", "best", "highest_rated"} else chart_type
+        url = f"{RYM_BASE_URL}/charts/{chart_path}/album/{year}/"
         if genre:
-            params["genre"] = genre
-
-        # build the URL (RYM uses custom chart URLs)
-        url = f"{RYM_CHARTS_URL}?{'&'.join(f'{k}={v}' for k, v in params.items())}"
+            url = f"{url}{genre}/"
         print(f"  [INFO] Requesting RYM chart: {year} ({chart_type})")
 
         html = _cached_request(url, self.session, self.use_cache)
+        self.collection_events.append({
+            "url": url,
+            "year": year,
+            "status": "ok" if html else "unavailable_or_blocked",
+            "collection_date": self._data_version,
+        })
         return html
 
     def parse_chart_page(self, html: str, year: int) -> List[Dict]:
@@ -163,54 +183,76 @@ class RYMDataCollector:
         try:
             soup = BeautifulSoup(html, "lxml")
 
-            # RYM chart structure: locate album entries
-            # note: the actual selectors need to be adjusted to RYM's current HTML structure
-            entries = soup.select("div.page_section_charts_item") or \
-                      soup.select("tr.chart_row") or \
-                      soup.select("div.chart_item")
+            # Current RYM chart markup plus conservative legacy fallbacks.
+            entries = (
+                soup.select(".page_charts_section_charts_item")
+                or soup.select(".page_section_charts_item")
+                or soup.select("tr.chart_row")
+                or soup.select("div.chart_item")
+            )
 
-            for entry in entries:
+            for position, entry in enumerate(entries, start=1):
                 try:
-                    # extract the album title
-                    title_elem = entry.select_one("a.album_title, a.chart_item_link, a")
-                    title = title_elem.get_text(strip=True) if title_elem else "Unknown"
+                    title_elem = entry.select_one(
+                        ".page_charts_section_charts_item_title a, "
+                        "a.album_title, a.chart_item_link, a[href*='/release/album/']"
+                    )
+                    artist_elem = entry.select_one(
+                        ".page_charts_section_charts_item_credited_links_primary a, "
+                        "a.artist, span.artist, a[href*='/artist/']"
+                    )
+                    rating_elem = entry.select_one(
+                        ".page_charts_section_charts_item_details_average_num, "
+                        "span.avg_rating, span.rating, .score"
+                    )
 
-                    # extract the artist
-                    artist_elem = entry.select_one("a.artist, span.artist")
-                    artist = artist_elem.get_text(strip=True) if artist_elem else "Unknown"
+                    title = title_elem.get_text(" ", strip=True) if title_elem else None
+                    artist = artist_elem.get_text(" ", strip=True) if artist_elem else None
+                    avg_rating = self._first_number(
+                        rating_elem.get_text(" ", strip=True) if rating_elem else ""
+                    )
 
-                    # extract the average rating
-                    rating_elem = entry.select_one("span.avg_rating, span.rating, .score")
-                    avg_rating = None
-                    if rating_elem:
-                        try:
-                            avg_rating = float(rating_elem.get_text(strip=True))
-                        except ValueError:
-                            pass
+                    # Reject partial DOM matches instead of manufacturing plausible rows.
+                    if not title or not artist or avg_rating is None or not 0 <= avg_rating <= 5:
+                        continue
 
-                    # extract the rating count
-                    count_elem = entry.select_one("span.ratings_count, span.count")
-                    ratings_count = None
-                    if count_elem:
-                        try:
-                            ratings_count = int(
-                                count_elem.get_text(strip=True)
-                                .replace(",", "")
-                                .replace(" ratings", "")
-                            )
-                        except ValueError:
-                            pass
+                    count_elem = entry.select_one(
+                        ".page_charts_section_charts_item_details_ratings, "
+                        "span.ratings_count, span.count"
+                    )
+                    count_text = count_elem.get_text(" ", strip=True) if count_elem else ""
+                    count_match = re.search(r"([0-9][0-9,]*)", count_text)
+                    ratings_count = int(count_match.group(1).replace(",", "")) if count_match else None
+
+                    rank_elem = entry.select_one(
+                        ".page_charts_section_charts_item_rank, .chart_rank, [class*=rank]"
+                    )
+                    rank = int(self._first_number(
+                        rank_elem.get_text(" ", strip=True) if rank_elem else ""
+                    ) or position)
+
+                    genre_labels = []
+                    for genre_link in entry.select("a[href*='/genre/']"):
+                        label = genre_link.get_text(" ", strip=True)
+                        if label and label not in genre_labels:
+                            genre_labels.append(label)
+
+                    release_url = urljoin(RYM_BASE_URL, title_elem.get("href") or "")
 
                     albums.append({
                         "title": title,
                         "artist": artist,
                         "year": year,
+                        "rank": rank,
                         "avg_rating": avg_rating,
                         "ratings_count": ratings_count,
+                        "genres": ", ".join(genre_labels) if genre_labels else None,
                         "source": "rym_web",
+                        "source_url": release_url,
                         "collection_date": self._data_version,
+                        "fetch_status": "ok",
                     })
-                except Exception as e:
+                except (AttributeError, TypeError, ValueError):
                     continue
 
         except Exception as e:
@@ -218,14 +260,19 @@ class RYMDataCollector:
 
         return albums
 
+    @staticmethod
+    def _first_number(value: str) -> Optional[float]:
+        match = re.search(r"\d+(?:\.\d+)?", value.replace(",", ""))
+        return float(match.group(0)) if match else None
+
     def get_top_albums_by_year(self, year: int, top_n: int = 100) -> pd.DataFrame:
         """
         Get the top N highest-rated albums of a given year
 
         Strategy:
-        1. Try to scrape the RYM web page
-        2. If that fails, use synthetic data (based on known statistical distributions)
-        3. Synthetic data aims to mimic the real distribution as closely as possible
+        1. Try to collect the public RYM chart page.
+        2. Return an empty, auditable result if collection is unavailable.
+        3. Generate fixtures only when fallback_to_synthetic is explicitly enabled.
 
         Parameters:
         -----------
@@ -241,7 +288,7 @@ class RYMDataCollector:
         if html:
             albums = self.parse_chart_page(html, year)
 
-        # if scraping returned too few albums, fall back to synthetic data
+        # if scraping returned too few albums, optionally fall back to synthetic data
         if len(albums) < top_n and self.fallback_to_synthetic:
             if albums:
                 print(f"  [INFO] Only got {len(albums)} entries, supplementing with synthetic data up to {top_n}")
@@ -253,7 +300,9 @@ class RYMDataCollector:
 
         df = pd.DataFrame(albums[:top_n])
         if not df.empty:
-            df["rank"] = range(1, len(df) + 1)
+            if "rank" not in df.columns:
+                df["rank"] = range(1, len(df) + 1)
+            df["is_synthetic"] = df.get("source", "").astype(str).eq("synthetic")
 
         return df
 
@@ -373,6 +422,9 @@ class RYMDataCollector:
             "review_ratio": daily_review_ratio,
             "estimated_ai_ratio": self._estimate_ai_ratio(dates, chatgpt_idx),
             "album_id": album_id,
+            "source": "synthetic",
+            "is_synthetic": True,
+            "collection_date": self._data_version,
         })
 
         return df
@@ -385,7 +437,7 @@ class RYMDataCollector:
         Based on the following assumptions:
         - Before the ChatGPT release: close to 0%
         - 6 months after release: slowly rising to 5-10%
-        - 1 year after release: rapidly rising to 15-25%
+        - 1 year after release: illustrative generator assumption of 15-25%
         - After 2025: possibly reaching 30-40%
         """
         n = len(dates)
@@ -446,6 +498,9 @@ class RYMDataCollector:
                 ),
                 "topic": topic,
                 "page": page + 1,
+                "source": "synthetic",
+                "is_synthetic": True,
+                "collection_date": self._data_version,
             })
 
         return pd.DataFrame(posts)
@@ -468,6 +523,11 @@ class RYMDataCollector:
                 all_dfs.append(df)
             print(f"  [OK] {year}: got {len(df)} records")
 
+        if not all_dfs:
+            return pd.DataFrame(columns=[
+                "title", "artist", "year", "avg_rating", "ratings_count",
+                "genres", "source", "collection_date", "rank", "is_synthetic",
+            ])
         combined = pd.concat(all_dfs, ignore_index=True)
         return combined
 
@@ -509,22 +569,34 @@ class RYMDataCollector:
 
         # 2. rating time series (multiple representative albums)
         print("\n[2/3] Collecting rating time series...")
-        sample_album_ids = [1001, 1002, 1003, 1004, 1005]
-        timeline = self.collect_ratings_timeline(sample_album_ids)
+        if self.fallback_to_synthetic:
+            sample_album_ids = [1001, 1002, 1003, 1004, 1005]
+            timeline = self.collect_ratings_timeline(sample_album_ids)
+        else:
+            print("  [INFO] Skipping synthetic RYM timeline; no public timeline endpoint is available")
+            timeline = pd.DataFrame()
         datasets["ratings_timeline"] = timeline
         if not timeline.empty:
             self.save_data(timeline, "rym_ratings_timeline.csv")
 
         # 3. forum discussions
         print("\n[3/3] Collecting forum discussion data...")
-        topics = ["AI review", "chatbot", "fake rating", "AI music", "GPT"]
-        forum_dfs = []
-        for topic in topics:
-            df = self.get_forum_discussions(topic, pages=3)
-            forum_dfs.append(df)
-        forum_data = pd.concat(forum_dfs, ignore_index=True)
+        if self.fallback_to_synthetic:
+            topics = ["AI review", "chatbot", "fake rating", "AI music", "GPT"]
+            forum_dfs = []
+            for topic in topics:
+                df = self.get_forum_discussions(topic, pages=3)
+                forum_dfs.append(df)
+            forum_data = pd.concat(forum_dfs, ignore_index=True)
+        else:
+            print("  [INFO] Skipping synthetic RYM forum discussions")
+            forum_data = pd.DataFrame()
         datasets["forum_discussions"] = forum_data
         self.save_data(forum_data, "rym_forum_ai_discussions.csv")
+
+        if self.collection_events:
+            events = pd.DataFrame(self.collection_events)
+            self.save_data(events, "rym_collection_events.csv")
 
         print("\n" + "=" * 60)
         print("[OK] RYM data collection complete")

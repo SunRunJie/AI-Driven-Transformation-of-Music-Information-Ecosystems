@@ -2,7 +2,7 @@
 Central configuration and constants
 ===================================
 
-A single academic-grade configuration module that keeps every tunable
+A centralized configuration module that keeps every tunable
 parameter, path, and API setting in one place. Follows a
 "configuration as documentation" principle: each parameter carries its
 units, range, and a short explanation.
@@ -95,16 +95,16 @@ POST_AI_YEARS = range(2023, 2027)     # Full post-ChatGPT window
 # Analysis window parameters
 ROLLING_WINDOW = 30          # Rolling mean window (days)
 ROLLING_WINDOW_WEEKLY = 8    # Weekly rolling window (8 weeks)
-CUSUM_THRESHOLD = 1.96       # CUSUM threshold (95% confidence level)
+CUSUM_THRESHOLD = 1.96       # Descriptive CUSUM reference; bootstrap provides the diagnostic p-value
 BOOTSTRAP_ITERATIONS = 1000  # Bootstrap resamples
-MONTE_CARLO_SIMULATIONS = 5000  # Monte Carlo simulations
+MONTE_CARLO_SIMULATIONS = 5000  # Reserved for future stochastic simulations
 
 # -- Trust threshold model parameters --
 TRUST_MODEL_PARAMS: Dict = {
     "alpha": 0.7,            # Preference intensity for genuine reviews [0,1]
     "beta": 2.0,             # Signal-to-noise ratio: user discrimination [0.1,10]
     "gamma": 0.3,            # Network effect strength [0,1]
-    "trust_threshold": 0.4,  # Trust collapse threshold [0,1]
+    "trust_threshold": 0.4,  # Analyst-selected trust reference [0,1]
     "heterogeneity": True,   # Enable user heterogeneity
     "network_effects": True, # Enable network effects
 }
@@ -116,7 +116,7 @@ RF_N_ESTIMATORS = 500        # Number of random forest trees (for stability)
 BERT_MODEL_NAME = "bert-base-uncased"  # Optional BERT model
 DETECTION_CONFIDENCE = 0.85  # Detection confidence threshold
 
-# -- Monte Carlo simulation parameters --
+# -- Conditional scenario parameters (not empirically calibrated) --
 MC_PENETRATION_INIT = 0.01   # Initial AI penetration rate
 MC_MONTHLY_GROWTH = 0.03     # Monthly growth rate
 MC_TIME_HORIZON = 240        # Simulation horizon in months (20 years)
@@ -189,12 +189,12 @@ PLATFORM_CN: Dict[str, str] = {
 METHOD_EN_CN: Dict[str, str] = {
     "CUSUM": "Cumulative Sum Test",
     "Chow": "Chow Test",
-    "Bai-Perron": "Bai-Perron Multiple Breaks",
+    "Bai-Perron": "Bai-Perron-style Least-Squares Segmentation",
     "TF-IDF": "Term Frequency-Inverse Document Frequency",
     "Random Forest": "Random Forest",
     "BERT": "BERT Deep Semantic Model",
     "S-curve": "S-shaped Phase Transition Curve",
-    "Monte Carlo": "Monte Carlo Simulation",
+    "Monte Carlo": "Scenario Simulation",
 }
 
 
@@ -242,18 +242,18 @@ FILES: Dict[str, str] = {
 
 # Figure descriptions (used in the report appendix)
 FIGURE_DESCRIPTIONS: Dict[str, str] = {
-    "structural_break_analysis.png": "Three-panel structural break analysis - CUSUM test + rolling statistics + ChatGPT break annotation",
-    "ai_vs_human_review_features.png": "AI vs human feature comparison - radar plot (polar projection) + diverging difference bar chart",
-    "trust_threshold_model.png": "Trust threshold model - S-shaped phase transition curve + multi-scenario Monte Carlo simulation",
-    "competitive_landscape.png": "Competitive landscape quadrant bubble chart - data depth x social experience, log-scale bubbles",
+    "structural_break_analysis.png": "Illustrative pre/post benchmark - rolling statistics + descriptive CUSUM path",
+    "ai_vs_human_review_features.png": "Published critic excerpts vs controlled AI-style texts - radar plot + feature differences",
+    "trust_threshold_model.png": "Uncalibrated trust-threshold scenario - logistic curve + deterministic scenarios",
+    "competitive_landscape.png": "Analyst-coded platform scenario map - ordinal data depth, social experience, and assumed risk",
     "four_dimensions_framework.png": "AI impact four-dimensional framework - grouped bar impact assessment + strategic priority matrix",
-    "genre_impact_heatmap.png": "Genre-differentiated impact heatmap - cool/warm gradient + marginal sensitivity ranking",
-    "rating_distribution_evolution.png": "Rating distribution evolution - KDE density comparison before/after ChatGPT + K-S test annotation",
-    "ai_impact_timeline.png": "Serpentine timeline - alternating event layout + large text + AI penetration S-curve",
-    "heterogeneous_trust.png": "Heterogeneous user trust curves - four user groups + safe/warning/collapse zones",
+    "genre_impact_heatmap.png": "Observed AOTY and RYM genre profiles - score, attention, review density, and coverage",
+    "rating_distribution_evolution.png": "Cross-platform score agreement among exact AOTY-RYM album matches",
+    "ai_impact_timeline.png": "Observed context date + evidence-building steps + illustrative logistic scenario",
+    "heterogeneous_trust.png": "Heterogeneous user trust curves - four assumed profiles and reference regions",
     "policy_intervention.png": "Policy intervention comparison - no intervention / AI detection / user education / dual intervention",
     "sensitivity_analysis.png": "Parameter sensitivity analysis - alpha (preference) / beta (discrimination) / gamma (network)",
-    "feature_correlation_heatmap.png": "Feature correlation matrix - Pearson correlations across 11 linguistic features",
+    "feature_correlation_heatmap.png": "Feature correlation matrix - observed critic excerpts plus controlled AI-style texts",
 }
 
 
@@ -278,7 +278,7 @@ def get_rng():
 # 7. Visualization style configuration
 # ================================================================
 
-# Academic color scheme (Nature/Science style, colorblind friendly)
+# Colorblind-friendly report palette
 ACADEMIC_COLORS = {
     # Main palette (from Nature color schemes)
     "blue": "#3B75AF",        # Deep blue
@@ -327,7 +327,7 @@ REPORT_META = {
     "title_cn": "Generative AI and the Transformation of Music Information Ecosystems",
     "title_en": "Generative AI and the Transformation of Music Information Ecosystems",
     "subtitle": "A Dual-Case Study of AOTY (Album of The Year) and RYM (RateYourMusic)",
-    "framework": "Signal-Institution Framework",
+    "framework": "Institutional analysis with reproducible data methods",
     "core_theory": "Signaling Theory - Lemons Market - Institutional Change - Second-Order Observation - Trust Paradox",
     "version": "v2.0",
     "generated": "",  # Filled in programmatically

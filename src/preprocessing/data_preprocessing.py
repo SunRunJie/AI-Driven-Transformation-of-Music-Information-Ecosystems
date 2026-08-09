@@ -31,15 +31,18 @@ from config import (
     RAW_DIR, PROCESSED_DIR, CHATGPT_RELEASE_DATE,
     RANDOM_SEED, FILES
 )
+from data_provenance import assess_dataframe, empirical_rows
 
 
 class DataPreprocessor:
     """Data preprocessor"""
 
-    def __init__(self):
+    def __init__(self, empirical_only: bool = True):
         self.rng = np.random.default_rng(RANDOM_SEED)
         self.transform_log: List[str] = []
         self._version = datetime.now().isoformat()
+        self.empirical_only = empirical_only
+        self.source_audit: List[Dict] = []
 
     def _log(self, message: str):
         """Record a transformation log entry"""
@@ -52,33 +55,41 @@ class DataPreprocessor:
     # ----------------------------------------------------------
 
     def load_raw_data(self) -> Dict[str, pd.DataFrame]:
-        """Load all raw data"""
+        """Load observation tables and apply the provenance gate."""
         raw_data = {}
 
-        # Try to load RYM data
-        rym_files = list(RAW_DIR.glob("rym_*.csv"))
-        for f in rym_files:
+        source_files = sorted(RAW_DIR.glob("rym_*.csv")) + sorted(RAW_DIR.glob("aoty_*.csv"))
+        for f in source_files:
             name = f.stem
             try:
                 df = pd.read_csv(f, encoding="utf-8-sig")
-                raw_data[name] = df
-                self._log(f"Loaded {f.name}: {len(df)} rows x {len(df.columns)} columns")
-            except Exception as e:
-                self._log(f"[WARN] Failed to load {f.name}: {e}")
+                if self.empirical_only:
+                    usable, audit = empirical_rows(df, name)
+                else:
+                    usable, audit = df.copy(), assess_dataframe(df, name)
+                self.source_audit.append(audit)
 
-        # Try to load AOTY data
-        aoty_files = list(RAW_DIR.glob("aoty_*.csv"))
-        for f in aoty_files:
-            name = f.stem
-            try:
-                df = pd.read_csv(f, encoding="utf-8-sig")
-                raw_data[name] = df
-                self._log(f"Loaded {f.name}: {len(df)} rows x {len(df.columns)} columns")
+                if audit["status"] == "audit_only":
+                    self._log(f"Excluded {f.name}: collection audit log")
+                    continue
+
+                if usable.empty:
+                    self._log(
+                        f"Excluded {f.name}: {audit['status']} "
+                        f"({audit['rows_total']} rows; {audit['reason']})"
+                    )
+                    continue
+
+                raw_data[name] = usable
+                self._log(
+                    f"Loaded {f.name}: {len(usable)} usable rows x "
+                    f"{len(usable.columns)} columns"
+                )
             except Exception as e:
                 self._log(f"[WARN] Failed to load {f.name}: {e}")
 
         if not raw_data:
-            self._log("[WARN] No raw data files found; a synthetic dataset will be generated")
+            self._log("[WARN] No empirical longitudinal rows are available in data/raw")
 
         return raw_data
 
@@ -99,13 +110,13 @@ class DataPreprocessor:
         if len(cleaned) < before:
             self._log(f"Removed {before - len(cleaned)} duplicate records")
 
-        # Handle missing values
+        # Preserve missing core measurements; downstream analyses must decide
+        # whether a metric has enough complete observations.
         for col in ["avg_rating", "ratings_count"]:
             if col in cleaned.columns:
                 missing = cleaned[col].isna().sum()
                 if missing > 0:
-                    cleaned[col] = cleaned[col].fillna(cleaned[col].median())
-                    self._log(f"Filled {missing} missing values in {col}")
+                    self._log(f"Retained {missing} missing values in {col}")
 
         # Standardize the rating scale (unify to a 0-10 scale)
         if "avg_rating" in cleaned.columns:
@@ -284,6 +295,7 @@ class DataPreprocessor:
             "data_types": {},
             "date_range": {},
             "summary": {},
+            "source_audit": self.source_audit,
         }
 
         # Missing value statistics
@@ -369,8 +381,13 @@ class DataPreprocessor:
         raw_data = self.load_raw_data()
 
         if not raw_data:
-            self._log("[WARN] No raw data; creating an empty DataFrame")
-            return pd.DataFrame(), {"error": "No data"}
+            audit_path = PROCESSED_DIR / "data_provenance_audit.csv"
+            pd.DataFrame(self.source_audit).to_csv(audit_path, index=False, encoding="utf-8-sig")
+            self._log(f"Provenance audit saved: {audit_path}")
+            return pd.DataFrame(), {
+                "error": "No empirical longitudinal data in data/raw",
+                "source_audit": self.source_audit,
+            }
 
         # 2. Clean each table
         cleaned_datasets = {}
@@ -392,6 +409,10 @@ class DataPreprocessor:
         # 4. Quality report
         quality_report = self.generate_quality_report(merged)
         self.print_quality_report(quality_report)
+
+        audit_path = PROCESSED_DIR / "data_provenance_audit.csv"
+        pd.DataFrame(self.source_audit).to_csv(audit_path, index=False, encoding="utf-8-sig")
+        self._log(f"Provenance audit saved: {audit_path}")
 
         # 5. Save
         if not merged.empty:

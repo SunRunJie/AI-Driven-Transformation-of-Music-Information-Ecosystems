@@ -1,137 +1,148 @@
 # Research Notes
 
-Notes on the methodology, data, and decisions behind this study. This document
-is intended for readers who want to understand *how* the project was carried
-out, not only what it found.
+## 1. Evidence Classes
 
-## 1. Project scope
+The repository uses four evidence classes.
 
-This project studies how generative AI affects crowdsourced music review
-platforms, using **RateYourMusic (RYM, founded 2002)** and **Album of the Year
-(AOTY, founded 2009)** as dual cases. The object of study is the
-*evaluative knowledge* these platforms produce — aggregated ratings, curated
-charts, and community discourse — and the institutional trust on which that
-knowledge depends.
+1. **Observed archive:** documented third-party observations from public AOTY
+   or RYM pages.
+2. **Collection log:** request URL, time, status, and challenge information.
+3. **Controlled corpus or benchmark:** fixed material used to test code and
+   compare features.
+4. **Scenario:** results determined by stated assumptions.
 
-The guiding framework is the **Signal-Institution framework**: the AI shock is
-interpreted as an institutional change in the "trust infrastructure" of
-user-generated-content (UGC) platforms, not merely a technical disruption.
+Each figure prints its class. Cross-sectional archive results can support
+descriptive claims. Structural change requires repeated observations.
 
-## 2. Data sources and collection
+## 2. Observed Archives
 
-### 2.1 Sources
+`src/analysis/observed_archive_analysis.py` loads and standardizes:
 
-| Dataset | Platform | Window | Purpose |
-|:--------|:---------|:-------|:--------|
-| `rym_yearly_charts_2000_2026.csv` | RYM | 2000-2026 | Album-level ratings, rating counts, genres |
-| `rym_ratings_timeline.csv` | RYM | 2020-2026 | Daily rating aggregates for representative albums |
-| `rym_forum_ai_discussions.csv` | RYM | 2023-2026 | Community discourse on AI-related topics |
-| `aoty_album_ratings.csv` | AOTY | 2020-2026 | User ratings (10-point scale) |
-| `aoty_genre_trends_2010_2026.csv` | AOTY | 2010-2026 | Genre-level rating trends |
+- 32,358 AOTY album records covering releases through October 2020;
+- 5,000 high-rated AOTY albums from a file updated on 2024-10-20;
+- 5,000 popular RYM albums collected on 2022-03-11;
+- 116,384 published critic excerpts in the AOTY/Metacritic training archive.
 
-### 2.2 Collection strategy
+The source manifest records URLs, publishers, dates, license status,
+limitations, and SHA-256 hashes. The RYM publisher gives no license. Raw-file
+redistribution needs a separate check.
 
-The scrapers in `src/data_collection/` follow a layered strategy:
+## 3. Cross-Platform Matching
 
-1. **Polite requests** to public pages (bounded rate, configured delays).
-2. **Local caching** of HTML responses (24-hour freshness window) to avoid
-   repeated requests.
-3. **Statistically calibrated synthetic generation** when a remote source is
-   unavailable or parsing fails. Synthetic records are marked
-   (`is_synthetic=True`, `source_dataset` column) and calibrated to known
-   platform statistics (e.g., RYM's left-skewed ~3.3/5 mean rating; AOTY's
-   ~7.2/10 distribution).
+Artist and title strings are normalized with Unicode decomposition, ASCII
+folding, lowercasing, and removal of non-alphanumeric characters. Release year
+is part of the key. Exact matches are deduplicated; fuzzy matches are excluded.
 
-Because of step 3, **some records in `data/raw/` are synthetic**. This is a
-deliberate, documented limitation (see Section 6), not an omission.
+The resulting file contains 4,102 matches. AOTY user scores are divided by 20
+to place them on RYM's 0-5 scale.
 
-## 3. Methodology
+Key results:
 
-### 3.1 Structural break analysis (`src/analysis/structural_break_analysis.py`)
+- Pearson correlation: 0.9096;
+- Spearman correlation: 0.8361;
+- mean AOTY-minus-RYM difference: +0.3318;
+- median difference: +0.3400;
+- share within 0.5 points: 87.37%.
 
-Tests whether rating behavior changed significantly around the ChatGPT
-release (2022-11-01):
+The AOTY archive ends in 2020 and the RYM snapshot was collected in 2022.
+Ratings could have changed between snapshots. The association is descriptive.
 
-- **CUSUM test** — cumulative deviations with bootstrap significance.
-- **Chow test** — mean comparison around a specified break date with
-  Levene's variance check and Cohen's *d* effect size.
-- **Bai-Perron** — automatic multiple-breakpoint detection.
-- **Hypothesis tests H1-H3** — low-quality rating share, long-form review
-  share, and new-vs-old user behavior divergence.
+## 4. Attention and Review Participation
 
-### 3.2 AI review detection (`src/analysis/ai_review_analysis.py`)
+The AOTY top-5,000 file represents 6,277,268 ratings; median ratings per album
+are 482. Its rating-count Gini coefficient is 0.6169 and its top 1% account for
+12.29% of represented ratings.
 
-Trains a TF-IDF + Random Forest classifier on labeled human/AI review samples,
-extracts 11 linguistic feature families, ranks feature importance, and
-evaluates how detection accuracy changes as models improve.
+The RYM popular file represents 30,418,504 ratings and 506,510 written reviews;
+median ratings per album are 3,973. Its rating-count Gini is 0.4005, its top 1%
+account for 6.80% of represented ratings, and the median review-to-rating ratio
+is 1.652%.
 
-### 3.3 Trust threshold model (`src/analysis/trust_threshold_analysis.py`)
+The AOTY file is selected by high user score and the RYM file by popularity.
+Raw totals cannot be read as platform size or market share.
 
-An agent-based model of trust: user trust depends on perceived share of
-authentic reviews (discrimination β), preference intensity (α), and network
-effects (γ). The model identifies the **critical penetration** where trust
-declines fastest (~55.8%) and the **collapse point** (~75%), plus
-heterogeneous thresholds across user types.
+## 5. Genre Analysis
 
-### 3.4 Platform competition analysis (`src/analysis/platform_competition_analysis.py`)
+Genre strings are split on comma-space delimiters. The chart retains the
+twelve shared genres with the largest minimum album count across both files.
+For each genre it reports:
 
-Scores platforms on data depth, social engagement, technical/data/community
-moats, and AI risk, and derives composite vulnerability rankings.
+- AOTY median user score and rating count;
+- RYM median user score, rating count, and reviews per 100 ratings;
+- album coverage in each snapshot.
 
-### 3.5 Visualization
+Cell colour is standardized within each metric. Printed values remain in
+their original units.
 
-`src/visualization.py` produces all 12 analysis figures (300 dpi, academic
-style). The pipeline also exports a machine-generated results digest
-(`docs/analysis_results.md`) listing the key statistics and figures. The
-narrative research report (`docs/Research_Report.md`) is authored by hand on
-top of that evidence.
+## 6. Text Comparison
 
-## 4. Key parameters
+The human sample is drawn deterministically from published critic excerpts.
+Eligible excerpts contain 120 to 600 characters; one excerpt is sampled per
+publication before the final source-diverse sample is drawn. The AI-style side
+contains 15 fixed, manually written controls.
 
-All parameters are centralized in `src/config.py` (global seed `42`).
-Notable values:
+Five-fold stratified out-of-fold predictions give 0.9667 accuracy and 0.9956
+AUC. The sample is small and deliberately contrasted. It supports feature and
+pipeline inspection. It provides no estimate of AI prevalence or production
+detector accuracy.
 
-| Parameter | Value | Meaning |
-|:----------|:------|:--------|
-| `CHATGPT_RELEASE_DATE` | `2022-11-01` | Structural break date |
-| `CUSUM_THRESHOLD` | `1.96` | 95% confidence threshold |
-| `TRUST_MODEL_PARAMS` | α=0.7, β=2.0, γ=0.3, τ=0.4 | Trust model defaults |
-| `TFIDF_MAX_FEATURES` | 2000 | Classifier feature budget |
-| `RF_N_ESTIMATORS` | 500 | Random forest size |
-| `RANDOM_SEED` | 42 | Global reproducibility seed |
+The feature chart uses standardized mean differences. This avoids unstable
+percentage changes when a group mean is close to zero.
 
-## 5. Document decisions
+## 7. Structural-Change Methods
 
-One structuring decision was made during the preparation of this repository:
-only the final case study analysis is published. An earlier, intermediate
-analysis draft was deliberately excluded to keep a single, authoritative
-version; the published report corresponds to the final analysis.
+`CHATGPT_RELEASE_DATE = 2022-11-01` is a prespecified candidate date.
 
-The report combines the research findings with a practitioner perspective.
-In addition to the empirical analysis, statistical appendices, and reference
-list, Part 2 examines industry employment and talent demand in the AI era,
-so that the institutional analysis carries through to implications for
-practitioners.
+- The Welch test compares pre/post means without equal-variance assumptions.
+- The Chow test compares pooled and split `y = intercept + beta * time`
+  regressions.
+- The CUSUM diagnostic detrends the series and uses a permutation-bootstrap
+  p-value.
+- Dynamic programming minimizes segmented linear-regression SSE; BIC selects
+  up to three breaks.
 
-## 6. Limitations
+The segmentation is accurately described as Bai-Perron-style least-squares
+segmentation. SupF, UDmax, robust covariance corrections, and breakpoint
+confidence intervals are not implemented.
 
-- **Synthetic data.** A share of rating/review records is statistically
-  generated rather than scraped. Domain-expert calibration mitigates but does
-  not eliminate the gap to real platform data.
-- **Forum discourse.** RYM forum data come from publicly accessible archives
-  and may not represent all users.
-- **Model assumptions.** Trust-threshold parameters are partly derived from
-  literature and reasonable assumptions; results should be read as trend
-  analysis, not precise prediction.
-- **Detection environment.** Classifier accuracy is measured on a controlled
-  sample and degrades against newer models; it is an upper-bound estimate of
-  real-world detection performance.
+The empirical archives contain no repeated rating timestamps. Structural
+tests therefore return `not_testable` in default mode. Demo mode uses an
+explicitly synthetic series with known breaks.
 
-## 7. Reproducibility checklist
+## 8. Scenario Modules
 
-- [x] Fixed global random seed (`RANDOM_SEED = 42`)
-- [x] Preprocessing transformation log
-- [x] Centralized configuration (`src/config.py`)
-- [x] Modular pipeline (`src/run_pipeline.py`) with independent stages
-- [x] Figures saved at 300 dpi
-- [x] Methodology and parameters documented (this file + report appendix)
+Trust, policy, four-dimension, and platform-positioning outputs depend on
+selected parameters or ordinal scores. Sensitivity plots show how conclusions
+move when assumptions change. The values do not estimate platform thresholds,
+policy effects, or current AI penetration.
+
+## 9. Reproducible Commands
+
+```powershell
+# Download archives and verify checksums
+py src\data_collection\download_archived_datasets.py
+
+# Rebuild observed matches, genre tables, and summary statistics
+py src\analysis\observed_archive_analysis.py
+
+# Default analysis with observed archives and provenance checks
+py -3.14 src\run_pipeline.py
+
+# Attempt live public-page collection
+py -3.14 src\run_pipeline.py --collect
+
+# Explicit synthetic method demonstration
+py -3.14 src\run_pipeline.py --demo
+
+# Generate all twelve analysis figures
+py -3.14 src\run_complete_analysis.py
+```
+
+## 10. Next Data Requirement
+
+The next decisive dataset is a dated panel. It should repeat the same albums
+or users across snapshots, preserve rating and review counts, record platform
+rule changes, and document exclusions before analysis. That design would make
+the November 2022 break test meaningful and allow alternative explanations
+such as catalog mix, cohort turnover, seasonality, and ranking changes to be
+tested directly.

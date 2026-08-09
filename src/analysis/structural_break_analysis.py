@@ -9,8 +9,9 @@ Core research question:
 
 Analytical methods:
   1. CUSUM test - detects whether a series contains a statistically significant structural change
-  2. Chow test - compares the change in means before and after a specified break point (ChatGPT release)
-  3. Bai-Perron method - automatically detects multiple potential break points
+  2. Welch mean test - compares pre/post means around a specified break date
+  3. Chow test - compares pooled vs split linear regressions around a specified break date
+  4. Bai-Perron-style dynamic programming - automatically detects multiple linear break points
   4. Rolling statistics - tracks the dynamic evolution of key metrics
 
 Testable hypotheses:
@@ -39,6 +40,7 @@ from scipy import stats
 from scipy.ndimage import gaussian_filter1d
 
 from config import CHATGPT_RELEASE_DATE, ROLLING_WINDOW, CUSUM_THRESHOLD, RANDOM_SEED
+from data_provenance import dataframe_label
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -137,24 +139,36 @@ class StructuralBreakAnalyzer:
         p_value = np.mean(bootstrap_max >= max_cusum)
 
         return {
-            "has_break": max_cusum > threshold,
+            "has_break": bool(max_cusum > threshold),
             "break_point_idx": break_idx,
             "break_point_date": str(self.dates.iloc[min(break_idx, self.n - 1)]),
             "cusum_statistic": float(max_cusum),
             "cusum_series": cumsum.tolist(),
             "threshold": threshold,
             "p_value": float(p_value),
-            "significant": p_value < 0.05,
+            "significant": bool(p_value < 0.05),
         }
 
     # ----------------------------------------------------------
-    # Chow test
+    # Welch mean test and Chow test
     # ----------------------------------------------------------
 
-    def chow_test(self, metric: np.ndarray,
-                  break_date: str = CHATGPT_RELEASE_DATE) -> Dict:
+    @staticmethod
+    def _ols_sse(y: np.ndarray, x: Optional[np.ndarray] = None) -> Tuple[float, int]:
+        """Return residual sum of squares and parameter count for OLS."""
+        y = np.asarray(y, dtype=float)
+        if x is None:
+            x = np.arange(len(y), dtype=float)
+        x = np.asarray(x, dtype=float)
+        design = np.column_stack([np.ones(len(y)), x])
+        beta, *_ = np.linalg.lstsq(design, y, rcond=None)
+        residuals = y - design @ beta
+        return float(np.sum(residuals ** 2)), design.shape[1]
+
+    def welch_mean_test(self, metric: np.ndarray,
+                        break_date: str = CHATGPT_RELEASE_DATE) -> Dict:
         """
-        Chow test - tests for a structural change in the mean before and after a specified date
+        Welch mean test - tests for a pre/post mean difference.
 
         Parameters:
         -----------
@@ -199,10 +213,11 @@ class StructuralBreakAnalyzer:
         levene_stat, levene_p = stats.levene(y1, y2)
 
         return {
+            "test_name": "Welch two-sample t-test",
             "t_statistic": float(t_stat),
             "p_value": float(p_value),
-            "significant": p_value < 0.05,
-            "highly_significant": p_value < 0.001,
+            "significant": bool(p_value < 0.05),
+            "highly_significant": bool(p_value < 0.001),
             "cohens_d": float(cohens_d),
             "effect_size": "large" if abs(cohens_d) > 0.8 else "medium" if abs(cohens_d) > 0.5 else "small",
             "mean_before": float(mean1),
@@ -214,7 +229,166 @@ class StructuralBreakAnalyzer:
             "n_after": int(n2),
             "levene_statistic": float(levene_stat),
             "levene_p_value": float(levene_p),
-            "variance_homogeneous": levene_p > 0.05,
+            "variance_homogeneous": bool(levene_p > 0.05),
+        }
+
+    def chow_test(self, metric: np.ndarray,
+                  break_date: str = CHATGPT_RELEASE_DATE) -> Dict:
+        """
+        Standard Chow test for a known structural break in a linear trend.
+
+        The pooled model is y ~ 1 + time. The split model fits the same
+        regression separately before and after the specified break date.
+        """
+        if self.n < 20:
+            return {"error": "insufficient sample size"}
+
+        break_idx = self.data[self.data["date"] >= break_date].index
+        if len(break_idx) == 0:
+            return {"error": f"break date {break_date} is out of the data range"}
+        break_idx = int(break_idx[0])
+
+        y = np.asarray(metric, dtype=float)
+        x = np.arange(len(y), dtype=float)
+        y1, y2 = y[:break_idx], y[break_idx:]
+        x1, x2 = x[:break_idx], x[break_idx:]
+
+        if len(y1) < 5 or len(y2) < 5:
+            return {"error": "insufficient sample size on one side of the break point"}
+
+        sse_pooled, k = self._ols_sse(y, x)
+        sse_before, _ = self._ols_sse(y1, x1)
+        sse_after, _ = self._ols_sse(y2, x2)
+        sse_split = sse_before + sse_after
+
+        numerator = max(sse_pooled - sse_split, 0.0) / k
+        denominator_df = len(y1) + len(y2) - 2 * k
+        if denominator_df <= 0 or sse_split <= 0:
+            return {"error": "invalid degrees of freedom or zero split SSE"}
+
+        denominator = sse_split / denominator_df
+        f_stat = numerator / max(denominator, 1e-12)
+        p_value = stats.f.sf(f_stat, k, denominator_df)
+
+        return {
+            "test_name": "Chow regression test",
+            "break_date": str(self.data["date"].iloc[break_idx]),
+            "f_statistic": float(f_stat),
+            "p_value": float(p_value),
+            "significant": bool(p_value < 0.05),
+            "highly_significant": bool(p_value < 0.001),
+            "sse_pooled": float(sse_pooled),
+            "sse_split": float(sse_split),
+            "df_num": int(k),
+            "df_den": int(denominator_df),
+            "n_before": int(len(y1)),
+            "n_after": int(len(y2)),
+        }
+
+    # ----------------------------------------------------------
+    # Bai-Perron-style multiple-break test
+    # ----------------------------------------------------------
+
+    def _segment_sse(self, metric: np.ndarray, start: int, end: int) -> float:
+        """OLS SSE for metric[start:end] using a local linear trend."""
+        y = np.asarray(metric[start:end], dtype=float)
+        if len(y) < 2:
+            return 0.0
+        x = np.arange(len(y), dtype=float)
+        sse, _ = self._ols_sse(y, x)
+        return sse
+
+    def bai_perron_test(self, metric: np.ndarray,
+                        max_breaks: int = 3,
+                        min_segment_size: Optional[int] = None) -> Dict:
+        """
+        Multiple structural-break detection using Bai-Perron-style dynamic
+        programming for linear regression segments.
+
+        This implements the central least-squares segmentation idea: minimize
+        total residual SSE across m+1 linear segments subject to a minimum
+        segment length, then choose the break count by BIC.
+        """
+        y = np.asarray(metric, dtype=float)
+        n = len(y)
+        if n < 30:
+            return {"error": "series too short for multiple-break detection"}
+
+        if min_segment_size is None:
+            min_segment_size = max(8, n // 10)
+        max_breaks = min(max_breaks, max(0, n // min_segment_size - 1))
+        if max_breaks < 1:
+            return {"error": "series too short under the minimum segment-size constraint"}
+
+        sse_cache = {}
+        for start in range(n):
+            for end in range(start + min_segment_size, n + 1):
+                sse_cache[(start, end)] = self._segment_sse(y, start, end)
+
+        inf = float("inf")
+        dp = np.full((max_breaks + 1, n + 1), inf)
+        prev = [[None for _ in range(n + 1)] for _ in range(max_breaks + 1)]
+
+        for end in range(min_segment_size, n + 1):
+            dp[0, end] = sse_cache[(0, end)]
+
+        for breaks in range(1, max_breaks + 1):
+            min_end = (breaks + 1) * min_segment_size
+            for end in range(min_end, n + 1):
+                best_cost = inf
+                best_split = None
+                split_start = breaks * min_segment_size
+                for split in range(split_start, end - min_segment_size + 1):
+                    if (split, end) not in sse_cache:
+                        continue
+                    cost = dp[breaks - 1, split] + sse_cache[(split, end)]
+                    if cost < best_cost:
+                        best_cost = cost
+                        best_split = split
+                dp[breaks, end] = best_cost
+                prev[breaks][end] = best_split
+
+        candidates = []
+        for breaks in range(max_breaks + 1):
+            sse = dp[breaks, n]
+            if not np.isfinite(sse):
+                continue
+            segment_count = breaks + 1
+            parameter_count = segment_count * 2 + breaks
+            bic = n * np.log(max(sse / n, 1e-12)) + parameter_count * np.log(n)
+            candidates.append({
+                "break_count": breaks,
+                "sse": float(sse),
+                "bic": float(bic),
+            })
+
+        if not candidates:
+            return {"error": "no feasible segmentation found"}
+
+        selected = min(candidates, key=lambda item: item["bic"])
+        breaks = selected["break_count"]
+
+        break_indices = []
+        end = n
+        for b in range(breaks, 0, -1):
+            split = prev[b][end]
+            if split is None:
+                break
+            break_indices.append(int(split))
+            end = split
+        break_indices = sorted(break_indices)
+
+        return {
+            "test_name": "Bai-Perron least-squares multiple-break segmentation",
+            "selected_break_count": int(breaks),
+            "break_indices": break_indices,
+            "break_dates": [str(self.dates.iloc[i]) for i in break_indices],
+            "min_segment_size": int(min_segment_size),
+            "max_breaks": int(max_breaks),
+            "selected_bic": float(selected["bic"]),
+            "selected_sse": float(selected["sse"]),
+            "candidates": candidates,
+            "has_break": bool(breaks > 0),
         }
 
     # ----------------------------------------------------------
@@ -286,12 +460,12 @@ class StructuralBreakAnalyzer:
             "ks_test": {
                 "statistic": float(ks_stat),
                 "p_value": float(ks_p),
-                "significant": ks_p < 0.05,
+                "significant": bool(ks_p < 0.05),
             },
             "f_test": {
                 "statistic": float(f_stat),
                 "p_value": float(f_p),
-                "variance_changed": f_p < 0.05,
+                "variance_changed": bool(f_p < 0.05),
             },
         }
 
@@ -310,19 +484,31 @@ class StructuralBreakAnalyzer:
         results = {}
 
         for metric_col in self.metric_columns:
-            metric = self.data[metric_col].dropna().values
+            metric_df = self.data[["date", metric_col]].dropna().reset_index(drop=True)
+            if len(metric_df) != self.n:
+                aligned = StructuralBreakAnalyzer(metric_df.rename(columns={metric_col: "metric"}))
+                metric = metric_df["metric"].values
+                metric_dates = aligned.dates
+            else:
+                aligned = self
+                metric = self.data[metric_col].values
+                metric_dates = self.dates
             if len(metric) < 20:
                 continue
 
             result = {
-                "chow_test": self.chow_test(metric),
-                "distribution": self.distribution_change_analysis(metric),
-                "cusum_test": self.cusum_test(metric),
+                "welch_mean_test": aligned.welch_mean_test(metric),
+                "chow_test": aligned.chow_test(metric),
+                "bai_perron_test": aligned.bai_perron_test(metric),
+                "distribution": aligned.distribution_change_analysis(metric),
+                "cusum_test": aligned.cusum_test(metric),
                 "descriptive": {
                     "mean": float(np.mean(metric)),
                     "std": float(np.std(metric)),
                     "min": float(np.min(metric)),
                     "max": float(np.max(metric)),
+                    "date_start": str(metric_dates.iloc[0]),
+                    "date_end": str(metric_dates.iloc[-1]),
                 }
             }
 
@@ -390,8 +576,8 @@ class StructuralBreakAnalyzer:
                     "change_pp": float((after_lq_ratio - before_lq_ratio) * 100),
                     "z_statistic": float(z_stat),
                     "p_value": float(z_p),
-                    "significant": z_p < 0.05,
-                    "H1_supported": after_lq_ratio > before_lq_ratio and z_p < 0.05,
+                    "significant": bool(z_p < 0.05),
+                    "H1_supported": bool(after_lq_ratio > before_lq_ratio and z_p < 0.05),
                 }
 
         return results
@@ -407,23 +593,16 @@ class StructuralBreakAnalyzer:
         """
         print("\n  [INFO] Hypothesis H2 test: high-quality review ratio change")
 
-        # If there is no review text column, use a simulated inference
+        # H2 is specifically about review depth, so a review-presence flag is
+        # not an adequate proxy and missing text makes the hypothesis untestable.
         if review_col and review_col in df.columns:
             # Compute review text length
-            df["review_length"] = df[review_col].astype(str).str.len()
-            high_quality = df["review_length"] > 300
-        elif review_col is None and "has_review" in df.columns:
-            # Use has_review as a proxy
-            print("  [INFO] Using has_review as a proxy for high-quality reviews (has review = high quality)")
-            high_quality = df["has_review"]
+            review_length = df[review_col].fillna("").astype(str).str.len()
+            high_quality = review_length > 300
         else:
-            # Generate an inference based on the statistical distribution
-            print("  [INFO] No review data; simulating based on the statistical distribution")
-            rng = np.random.default_rng(RANDOM_SEED)
-            high_quality = pd.Series(
-                rng.random(len(df)) < 0.2,
-                index=df.index
-            )
+            reason = "review text is required to operationalize review depth"
+            print(f"  [WARN] H2 not testable: {reason}")
+            return {"status": "not_testable", "reason": reason}
 
         if "date" in df.columns:
             before_mask = df["date"] < CHATGPT_RELEASE_DATE
@@ -449,8 +628,8 @@ class StructuralBreakAnalyzer:
                 "change_pp": float((after_ratio - before_ratio) * 100),
                 "z_statistic": float(z_stat),
                 "p_value": float(z_p),
-                "significant": z_p < 0.05,
-                "H2_supported": after_ratio < before_ratio and z_p < 0.05,
+                "significant": bool(z_p < 0.05),
+                "H2_supported": bool(after_ratio < before_ratio and z_p < 0.05),
             }
 
         return {"error": "no date information"}
@@ -465,28 +644,28 @@ class StructuralBreakAnalyzer:
         print("\n  [INFO] Hypothesis H3 test: rating behavior divergence between new and old users")
 
         if "user_age_days" not in df.columns:
-            print("  [INFO] No user age data; simulating")
-            rng = np.random.default_rng(RANDOM_SEED)
-            df["user_age_days"] = rng.exponential(500, len(df))
+            reason = "user_age_days is required to distinguish new and existing users"
+            print(f"  [WARN] H3 not testable: {reason}")
+            return {"status": "not_testable", "reason": reason}
 
         # Define new users (registered for fewer than 90 days)
-        df["is_new_user"] = df["user_age_days"] < 90
+        is_new_user = pd.to_numeric(df["user_age_days"], errors="coerce") < 90
 
         if "date" in df.columns:
             before_mask = df["date"] < CHATGPT_RELEASE_DATE
             after_mask = df["date"] >= CHATGPT_RELEASE_DATE
 
             # Share of ratings from new users
-            before_new_ratio = df["is_new_user"][before_mask].mean()
-            after_new_ratio = df["is_new_user"][after_mask].mean()
+            before_new_ratio = is_new_user[before_mask].mean()
+            after_new_ratio = is_new_user[after_mask].mean()
 
             # Difference in mean ratings between new and old users
             if "rating" in df.columns or "avg_rating" in df.columns:
                 rating_col = "rating" if "rating" in df.columns else "avg_rating"
-                old_before = df.loc[~df["is_new_user"] & before_mask, rating_col].mean()
-                new_before = df.loc[df["is_new_user"] & before_mask, rating_col].mean()
-                old_after = df.loc[~df["is_new_user"] & after_mask, rating_col].mean()
-                new_after = df.loc[df["is_new_user"] & after_mask, rating_col].mean()
+                old_before = df.loc[~is_new_user & before_mask, rating_col].mean()
+                new_before = df.loc[is_new_user & before_mask, rating_col].mean()
+                old_after = df.loc[~is_new_user & after_mask, rating_col].mean()
+                new_after = df.loc[is_new_user & after_mask, rating_col].mean()
 
                 return {
                     "new_user_ratio_before": float(before_new_ratio),
@@ -498,7 +677,7 @@ class StructuralBreakAnalyzer:
                     "new_user_mean_after": float(new_after) if pd.notna(new_after) else None,
                     "gap_before": float(new_before - old_before) if (pd.notna(new_before) and pd.notna(old_before)) else None,
                     "gap_after": float(new_after - old_after) if (pd.notna(new_after) and pd.notna(old_after)) else None,
-                    "H3_supported": after_new_ratio > before_new_ratio,
+                    "H3_supported": bool(after_new_ratio > before_new_ratio),
                 }
 
         return {"error": "unable to test H3"}
@@ -518,7 +697,9 @@ class StructuralBreakAnalyzer:
         # Print summary
         print("\n[INFO] Hypothesis test result summary:")
         for h, r in results.items():
-            if "error" in r:
+            if r.get("status") == "not_testable":
+                print(f"  {h}: [WARN] not testable ({r['reason']})")
+            elif "error" in r:
                 print(f"  {h}: [WARN] {r['error']}")
             elif "H1_supported" in r:
                 status = "[OK] supported" if r["H1_supported"] else "[FAIL] not supported"
@@ -544,7 +725,8 @@ class StructuralBreakAnalyzer:
 # Convenience functions
 # ============================================================
 
-def run_full_analysis(data: pd.DataFrame) -> Dict:
+def run_full_analysis(data: pd.DataFrame,
+                      allow_non_empirical: bool = False) -> Dict:
     """
     Runs the complete break point analysis pipeline
 
@@ -556,6 +738,16 @@ def run_full_analysis(data: pd.DataFrame) -> Dict:
     --------
     dict - complete analysis results
     """
+    evidence_class = dataframe_label(data)
+    if evidence_class != "empirical observations" and not allow_non_empirical:
+        reason = f"structural-break inference requires empirical observations; got {evidence_class}"
+        print(f"[WARN] {reason}")
+        return {
+            "status": "not_testable",
+            "reason": reason,
+            "evidence_class": evidence_class,
+        }
+
     print("\n" + "=" * 60)
     print("[INFO] Time series structural break analysis - start")
     print("=" * 60)
@@ -579,6 +771,8 @@ def run_full_analysis(data: pd.DataFrame) -> Dict:
     print("=" * 60)
 
     return {
+        "status": "demonstration" if evidence_class != "empirical observations" else "empirical_analysis",
+        "evidence_class": evidence_class,
         "break_analysis": break_results,
         "hypothesis_tests": hypothesis_results,
         "summary": summary,
@@ -596,13 +790,19 @@ def _generate_summary(break_results: Dict,
         if chow.get("significant"):
             significant_breaks += 1
 
+    testable_results = [
+        result for result in hypothesis_results.values()
+        if result.get("status") != "not_testable" and "error" not in result
+    ]
+
     return {
         "total_metrics_analyzed": total_metrics,
         "significant_breaks": significant_breaks,
         "break_detection_rate": round(significant_breaks / max(total_metrics, 1) * 100, 1),
-        "hypotheses_tested": len(hypothesis_results),
+        "hypotheses_tested": len(testable_results),
+        "hypotheses_not_testable": len(hypothesis_results) - len(testable_results),
         "hypotheses_supported": sum(
-            1 for r in hypothesis_results.values()
+            1 for r in testable_results
             if r.get("H1_supported") or r.get("H2_supported") or r.get("H3_supported")
         ),
     }
@@ -633,5 +833,7 @@ if __name__ == "__main__":
         "review_ratio": np.clip(0.3 + 0.1 * rng.standard_normal(n), 0.05, 0.6),
     })
 
-    results = run_full_analysis(df)
+    df["is_synthetic"] = True
+    df["source_dataset"] = "illustrative_structural_break_benchmark"
+    results = run_full_analysis(df, allow_non_empirical=True)
     print(f"\nAnalysis summary: {results['summary']}")

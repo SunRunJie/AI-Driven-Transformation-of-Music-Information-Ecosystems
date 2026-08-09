@@ -1,8 +1,10 @@
 """
-The "Trust Threshold Hypothesis" quantitative model
-====================================================
+The "Trust Threshold Hypothesis" scenario model
+=================================================
 
-This is one of the most central theoretical contributions of this research.
+This module formalizes a theoretical mechanism. Its default parameters are
+not calibrated to RYM, AOTY, or user-level observations, so numerical
+thresholds are scenario outputs rather than estimates or forecasts.
 
 Core idea:
   The credibility of a UGC information platform does not decline linearly;
@@ -172,9 +174,9 @@ class TrustThresholdModel:
             "critical_trust": float(critical_trust),
             "max_derivative": float(derivatives[min_idx]),
             "interpretation": (
-                f"When AI penetration reaches {critical_penetration:.0%}, "
-                f"trust declines fastest ({derivatives[min_idx]:.2f}), "
-                f"and trust is {critical_trust:.2f} at that point"
+                f"Under the supplied assumptions, the modeled curve is steepest at "
+                f"penetration {critical_penetration:.0%} ({derivatives[min_idx]:.2f}), "
+                f"with modeled trust {critical_trust:.2f}"
             ),
         }
 
@@ -210,8 +212,9 @@ class TrustThresholdModel:
             "collapse_trust": float(collapse_trust),
             "threshold": threshold,
             "interpretation": (
-                f"When AI penetration reaches {collapse_penetration:.1%}, "
-                f"trust falls below {threshold}, triggering a trust collapse"
+                f"Under the supplied assumptions, modeled trust first crosses "
+                f"the arbitrary reference threshold {threshold} at penetration "
+                f"{collapse_penetration:.1%}"
             ),
         }
 
@@ -406,7 +409,13 @@ class TrustThresholdModel:
         for k, v in self.params.items():
             print(f"  {k} = {v}")
 
-        results = {}
+        results = {
+            "evidence_status": {
+                "class": "assumption-driven scenario model",
+                "calibrated": False,
+                "forecast": False,
+            }
+        }
 
         # 1. Critical point analysis
         print("\n[Phase 1] Critical point analysis...")
@@ -414,7 +423,7 @@ class TrustThresholdModel:
         results["collapse_point"] = self.find_collapse_point()
         print(f"  Critical point: {results['critical_point']['interpretation']}")
         if results["collapse_point"].get("collapse_exists"):
-            print(f"  Collapse point: {results['collapse_point']['interpretation']}")
+            print(f"  Reference crossing: {results['collapse_point']['interpretation']}")
 
         # 2. Dynamic simulation
         print("\n[Phase 2] Dynamic simulation...")
@@ -422,14 +431,14 @@ class TrustThresholdModel:
         final_state = results["dynamics"].iloc[-1]
         print(f"  Final state: AI penetration={final_state['ai_penetration']:.2%}, "
               f"trust={final_state['trust']:.3f}, "
-              f"{'collapsed' if final_state['is_crashed'] else 'not collapsed'}")
+              f"{'below' if final_state['is_crashed'] else 'above'} reference")
 
         # 3. Multi-scenario comparison
         print("\n[Phase 3] Multi-scenario comparison...")
         results["scenarios"] = self.simulate_multiple_scenarios()
         for name, df in results["scenarios"].items():
             final = df.iloc[-1]
-            status = "[OK] survived" if not final["is_crashed"] else "[FAIL] collapsed"
+            status = "above reference" if not final["is_crashed"] else "below reference"
             print(f"  {name}: final trust={final['trust']:.3f} [{status}]")
 
         # 4. User heterogeneity
@@ -456,7 +465,7 @@ class TrustThresholdModel:
                   0.35, 0.40, 0.45, 0.50, 0.60, 0.80]:
             t = self.user_trust_function(p)
             deriv = self.trust_derivative(p)
-            status = "[OK]" if t > self.params["trust_threshold"] else "[FAIL]"
+            status = "above reference" if t > self.params["trust_threshold"] else "below reference"
             print(f"  AI penetration={p:.0%} -> trust={t:.4f} "
                   f"(decline rate={deriv:.2f}) [{status}]")
 
@@ -498,10 +507,10 @@ def estimate_time_to_collapse(model: TrustThresholdModel,
                                current_penetration: float = 0.01,
                                monthly_growth: float = 0.03) -> Dict:
     """
-    Estimate the time needed to reach the trust collapse threshold
+    Compute a conditional scenario timeline from explicit growth assumptions.
 
-    This is a highly practical question for this research:
-      "At the current pace, how much time does the platform have left?"
+    This is not a forecast because neither current penetration nor monthly
+    growth is estimated from platform observations.
     """
     collapse_point = model.find_collapse_point()
     if not collapse_point.get("collapse_exists"):
@@ -517,6 +526,8 @@ def estimate_time_to_collapse(model: TrustThresholdModel,
         months += 1
 
     return {
+        "evidence_class": "conditional uncalibrated scenario",
+        "is_forecast": False,
         "current_penetration": current_penetration,
         "monthly_growth_rate": monthly_growth,
         "collapse_penetration": target,

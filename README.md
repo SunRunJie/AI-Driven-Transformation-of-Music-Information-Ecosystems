@@ -1,119 +1,115 @@
-# AI-Driven Music Information Ecosystem Research
+# AI-Driven Transformation of Music Information Ecosystems
 
+This project studies how generative AI may affect the trust, governance, and
+knowledge-production functions of crowdsourced music-information platforms,
+using RateYourMusic (RYM) and Album of the Year (AOTY) as motivating cases.
 
-## Overview
+## Evidence Status
 
-This research project investigates how generative AI technologies reshape music information ecosystems, digital platforms, and user participation mechanisms.
+The repository now contains three documented third-party archives with real
+AOTY and RYM observations. They support descriptive cross-platform, attention,
+genre, and text analyses. None contains repeated rating timestamps, so the
+post-2022 structural-break hypothesis remains open. The 17,274 legacy
+synthetic rows remain marked and excluded from empirical analysis.
 
-Using RateYourMusic (RYM) and Album of the Year (AOTY) as representative cases, this study explores how artificial intelligence may influence information organization, music discovery, platform evolution, and niche cultural markets.
+| File group | Rows | Current status | Permitted use |
+|:--|--:|:--|:--|
+| AOTY historical ratings | 32,358 | Third-party observed archive | Critic-user and cross-platform analysis |
+| AOTY high-rated snapshot | 5,000 | Third-party observed snapshot | Attention and genre analysis |
+| RYM popular snapshot | 5,000 | Third-party observed snapshot | Attention, review, genre, and matching analysis |
+| Published critic excerpts | 116,384 | Archived published text | Reproducible human-text sample |
+| RYM yearly charts | 2,700 | Synthetic | Parser/analysis demonstration only |
+| RYM rating timeline | 11,870 | Synthetic | Time-series benchmark only |
+| RYM forum discussions | 15 | Synthetic/template-generated | Demonstration only |
+| AOTY album ratings | 2,400 | Synthetic | Demonstration only |
+| AOTY genre trends | 289 | Synthetic | Scenario visualization only |
+| Collection event logs | 8 | Audit metadata | Documents blocked collection attempts |
 
+Live checks made in August 2026 returned `403 Forbidden` from RYM and a
+Cloudflare verification page from AOTY, including when AOTY was rendered in a
+real headless Chrome session. The collectors therefore record an unavailable
+event and leave existing observation files untouched.
 
-## Research Questions
+## What Is Implemented
 
-This project focuses on three questions:
+- Auditable AOTY and RYM public-chart collectors with caching, source URLs,
+  collection timestamps, challenge detection, and opt-in synthetic fixtures.
+- A source manifest with URLs, snapshot dates, license status, limitations,
+  and SHA-256 checksums, plus deterministic archive ingestion.
+- Exact artist-title-year matching across AOTY and RYM, concentration
+  statistics, genre profiles, and reproducible aggregate exports.
+- Welch pre/post mean comparison, a standard regression Chow test, a
+  bootstrap CUSUM diagnostic, and Bai-Perron-style dynamic-programming
+  segmentation with BIC break-count selection.
+- A controlled text-classification demonstration using 15 published critic
+  excerpts and 15 assistant-style controls with leakage-safe cross-validation.
+- Uncalibrated trust, policy, and platform-positioning scenario models.
+- Twelve figures whose evidence class is printed directly on each image.
 
-1. How do music information platforms organize and represent cultural knowledge?
+The multiple-break implementation captures the least-squares segmentation
+core of Bai-Perron. It does **not** implement the full Bai-Perron inferential
+suite such as supF/UDmax tests and confidence intervals.
 
-2. How may generative AI transform existing music discovery and information service ecosystems?
+## Running the Project
 
-3. What opportunities and challenges does AI bring to niche music markets?
+Empirical mode is the default:
 
+```powershell
+py -3.14 src\run_pipeline.py
+```
 
-## Case Studies
+The pipeline loads local external archives, writes aggregate audit outputs,
+and generates observed figures. Structural-break hypotheses return
+`not_testable` when no repeated empirical series is available.
 
-This research analyzes two representative music information platforms:
+Re-download the documented archives and verify their checksums with:
 
-- RateYourMusic (RYM)
-- Album of the Year (AOTY)
+```powershell
+py src\data_collection\download_archived_datasets.py
+```
 
+Attempt live public-page collection explicitly with:
 
-## Methodology
+```powershell
+py -3.14 src\run_pipeline.py --collect
+```
 
-The project applies:
+Run the explicitly synthetic demonstration with:
 
-- Web data collection
-- Exploratory data analysis
-- Comparative case study
-- Information organization analysis
-- Data visualization
+```powershell
+py -3.14 src\run_pipeline.py --demo
+```
 
+Generate all scenario and benchmark figures with source notes:
 
-## Research Output
+```powershell
+py -3.14 src\run_complete_analysis.py
+```
 
-Current outputs include:
+## Research Interpretation
 
-- Research report
-- Data collection pipeline
-- Data analysis and visualization
+The repository now supports four findings and boundaries:
 
+1. AOTY and RYM user scores correlate at `r = 0.910` across 4,102 exact album
+   matches; 87.4% differ by no more than 0.5 points on a common 0-5 scale.
+2. Rating attention is concentrated, while written reviews form a much
+   smaller participation layer in the RYM snapshot.
+3. Genre profiles differ in score, attention, and review density across the
+   two selected archives.
+4. Structural-break and trust results remain method checks or scenarios until
+   repeated platform observations and behavioral calibration are available.
 
-## Current Results
+It does not currently establish that ChatGPT caused a change in RYM or AOTY,
+that AI-review prevalence reached any specified percentage, or that platform
+trust will collapse at a particular date or penetration level.
 
-### Dataset
-
-
-Collected:
-
-- **2,700 albums**
-- **2,700 artists**
-- **17 genre tags**
-- **2,340 user rating records**
-
-Data sources and coverage:
-
-- **RYM yearly charts (2000–2026):** 2,700 unique albums and artists collected from 27 years of annual rankings (100 albums/year).
-- **Genre metadata:** 17 normalized genre categories extracted from RYM and AOTY tagging systems.
-- **AOTY user ratings:** 2,340 individual album rating records collected for user evaluation analysis.
-
-Additional supporting datasets include:
-
-- 340 weekly observation records for temporal analysis
-- 204 genre-year observations for trend analysis
-- 15 music community forum posts for qualitative ecosystem analysis
-
-All statistics are calculated from the raw datasets stored in `data/raw/`.
-
-
-### Platform Comparison
-
-Compared RYM and AOTY based on:
-
-- metadata richness
-- tagging systems
-- community participation
-- recommendation mechanisms
-
-
-### Visualization
-
-Generated:
-
-- music genre network
-- artist similarity graph
-- platform metadata comparison
-
-  
-## Future Work
-
-Future research will explore:
-
-- Machine learning approaches for music information analysis
-- User behavior modeling
-- The evolution of AI-enhanced cultural platforms
-
+See [Research Report](docs/Research_Report.md), [Research Notes](docs/Research_Notes.md),
+[data provenance](data/README.md), and [figure inventory](figures/README.md).
 
 ## Author
 
 RunJie Sun
+School of Information Management, Nanjing University
 
-Undergraduate Student  
-School of Information Management  
-Nanjing University
-
-
-Research Interests:
-
-- Artificial Intelligence
-- Information Systems
-- Digital Platforms
-- Computational Social Science
+Research interests: artificial intelligence, information systems, digital
+platforms, and computational social science.
