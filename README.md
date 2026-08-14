@@ -1,5 +1,7 @@
 # AI-Driven Transformation of Music Information Ecosystems
 
+[**Explore the research website →**](https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/)
+
 This project studies how generative AI may affect the trust, governance, and
 knowledge-production functions of crowdsourced music-information platforms,
 using RateYourMusic (RYM) and Album of the Year (AOTY) as motivating cases.

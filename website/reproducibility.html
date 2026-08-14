@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10201d">
+  <meta name="description" content="A practical reproduction guide for the music information ecosystems research pipeline.">
+  <title>Reproduce — AI × Music Information Ecosystems</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <nav class="container nav-shell" aria-label="Primary navigation">
+      <a class="brand" href="index.html" aria-label="Research home"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">AI × Music Information Ecosystems</span></a>
+      <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <div class="nav-links"><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="methods.html">Methods</a><a href="reproducibility.html" aria-current="page">Reproduce</a><a class="repo-link" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">View repository ↗</a></div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container page-hero-grid">
+        <div><p class="eyebrow">Open research infrastructure</p><h1 class="page-title">From repository to result, without hidden steps.</h1><p class="lede">The pipeline documents source identity, rejects synthetic observations in empirical mode, fixes random operations, and rebuilds aggregate evidence and figures from local archives.</p></div>
+        <div class="page-index" aria-label="Page contents"><div><strong>01</strong><span>Readiness audit</span></div><div><strong>02</strong><span>Run sequence</span></div><div><strong>03</strong><span>Known constraints</span></div></div>
+      </div>
+    </section>
+
+    <section class="section-dark section-tight">
+      <div class="container">
+        <div class="stat-grid reveal">
+          <article class="stat"><span class="stat-index">R · 01</span><strong class="stat-value">SHA-256</strong><span class="stat-label">Archive integrity recorded</span><span class="stat-note">Stored in source_manifest.csv</span></article>
+          <article class="stat"><span class="stat-index">R · 02</span><strong class="stat-value">42</strong><span class="stat-label">Global random seed</span><span class="stat-note">Deterministic sampling and models</span></article>
+          <article class="stat"><span class="stat-index">R · 03</span><strong class="stat-value">3</strong><span class="stat-label">Explicit pipeline modes</span><span class="stat-note">Empirical · collect · demo</span></article>
+          <article class="stat"><span class="stat-index">R · 04</span><strong class="stat-value">12</strong><span class="stat-label">Regenerable analysis figures</span><span class="stat-note">Evidence labels embedded</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container repro-grid">
+        <div class="sticky-note reveal"><p class="eyebrow">01 · Readiness audit</p><h2>What another researcher can verify</h2><p>Current strengths are strongest in provenance, evidence labeling, deterministic archive ingestion, and analytical boundaries. Environment pinning remains intentionally transparent as a limitation.</p></div>
+        <div class="checklist reveal">
+          <div class="check-item"><span class="check-mark" aria-hidden="true">✓</span><div><strong>Purpose and evidence status</strong><p>The README states the research question, archive coverage, permitted uses, and unsupported claims.</p></div><small>DOCUMENTED</small></div>
+          <div class="check-item"><span class="check-mark" aria-hidden="true">✓</span><div><strong>Source provenance and archive hashes</strong><p>Publisher, date, URL, license status, limitations, and SHA-256 checksum are retained.</p></div><small>AUDITABLE</small></div>
+          <div class="check-item"><span class="check-mark" aria-hidden="true">✓</span><div><strong>Synthetic-data exclusion</strong><p>Empirical mode excludes legacy generated rows and unknown provenance through a reusable gate.</p></div><small>ENFORCED</small></div>
+          <div class="check-item"><span class="check-mark" aria-hidden="true">✓</span><div><strong>Deterministic random operations</strong><p>Sampling, cross-validation, forests, and synthetic checks use the documented global seed.</p></div><small>SEED 42</small></div>
+          <div class="check-item"><span class="check-mark" aria-hidden="true">✓</span><div><strong>Clear execution order</strong><p>Dedicated entry points cover archive download, empirical analysis, collection attempts, demo mode, and all figures.</p></div><small>SCRIPTED</small></div>
+          <div class="check-item"><span class="check-mark" aria-hidden="true">!</span><div><strong>Dependency versions use lower bounds</strong><p>The requirements file documents packages but does not freeze an exact lockfile or container image.</p></div><small>KNOWN RISK</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" id="run">
+      <div class="container repro-grid">
+        <div class="sticky-note reveal"><p class="eyebrow">02 · Run sequence</p><h2>Rebuild the empirical baseline</h2><p>Commands assume Python and the dependencies listed in <code>requirements.txt</code>. The repository currently documents Python 3.14 in its primary PowerShell examples.</p></div>
+        <div class="reveal">
+          <h3>1. Install the research environment</h3>
+          <div class="code-block"><button class="copy-button" type="button">Copy</button><code>py -3.14 -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt</code></div>
+
+          <h3>2. Verify or restore the documented archives</h3>
+          <div class="code-block"><button class="copy-button" type="button">Copy</button><code>py src\data_collection\download_archived_datasets.py</code></div>
+          <p class="section-copy">The downloader verifies each archive against the checksum stored in the source manifest.</p>
+
+          <h3>3. Run the default empirical pipeline</h3>
+          <div class="code-block"><button class="copy-button" type="button">Copy</button><code>py -3.14 src\run_pipeline.py</code></div>
+          <p class="section-copy">This loads local observed archives, writes provenance audits and aggregate outputs, and leaves structural-break hypotheses explicitly <code>not_testable</code> when repeated data are absent.</p>
+
+          <h3>4. Regenerate the complete figure set</h3>
+          <div class="code-block"><button class="copy-button" type="button">Copy</button><code>py -3.14 src\run_complete_analysis.py</code></div>
+
+          <h3>5. Use synthetic mode only as a declared method check</h3>
+          <div class="code-block"><button class="copy-button" type="button">Copy</button><code>py -3.14 src\run_pipeline.py --demo</code></div>
+          <div class="note-box"><strong>Do not mix demo output with empirical evidence.</strong><p>Demo mode writes a separate synthetic time series and exists to exercise structural-break procedures on a known input.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container repro-grid">
+        <div class="sticky-note reveal"><p class="eyebrow">03 · Known constraints</p><h2>Reproduction is not the same as identification</h2><p>Rebuilding the reported numbers does not widen their inferential scope. The same evidence boundaries apply after successful reproduction.</p></div>
+        <div class="boundary-list reveal">
+          <div class="boundary-item"><b>C1</b><div><strong>Live collection is currently blocked</strong><p>RYM returned HTTP 403 and AOTY returned a Cloudflare verification page in August 2026. Failures are logged; generated rows never replace unavailable observations.</p></div></div>
+          <div class="boundary-item"><b>C2</b><div><strong>The RYM snapshot has no stated license</strong><p>Aggregate findings can be inspected, but raw redistribution needs a separate terms and license check.</p></div></div>
+          <div class="boundary-item"><b>C3</b><div><strong>Exact environments are not yet locked</strong><p>Package lower bounds support portability but may permit version drift. A future lockfile or container would strengthen bit-level reproducibility.</p></div></div>
+          <div class="boundary-item"><b>C4</b><div><strong>The causal dataset does not yet exist here</strong><p>A dated repeated panel remains necessary to test post-2022 structural change and competing explanations.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight"><div class="container cta-panel reveal"><div><h2>Audit the source, not only the summary.</h2><p>The complete report, provenance manifest, figure inventory, and analysis modules are available in the repository.</p></div><a class="button" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">Browse repository ↗</a></div></section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">A scientific result should not depend on the original author’s memory.</h2><p class="footer-copy">This repository aims to make data origin, execution order, generated outputs, and interpretive limits inspectable.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="methods.html">Methods</a></div><div class="footer-nav"><strong>Reproduce</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/requirements.txt">Dependencies ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/data/README.md">Data guide ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/LICENSE">License ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Default mode: empirical</span></div></div></footer>
+</body>
+</html>
