@@ -1,11 +1,29 @@
 # Research Summary
 
-## Generative AI and Crowdsourced Music Information Platforms
+## Generative AI and Structural Change in Crowdsourced Music Information Platforms
 
-This project studies ratings, reviews, ranking rules, and trust on
-RateYourMusic (RYM) and Album of the Year (AOTY). Its main concern is simple:
-when review-like content becomes cheap to produce, which parts of a music
-information platform still deserve confidence?
+This project studies how generative AI may change the institutional conditions
+under which RateYourMusic (RYM) and Album of the Year (AOTY) produce and govern
+crowdsourced music knowledge. It examines the cost of producing review-like
+text, the allocation of rating weight and visibility, the provenance of
+contributions, and the position of core contributors.
+
+## Research Contribution
+
+The central proposition is a shift in scarcity. Coherent review-like text has
+become inexpensive to produce. Credible provenance, accountable contribution
+histories, and documented ranking rules carry more of the burden of sustaining
+information trust. This proposition links generative content
+production to platform structure and generates measurable expectations about
+review use, contributor retention, rating weights, and the value of historical
+data.
+
+The study contributes three elements: a theoretical account of how generative
+AI can transmit through technology, platform rules, organizational response,
+and information value; a reproducible comparative baseline for AOTY and RYM;
+and an evidence-graded design for testing post-2022 structural change. The
+current archives do not estimate AI-review prevalence or causal effects. They
+identify the platform conditions through which such effects could operate.
 
 ## Evidence Base
 
@@ -24,22 +42,26 @@ is used only to test structural-break code on a known input.
 
 ## Main Findings
 
-Across 4,102 exact artist-title-year matches, AOTY and RYM user scores have a
-Pearson correlation of 0.910 and a Spearman correlation of 0.836. After both
+Across 4,102 exact artist-title-year matches, AOTY and RYM user scores in the
+selected archives have a Pearson correlation of 0.910 and a Spearman
+correlation of 0.836. After both
 scores are put on a 0-5 scale, 87.4% of matched albums lie within half a point.
 AOTY's median score is 0.34 points higher. The communities share much of the
-same rank order and use different score calibrations.
+same rank order within this matched sample and use different score
+calibrations. The differently dated archives do not establish stable agreement
+over time.
 
-Attention is concentrated. In the selected AOTY top-5,000 file, the top 1%
-of albums receive 12.3% of represented ratings and the rating-count Gini is
+Attention is concentrated within both selected files. In the AOTY high-rated
+top-5,000 snapshot, the top 1% of albums receive 12.3% of represented ratings
+and the rating-count Gini is
 0.617. In the RYM popular snapshot, the corresponding values are 6.8% and
-0.400. The files use different selection rules, so these are within-sample
-statistics.
+0.400. The files use different selection rules, so the values describe each
+archive and should not be interpreted as a direct platform comparison.
 
 Written reviews form a thin participation layer in the RYM snapshot. The
 median album has 3,973 ratings and 72 reviews; the median review-to-rating
-ratio is 1.65%. This makes contributor retention and review quality more
-important than traffic totals alone would suggest.
+ratio is 1.65%. This pattern motivates separate measurement of contributor
+retention and review quality alongside aggregate traffic.
 
 AOTY critic and user scores correlate at 0.536 across 32,358 archived albums.
 Their mean absolute gap is 7.64 points on the 0-100 scale. Community judgment
@@ -51,17 +73,18 @@ review density ranges from 1.23 reviews per 100 ratings for Art Pop to 2.51
 for Pop Rock. Genre should be treated as a sampling stratum in later detector
 and retention studies.
 
-## Text Study
+## Controlled Text Study
 
 The controlled corpus combines 15 published critic excerpts with 15 manually
-written assistant-style controls. Five-fold out-of-fold evaluation gives
-96.7% accuracy and AUC 0.996. Average sentence length is 22.8 words in the
-critic sample and 12.9 in the controls; lexical diversity is also higher in
-the critic sample.
+authored assistant-style controls. Five-fold out-of-fold evaluation gives
+96.7% accuracy and AUC 0.996. These metrics describe separation between two
+small, deliberately contrasted groups. Average sentence length is 22.8 words
+in the critic sample and 12.9 in the controls; lexical diversity is also
+higher in the critic sample.
 
-This result is narrow. It compares professional excerpts with constructed
-controls and has no platform-user holdout. It cannot estimate AI prevalence
-or current detector performance on RYM or AOTY.
+The exercise compares professional excerpts with constructed controls and has
+no model-generated sample or platform-user holdout. It cannot estimate AI
+prevalence or detector performance on RYM or AOTY.
 
 ## Methods
 
@@ -78,18 +101,21 @@ The segmentation code implements the least-squares core associated with
 Bai-Perron. It does not implement the full supF/UDmax test suite or breakpoint
 confidence intervals.
 
-## Open Claim
+## Open Empirical Claim
 
 The project cannot yet show a post-November-2022 structural break in platform
 behavior. The archives are cross-sections and do not record when individual
 ratings were submitted. A dated panel of repeated album or user observations
 is still required.
 
-This boundary does not flatten the argument. It locates the pressure point:
-the platforms already depend on concentrated attention, a small review layer,
-and ranking rules that decide how much low-count scores matter. AOTY's public
-changelog shows active changes to weighted charts and rating export from 2025
-to 2026. Provenance and ranking design have become practical governance work.
+The structural argument currently combines a theory of changing production
+conditions with observed platform characteristics: concentrated attention, a
+thin written-review layer, and ranking rules that determine how low-count
+scores enter charts. AOTY's public changelog documents changes to weighted
+charts and rating export from 2025 to 2026. The changelog does not attribute
+those changes to generative AI. A dated panel can test whether rating
+distributions, review depth, contributor activity, or trust changed after the
+release of widely available generative systems.
 
 Full details are in [Research_Report.md](Research_Report.md),
 [Research_Notes.md](Research_Notes.md), and

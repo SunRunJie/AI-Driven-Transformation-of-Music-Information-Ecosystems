@@ -2,14 +2,15 @@
 
 Generated: 2026-08-10 01:46:32
 
-This file is produced by the pipeline and lists the reproducible evidence (key statistics and figures). The narrative research report is authored separately in `docs/Research_Report.md`.
+This file is produced by the pipeline and records reproducible statistics and figure outputs. Interpretation and evidence limitations are documented in `docs/Research_Report.md`.
 
 ## Evidence status
 
 - Pipeline mode: empirical
 - Empirical status: descriptive_archives_available
 - Reason: observed cross-sectional archives are available, but no repeated platform time series can support a structural-break estimate
-- Trust and competition outputs are assumption-driven scenario analyses.
+- Trust and competition outputs are conditional results from assumption-driven scenarios; they are not platform estimates.
+- Research role: observed archives identify the platform structures through which AI-related pressure could operate; causal timing remains unestimated.
 
 ## 1. Observed archive evidence
 
@@ -26,13 +27,14 @@ This file is produced by the pipeline and lists the reproducible evidence (key s
 - Status: not testable
 - Reason: no empirical time series passed the provenance gate
 
-## 3. AI review detection
+## 3. Controlled text classification
 
-- Data basis: 15 observed critic excerpts and 15 controlled AI-style texts; no external validation
+- Data basis: 15 observed critic excerpts and 15 manually authored assistant-style controls; no model-generated sample or external validation
 - Cross-validated accuracy: 96.7%
 - Cross-validated AUC: 0.996
+- Interpretation: the metrics describe separation between the two constructed groups, not AI-text detection performance on platform reviews
 
-## 4. Trust threshold model
+## 4. Trust threshold scenario
 
 - Data basis: uncalibrated scenario assumptions
 - Assumption-implied threshold crossing: 75.0%

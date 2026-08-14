@@ -432,9 +432,9 @@ class ResearchPipeline:
             with open(digest_path, "w", encoding="utf-8") as f:
                 f.write("# Analysis Results Digest (auto-generated)\n\n")
                 f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-                f.write("This file is produced by the pipeline and lists the reproducible "
-                        "evidence (key statistics and figures). The narrative research "
-                        "report is authored separately in `docs/Research_Report.md`.\n\n")
+                f.write("This file is produced by the pipeline and records reproducible "
+                        "statistics and figure outputs. Interpretation and evidence "
+                        "limitations are documented in `docs/Research_Report.md`.\n\n")
 
                 f.write("## Evidence status\n\n")
                 f.write(f"- Pipeline mode: {self.mode}\n")
@@ -444,7 +444,11 @@ class ResearchPipeline:
                     f.write(f"- Reason: {evidence.get('reason')}\n")
                 else:
                     f.write("- Empirical status: available\n")
-                f.write("- Trust and competition outputs are assumption-driven scenario analyses.\n\n")
+                f.write("- Trust and competition outputs are conditional results from "
+                        "assumption-driven scenarios; they are not platform estimates.\n\n")
+                f.write("- Research role: observed archives identify the platform structures "
+                        "through which AI-related pressure could operate; causal timing "
+                        "remains unestimated.\n\n")
 
                 observed = self.results.get("observed_archives", {}) or {}
                 cross = observed.get("cross_platform", {}) or {}
@@ -472,22 +476,25 @@ class ResearchPipeline:
                     f.write("## 2. Structural break analysis\n\n")
                     f.write(f"- Status: not testable\n- Reason: {sb.get('reason')}\n\n")
 
-                # AI review detection
+                # Controlled text classification
                 ai = self.results.get("ai_detection", {}) or {}
                 model = ai.get("model", {}) or {}
                 if model:
-                    f.write("## 3. AI review detection\n\n")
-                    f.write("- Data basis: 15 observed critic excerpts and 15 controlled AI-style texts; no external validation\n")
+                    f.write("## 3. Controlled text classification\n\n")
+                    f.write("- Data basis: 15 observed critic excerpts and 15 manually authored "
+                            "assistant-style controls; no model-generated sample or external validation\n")
                     f.write(f"- Cross-validated accuracy: {pct(model.get('accuracy'))}\n")
                     auc = model.get("auc")
                     auc_text = f"{auc:.3f}" if isinstance(auc, (int, float)) else "N/A"
-                    f.write(f"- Cross-validated AUC: {auc_text}\n\n")
+                    f.write(f"- Cross-validated AUC: {auc_text}\n")
+                    f.write("- Interpretation: the metrics describe separation between the two "
+                            "constructed groups, not AI-text detection performance on platform reviews\n\n")
 
                 # Trust threshold model
                 tm = self.results.get("trust_model", {}) or {}
                 cp = tm.get("collapse_point", {}) or {}
                 if cp:
-                    f.write("## 4. Trust threshold model\n\n")
+                    f.write("## 4. Trust threshold scenario\n\n")
                     f.write("- Data basis: uncalibrated scenario assumptions\n")
                     f.write(f"- Assumption-implied threshold crossing: "
                             f"{pct(cp.get('collapse_penetration'))}\n\n")

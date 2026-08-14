@@ -9,12 +9,32 @@ The repository uses four evidence classes.
 2. **Collection log:** request URL, time, status, and challenge information.
 3. **Controlled corpus or benchmark:** fixed material used to test code and
    compare features.
-4. **Scenario:** results determined by stated assumptions.
+4. **Scenario:** conditional outputs determined by stated assumptions.
 
 Each figure prints its class. Cross-sectional archive results can support
 descriptive claims. Structural change requires repeated observations.
 
-## 2. Observed Archives
+## 2. Structural Proposition
+
+The project proposes that generative AI changes the scarcity structure of
+crowdsourced evaluation. Review-like text becomes cheaper to produce, while
+credible provenance, contribution history, and documented ranking rules become
+more consequential to information trust.
+
+The proposition contains four measurable links:
+
+1. lower production cost may change review volume, style, and provenance;
+2. provenance uncertainty may change how users read and weight reviews;
+3. changes in attention may affect detailed reviewers and taxonomy
+   contributors before they appear in aggregate traffic;
+4. platform responses may shift from text-level detection toward provenance,
+   ranking design, behavioral controls, human review, and appeals.
+
+The observed archives describe the platform structures on which these links
+could operate. A causal estimate requires repeated observations, contributor
+behavior, and records of platform-rule changes.
+
+## 3. Observed Archives
 
 `src/analysis/observed_archive_analysis.py` loads and standardizes:
 
@@ -27,7 +47,7 @@ The source manifest records URLs, publishers, dates, license status,
 limitations, and SHA-256 hashes. The RYM publisher gives no license. Raw-file
 redistribution needs a separate check.
 
-## 3. Cross-Platform Matching
+## 4. Cross-Platform Matching
 
 Artist and title strings are normalized with Unicode decomposition, ASCII
 folding, lowercasing, and removal of non-alphanumeric characters. Release year
@@ -47,7 +67,7 @@ Key results:
 The AOTY archive ends in 2020 and the RYM snapshot was collected in 2022.
 Ratings could have changed between snapshots. The association is descriptive.
 
-## 4. Attention and Review Participation
+## 5. Attention and Review Participation
 
 The AOTY top-5,000 file represents 6,277,268 ratings; median ratings per album
 are 482. Its rating-count Gini coefficient is 0.6169 and its top 1% account for
@@ -61,7 +81,7 @@ is 1.652%.
 The AOTY file is selected by high user score and the RYM file by popularity.
 Raw totals cannot be read as platform size or market share.
 
-## 5. Genre Analysis
+## 6. Genre Analysis
 
 Genre strings are split on comma-space delimiters. The chart retains the
 twelve shared genres with the largest minimum album count across both files.
@@ -74,22 +94,24 @@ For each genre it reports:
 Cell colour is standardized within each metric. Printed values remain in
 their original units.
 
-## 6. Text Comparison
+## 7. Text Comparison
 
-The human sample is drawn deterministically from published critic excerpts.
+The critic sample is drawn deterministically from published review excerpts.
 Eligible excerpts contain 120 to 600 characters; one excerpt is sampled per
-publication before the final source-diverse sample is drawn. The AI-style side
-contains 15 fixed, manually written controls.
+publication before the final source-diverse sample is drawn. The comparison
+group contains 15 fixed, manually authored assistant-style controls. These
+controls are not outputs from a documented generative model.
 
 Five-fold stratified out-of-fold predictions give 0.9667 accuracy and 0.9956
-AUC. The sample is small and deliberately contrasted. It supports feature and
-pipeline inspection. It provides no estimate of AI prevalence or production
-detector accuracy.
+AUC. The metrics describe separation between the two constructed groups. The
+sample is small and deliberately contrasted, so it supports feature and
+pipeline inspection only. It provides no estimate of AI prevalence or
+generated-text detector accuracy.
 
 The feature chart uses standardized mean differences. This avoids unstable
 percentage changes when a group mean is close to zero.
 
-## 7. Structural-Change Methods
+## 8. Structural-Change Methods
 
 `CHATGPT_RELEASE_DATE = 2022-11-01` is a prespecified candidate date.
 
@@ -106,17 +128,18 @@ segmentation. SupF, UDmax, robust covariance corrections, and breakpoint
 confidence intervals are not implemented.
 
 The empirical archives contain no repeated rating timestamps. Structural
-tests therefore return `not_testable` in default mode. Demo mode uses an
+tests return `not_testable` in default mode. Demo mode uses an
 explicitly synthetic series with known breaks.
 
-## 8. Scenario Modules
+## 9. Scenario Modules
 
 Trust, policy, four-dimension, and platform-positioning outputs depend on
-selected parameters or ordinal scores. Sensitivity plots show how conclusions
-move when assumptions change. The values do not estimate platform thresholds,
-policy effects, or current AI penetration.
+selected parameters or ordinal scores. Sensitivity plots show how scenario
+outputs move when assumptions change. The values do not estimate platform
+thresholds, policy effects, current AI penetration, or organizational
+readiness.
 
-## 9. Reproducible Commands
+## 10. Reproducible Commands
 
 ```powershell
 # Download archives and verify checksums
@@ -138,7 +161,7 @@ py -3.14 src\run_pipeline.py --demo
 py -3.14 src\run_complete_analysis.py
 ```
 
-## 10. Next Data Requirement
+## 11. Next Data Requirement
 
 The next decisive dataset is a dated panel. It should repeat the same albums
 or users across snapshots, preserve rating and review counts, record platform
