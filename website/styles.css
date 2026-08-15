@@ -38,7 +38,7 @@ body {
     radial-gradient(circle at 10% 8%, rgba(115, 242, 182, 0.12), transparent 25rem),
     linear-gradient(180deg, #f7f4ed 0%, var(--paper) 100%);
   font-family: var(--sans);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.65;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -125,7 +125,7 @@ input {
   display: inline-flex;
   align-items: center;
   gap: 0.8rem;
-  font-size: 0.76rem;
+  font-size: 0.8rem;
   font-weight: 760;
   letter-spacing: 0.09em;
   line-height: 1.2;
@@ -231,7 +231,7 @@ input {
   gap: 0.65rem;
   margin: 0 0 1.2rem;
   color: var(--green);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   line-height: 1.2;
@@ -270,14 +270,14 @@ input {
 
 .hero {
   min-height: calc(100vh - 80px);
-  padding: clamp(4rem, 8vw, 8rem) 0 4rem;
+  padding: clamp(3rem, 5.5vw, 5.75rem) 0 3.25rem;
 }
 
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.28fr) minmax(290px, 0.72fr);
   align-items: end;
-  gap: clamp(3rem, 7vw, 8rem);
+  gap: clamp(2.5rem, 5vw, 5.5rem);
 }
 
 .hero-actions {
@@ -356,7 +356,7 @@ input {
 .hero-aside p {
   margin: 0.9rem 0 0;
   color: rgba(255, 255, 255, 0.68);
-  font-size: 0.86rem;
+  font-size: 0.92rem;
   line-height: 1.55;
 }
 
@@ -388,7 +388,7 @@ input {
 .hero-meta span {
   margin-top: 0.2rem;
   color: rgba(255, 255, 255, 0.56);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -418,7 +418,7 @@ input {
   padding: 1rem 2rem;
   color: var(--ink-soft);
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -436,11 +436,11 @@ input {
 }
 
 .section {
-  padding: clamp(5.5rem, 10vw, 9rem) 0;
+  padding: clamp(4.5rem, 7vw, 6.5rem) 0;
 }
 
 .section-tight {
-  padding: clamp(4rem, 7vw, 6.5rem) 0;
+  padding: clamp(3.25rem, 5vw, 4.75rem) 0;
 }
 
 .section-dark {
@@ -463,8 +463,8 @@ input {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.55fr);
   align-items: end;
-  gap: 3rem;
-  margin-bottom: clamp(2.8rem, 5vw, 4.5rem);
+  gap: 2rem;
+  margin-bottom: clamp(2.25rem, 3.5vw, 3.4rem);
 }
 
 .section-title {
@@ -481,7 +481,7 @@ input {
   max-width: 37rem;
   margin: 0;
   color: var(--ink-soft);
-  font-size: 0.98rem;
+  font-size: 1.02rem;
 }
 
 .principle-grid {
@@ -498,7 +498,7 @@ input {
 }
 
 .principle-main {
-  padding: clamp(2rem, 5vw, 4.5rem);
+  padding: clamp(2rem, 4vw, 3.5rem);
 }
 
 .principle-main blockquote {
@@ -550,7 +550,7 @@ input {
 .principle-link span {
   margin-top: 0.3rem;
   color: var(--ink-soft);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
 }
 
 .stat-grid {
@@ -562,7 +562,7 @@ input {
 }
 
 .stat {
-  min-height: 16rem;
+  min-height: 13rem;
   padding: 1.5rem;
   background: var(--dark);
 }
@@ -570,12 +570,12 @@ input {
 .stat-index {
   color: rgba(255, 255, 255, 0.36);
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
 }
 
 .stat-value {
   display: block;
-  margin-top: 3.4rem;
+  margin-top: 2.25rem;
   color: var(--green-bright);
   font-family: var(--serif);
   font-size: clamp(2.4rem, 4vw, 4.3rem);
@@ -588,7 +588,7 @@ input {
   display: block;
   margin-top: 1rem;
   color: rgba(255, 255, 255, 0.72);
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   line-height: 1.45;
 }
 
@@ -596,19 +596,19 @@ input {
   display: block;
   margin-top: 0.45rem;
   color: rgba(255, 255, 255, 0.4);
-  font-size: 0.67rem;
+  font-size: 0.78rem;
   line-height: 1.45;
 }
 
 .finding-stack {
   display: grid;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .finding-card {
   display: grid;
   grid-template-columns: 0.42fr 0.58fr;
-  min-height: 28rem;
+  min-height: 23rem;
   background: rgba(255, 255, 255, 0.48);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -620,7 +620,7 @@ input {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(1.8rem, 4vw, 3.6rem);
+  padding: clamp(1.7rem, 3.2vw, 2.8rem);
 }
 
 .finding-copy h3 {
@@ -637,7 +637,7 @@ input {
   max-width: 34rem;
   margin: 1.2rem 0 0;
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  font-size: 0.96rem;
 }
 
 .finding-meta {
@@ -654,7 +654,7 @@ input {
   width: fit-content;
   padding: 0.38rem 0.62rem;
   font-family: var(--mono);
-  font-size: 0.63rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   line-height: 1.2;
@@ -700,7 +700,7 @@ input {
   padding: 0.55rem 0.75rem;
   color: rgba(255, 255, 255, 0.78);
   background: rgba(16, 32, 29, 0.88);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   border-radius: 0.35rem;
 }
 
@@ -713,7 +713,7 @@ input {
 
 .boundary-lead,
 .boundary-list {
-  padding: clamp(2rem, 4.5vw, 4rem);
+  padding: clamp(1.8rem, 3.5vw, 3rem);
 }
 
 .boundary-lead {
@@ -732,7 +732,7 @@ input {
 
 .boundary-lead p {
   margin: 1.3rem 0 0;
-  font-size: 0.86rem;
+  font-size: 0.94rem;
 }
 
 .boundary-list {
@@ -749,7 +749,7 @@ input {
 
 .boundary-item:first-child { padding-top: 0; }
 .boundary-item:last-child { padding-bottom: 0; border-bottom: 0; }
-.boundary-item b { color: var(--orange); font-family: var(--mono); font-size: 0.75rem; }
+.boundary-item b { color: var(--orange); font-family: var(--mono); font-size: 0.78rem; }
 .boundary-item strong { display: block; font-size: 0.96rem; }
 .boundary-item p { margin: 0.35rem 0 0; color: var(--ink-soft); font-size: 0.8rem; }
 
@@ -757,8 +757,8 @@ input {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 3rem;
-  padding: clamp(2rem, 5vw, 4.5rem);
+  gap: 2rem;
+  padding: clamp(2rem, 4vw, 3.5rem);
   color: var(--white);
   background: var(--green);
   border-radius: var(--radius);
@@ -779,7 +779,7 @@ input {
   max-width: 42rem;
   margin: 1rem 0 0;
   color: rgba(255, 255, 255, 0.76);
-  font-size: 0.88rem;
+  font-size: 0.96rem;
 }
 
 .cta-panel .button {
@@ -788,14 +788,14 @@ input {
 }
 
 .page-hero {
-  padding: clamp(4.5rem, 9vw, 8rem) 0 clamp(4rem, 7vw, 6rem);
+  padding: clamp(3.5rem, 6vw, 5.5rem) 0 clamp(3.25rem, 5vw, 4.5rem);
 }
 
 .page-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
   align-items: end;
-  gap: clamp(3rem, 8vw, 8rem);
+  gap: clamp(2.5rem, 5vw, 5.5rem);
 }
 
 .page-title {
@@ -811,7 +811,7 @@ input {
 .page-index {
   color: var(--ink-soft);
   font-family: var(--mono);
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   border-top: 1px solid var(--line-strong);
 }
 
@@ -869,7 +869,7 @@ input {
   padding: 0.7rem 0;
   color: var(--ink-soft);
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -882,7 +882,7 @@ input {
 .evidence-row p {
   margin: 0;
   color: var(--ink-soft);
-  font-size: 0.79rem;
+  font-size: 0.86rem;
   line-height: 1.5;
 }
 
@@ -890,7 +890,7 @@ input {
   width: fit-content;
   padding: 0.34rem 0.55rem;
   font-family: var(--mono);
-  font-size: 0.63rem;
+  font-size: 0.78rem;
   font-weight: 700;
   border-radius: 0.35rem;
 }
@@ -907,7 +907,7 @@ input {
 
 .source-card {
   display: flex;
-  min-height: 23rem;
+  min-height: 20rem;
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem;
@@ -931,12 +931,12 @@ input {
 .source-card p {
   margin: 0.7rem 0 0;
   color: var(--ink-soft);
-  font-size: 0.78rem;
+  font-size: 0.85rem;
 }
 
 .source-card dl {
   margin: 1.8rem 0 0;
-  font-size: 0.72rem;
+  font-size: 0.79rem;
 }
 
 .source-card dl div {
@@ -987,7 +987,7 @@ input {
 .flow-step b {
   color: var(--green);
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
 }
 
 .flow-step strong {
@@ -999,7 +999,7 @@ input {
 .flow-step p {
   margin: 0.5rem 0 0;
   color: var(--ink-soft);
-  font-size: 0.74rem;
+  font-size: 0.82rem;
 }
 
 .method-list {
@@ -1023,9 +1023,9 @@ input {
 .method-item summary::-webkit-details-marker { display: none; }
 .method-item summary::after { content: "+"; font-family: var(--mono); font-size: 1.2rem; }
 .method-item[open] summary::after { content: "−"; }
-.method-item summary b { color: var(--green); font-family: var(--mono); font-size: 0.72rem; }
+.method-item summary b { color: var(--green); font-family: var(--mono); font-size: 0.78rem; }
 .method-item summary strong { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; }
-.method-item summary span { color: var(--ink-soft); font-size: 0.78rem; }
+.method-item summary span { color: var(--ink-soft); font-size: 0.84rem; }
 
 .method-body {
   display: grid;
@@ -1037,7 +1037,7 @@ input {
 .method-body p,
 .method-body li {
   color: var(--ink-soft);
-  font-size: 0.8rem;
+  font-size: 0.88rem;
 }
 
 .method-body ul {
@@ -1047,7 +1047,7 @@ input {
 
 .method-body code {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
 }
 
 .repro-grid {
@@ -1102,8 +1102,8 @@ input {
 }
 
 .check-item strong { display: block; font-size: 0.88rem; }
-.check-item p { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.74rem; }
-.check-item small { color: var(--ink-soft); font-family: var(--mono); font-size: 0.62rem; }
+.check-item p { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.82rem; }
+.check-item small { color: var(--ink-soft); font-family: var(--mono); font-size: 0.78rem; }
 
 .code-block {
   position: relative;
@@ -1118,7 +1118,7 @@ input {
 
 .code-block code {
   font-family: var(--mono);
-  font-size: 0.74rem;
+  font-size: 0.82rem;
   line-height: 1.7;
   white-space: pre;
 }
@@ -1134,7 +1134,7 @@ input {
   border-radius: 0.35rem;
   cursor: pointer;
   font-family: var(--mono);
-  font-size: 0.62rem;
+  font-size: 0.78rem;
 }
 
 .note-box {
@@ -1155,7 +1155,7 @@ input {
 .footer-grid {
   display: grid;
   grid-template-columns: 1.1fr 0.55fr 0.55fr;
-  gap: 4rem;
+  gap: 2.75rem;
 }
 
 .footer-title {
@@ -1172,7 +1172,7 @@ input {
 .footer-copy {
   max-width: 34rem;
   margin: 1rem 0 0;
-  font-size: 0.78rem;
+  font-size: 0.86rem;
 }
 
 .footer-nav strong {
@@ -1180,7 +1180,7 @@ input {
   margin-bottom: 0.9rem;
   color: var(--green-bright);
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
@@ -1189,7 +1189,7 @@ input {
   display: block;
   width: fit-content;
   margin: 0.5rem 0;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   text-decoration: none;
 }
 
@@ -1199,10 +1199,10 @@ input {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
-  margin-top: 4rem;
+  margin-top: 3rem;
   padding-top: 1.2rem;
   font-family: var(--mono);
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
