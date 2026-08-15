@@ -1,6 +1,6 @@
 # Analysis Results Digest (auto-generated)
 
-Generated: 2026-08-10 01:46:32
+Generated: 2026-08-16 01:09:08
 
 This file is produced by the pipeline and records reproducible statistics and figure outputs. Interpretation and evidence limitations are documented in `docs/Research_Report.md`.
 
@@ -10,6 +10,7 @@ This file is produced by the pipeline and records reproducible statistics and fi
 - Empirical status: descriptive_archives_available
 - Reason: observed cross-sectional archives are available, but no repeated platform time series can support a structural-break estimate
 - Trust and competition outputs are conditional results from assumption-driven scenarios; they are not platform estimates.
+
 - Research role: observed archives identify the platform structures through which AI-related pressure could operate; causal timing remains unestimated.
 
 ## 1. Observed archive evidence

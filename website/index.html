@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10201d">
   <meta name="description" content="A reproducible study of how generative AI may reshape trust, governance, and knowledge production on crowdsourced music-information platforms.">
+  <link rel="canonical" href="https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="AI × Music Information Ecosystems">
   <meta property="og:description" content="Observed archives, explicit evidence boundaries, and a reproducible design for studying structural change in AOTY and RYM.">
@@ -14,8 +15,29 @@
   <meta name="twitter:title" content="AI × Music Information Ecosystems">
   <meta name="twitter:description" content="A reproducible study of trust, provenance, and structural change in crowdsourced music knowledge.">
   <meta name="twitter:image" content="https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/assets/og.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Generative AI and Structural Change in Crowdsourced Music Information Platforms",
+    "alternativeHeadline": "Evidence, Mechanisms, and Open Questions from AOTY and RYM",
+    "author": {
+      "@type": "Person",
+      "name": "RunJie Sun",
+      "email": "mailto:251820093@smail.nju.edu.cn",
+      "affiliation": {"@type": "Organization", "name": "School of Information Management, Nanjing University"},
+      "sameAs": ["https://github.com/SunRunJie"]
+    },
+    "datePublished": "2026-08-16",
+    "version": "1.0.0",
+    "license": "https://opensource.org/license/mit",
+    "url": "https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/",
+    "image": "https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/assets/og.png",
+    "keywords": ["generative AI", "platform governance", "data provenance", "music information", "computational social science"]
+  }
+  </script>
   <title>AI × Music Information Ecosystems — RunJie Sun</title>
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -32,6 +54,7 @@
         <a href="evidence.html">Evidence</a>
         <a href="methods.html">Methods</a>
         <a href="reproducibility.html">Reproduce</a>
+        <a href="cite.html">Cite</a>
         <a class="repo-link" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">View repository ↗</a>
       </div>
     </nav>
@@ -46,7 +69,7 @@
           <p class="lede">A reproducible study of how generative AI may alter provenance, governance, and knowledge production on crowdsourced music-information platforms—using Rate Your Music and Album of the Year as motivating cases.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="evidence.html">Explore the evidence <span class="arrow" aria-hidden="true">→</span></a>
-            <a class="button button-secondary" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/docs/Research_Report.md">Read the full report <span class="arrow" aria-hidden="true">↗</span></a>
+            <a class="button button-secondary" href="assets/research-brief-v1.0.0.pdf">Download research brief <span class="arrow" aria-hidden="true">↓</span></a>
           </div>
         </div>
         <aside class="hero-aside" aria-label="Research status">
@@ -106,10 +129,10 @@
           <p class="section-copy">Three documented third-party archives support cross-platform, attention, genre, and text analyses. None contains repeated rating timestamps, so they cannot identify a post-2022 break.</p>
         </div>
         <div class="stat-grid reveal">
-          <article class="stat"><span class="stat-index">N · 01</span><strong class="stat-value">32,358</strong><span class="stat-label">AOTY historical album records</span><span class="stat-note">Releases through October 2020</span></article>
-          <article class="stat"><span class="stat-index">N · 02</span><strong class="stat-value">5,000</strong><span class="stat-label">AOTY high-rated snapshot</span><span class="stat-note">Updated 20 October 2024</span></article>
-          <article class="stat"><span class="stat-index">N · 03</span><strong class="stat-value">5,000</strong><span class="stat-label">RYM popular snapshot</span><span class="stat-note">Collected 11 March 2022</span></article>
-          <article class="stat"><span class="stat-index">N · 04</span><strong class="stat-value">116k</strong><span class="stat-label">Published critic excerpts</span><span class="stat-note">Archived human-text source</span></article>
+          <article class="stat"><span class="stat-index">N · 01</span><strong class="stat-value">32,358</strong><span class="stat-label">AOTY historical album records <a class="source-ref" href="sources.html#src-aoty-history" aria-label="Source D01">D01</a></span><span class="stat-note">Releases through October 2020</span></article>
+          <article class="stat"><span class="stat-index">N · 02</span><strong class="stat-value">5,000</strong><span class="stat-label">AOTY high-rated snapshot <a class="source-ref" href="sources.html#src-aoty-snapshot" aria-label="Source D02">D02</a></span><span class="stat-note">Updated 20 October 2024</span></article>
+          <article class="stat"><span class="stat-index">N · 03</span><strong class="stat-value">5,000</strong><span class="stat-label">RYM popular snapshot <a class="source-ref" href="sources.html#src-rym-snapshot" aria-label="Source D03">D03</a></span><span class="stat-note">Collected 11 March 2022</span></article>
+          <article class="stat"><span class="stat-index">N · 04</span><strong class="stat-value">116k</strong><span class="stat-label">Published critic excerpts <a class="source-ref" href="sources.html#src-aoty-history" aria-label="Source D01">D01</a></span><span class="stat-note">Archived human-text source</span></article>
         </div>
       </div>
     </section>
@@ -129,7 +152,7 @@
               <div>
                 <span class="evidence-tag tag-observed">Observed archive</span>
                 <h3>Shared rank order, different score calibration</h3>
-                <p>Across 4,102 exact artist–title–year matches, AOTY and RYM user scores correlate at <strong>r = 0.910</strong>. After rescaling, 87.4% lie within half a point, while the median AOTY score is 0.34 points higher.</p>
+                <p>Across 4,102 exact artist–title–year matches, AOTY and RYM user scores correlate at <strong>r = 0.910</strong>. After rescaling, 87.4% lie within half a point, while the median AOTY score is 0.34 points higher. <a class="source-ref" href="sources.html#claim-score-agreement" aria-label="Evidence trace C01">C01</a></p>
               </div>
               <div class="finding-meta"><span class="evidence-tag tag-observed">Exact matching</span><span class="evidence-tag tag-observed">Descriptive association</span></div>
             </div>
@@ -144,7 +167,7 @@
               <div>
                 <span class="evidence-tag tag-observed">Observed archive</span>
                 <h3>Attention concentrates; written participation stays thin</h3>
-                <p>The AOTY top-5,000 file has a rating-count Gini of <strong>0.617</strong>; the selected RYM file has a Gini of <strong>0.400</strong>. In the RYM snapshot, the median review-to-rating ratio is only <strong>1.65%</strong>.</p>
+                <p>The AOTY top-5,000 file has a rating-count Gini of <strong>0.617</strong>; the selected RYM file has a Gini of <strong>0.400</strong>. In the RYM snapshot, the median review-to-rating ratio is only <strong>1.65%</strong>. <a class="source-ref" href="sources.html#claim-attention" aria-label="Evidence trace C02">C02</a></p>
               </div>
               <div class="finding-meta"><span class="evidence-tag tag-observed">Within-sample concentration</span><span class="evidence-tag tag-observed">Genre strata</span></div>
             </div>
@@ -181,6 +204,13 @@
         <a class="button" href="evidence.html">Open evidence matrix →</a>
       </div>
     </section>
+
+    <section class="section-tight">
+      <div class="container publication-strip reveal">
+        <div><p class="eyebrow">Versioned research object</p><h2>Read, cite, or archive the work.</h2><p>Version 1.0.0 · Published 16 August 2026 · Citation metadata and archive-ready deposit records included.</p></div>
+        <div class="publication-actions"><a class="button button-primary" href="cite.html">Cite this work →</a><a class="button button-secondary" href="sources.html">Open source ledger →</a></div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -190,10 +220,10 @@
           <h2 class="footer-title">AI-Driven Transformation of Music Information Ecosystems</h2>
           <p class="footer-copy">RunJie Sun · School of Information Management, Nanjing University. Research interests: artificial intelligence, information systems, digital platforms, and computational social science.</p>
         </div>
-        <div class="footer-nav"><strong>Research</strong><a href="evidence.html">Evidence</a><a href="methods.html">Methods</a><a href="reproducibility.html">Reproduce</a></div>
-        <div class="footer-nav"><strong>Repository</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/docs/Research_Report.md">Full report ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/tree/main/figures">Figure inventory ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">Source code ↗</a></div>
+        <div class="footer-nav"><strong>Research</strong><a href="evidence.html">Evidence</a><a href="methods.html">Methods</a><a href="sources.html">Sources</a><a href="reproducibility.html">Reproduce</a></div>
+        <div class="footer-nav"><strong>Publication</strong><a href="cite.html">Cite this work</a><a href="assets/research-brief-v1.0.0.pdf">Research brief PDF</a><a href="mailto:251820093@smail.nju.edu.cn">Contact the author</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">Source code ↗</a></div>
       </div>
-      <div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Evidence status: descriptive archives available · causal timing unestimated</span></div>
+      <div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Version 1.0.0 · Evidence status: causal timing unestimated</span></div>
     </div>
   </footer>
 </body>

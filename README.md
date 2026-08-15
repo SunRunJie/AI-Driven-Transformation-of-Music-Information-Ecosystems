@@ -2,6 +2,10 @@
 
 [**Explore the research website →**](https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/)
 
+[**Download the versioned research brief (PDF) →**](https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/assets/research-brief-v1.0.0.pdf) · [**Cite this work →**](https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/cite.html)
+
+**Public release:** v1.0.0 · 16 August 2026
+
 This project studies how generative AI may affect the trust, governance, and
 knowledge-production functions of crowdsourced music-information platforms,
 using RateYourMusic (RYM) and Album of the Year (AOTY) as motivating cases.
@@ -54,10 +58,22 @@ suite such as supF/UDmax tests and confidence intervals.
 
 ## Running the Project
 
+### Reference environment (Python 3.12.10)
+
+For an exact, hash-verified installation:
+
+```powershell
+py -3.12 -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --require-hashes -r requirements-lock.txt
+```
+
+The repository also provides `environment.yml`, a `Dockerfile`, and an automated reproducibility workflow. `requirements.txt` retains lower bounds for development; `requirements-lock.txt` is the release-verification environment.
+
 Empirical mode is the default:
 
 ```powershell
-py -3.14 src\run_pipeline.py
+python src\run_pipeline.py
 ```
 
 The pipeline loads local external archives, writes aggregate audit outputs,
@@ -67,25 +83,25 @@ and generates observed figures. Structural-break hypotheses return
 Re-download the documented archives and verify their checksums with:
 
 ```powershell
-py src\data_collection\download_archived_datasets.py
+python src\data_collection\download_archived_datasets.py
 ```
 
 Attempt live public-page collection explicitly with:
 
 ```powershell
-py -3.14 src\run_pipeline.py --collect
+python src\run_pipeline.py --collect
 ```
 
 Run the explicitly synthetic demonstration with:
 
 ```powershell
-py -3.14 src\run_pipeline.py --demo
+python src\run_pipeline.py --demo
 ```
 
 Generate all scenario and benchmark figures with source notes:
 
 ```powershell
-py -3.14 src\run_complete_analysis.py
+python src\run_complete_analysis.py
 ```
 
 ## Research Interpretation
@@ -110,8 +126,13 @@ See [Research Report](docs/Research_Report.md), [Research Notes](docs/Research_N
 
 ## Author
 
-RunJie Sun
-School of Information Management, Nanjing University
+RunJie Sun<br>
+School of Information Management, Nanjing University<br>
+[Email](mailto:251820093@smail.nju.edu.cn) · [GitHub](https://github.com/SunRunJie)
 
 Research interests: artificial intelligence, information systems, digital
 platforms, and computational social science.
+
+## Citation and Archival Status
+
+Citation metadata are provided in `CITATION.cff`; deposit metadata are provided in `.zenodo.json`. A DOI will be displayed only after a public Zenodo or OSF deposit resolves. Until then, cite version 1.0.0 using the repository URL and the recommended format on the website.

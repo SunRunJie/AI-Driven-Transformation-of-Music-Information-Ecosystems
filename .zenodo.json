@@ -1,0 +1,34 @@
+{
+  "title": "Generative AI and Structural Change in Crowdsourced Music Information Platforms",
+  "description": "Research report, software, provenance records, and publication figures examining how generative AI may alter provenance, governance, and knowledge production on crowdsourced music-information platforms. Observed archives, controlled comparisons, synthetic method checks, and assumption-driven scenarios are explicitly separated.",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Sun, RunJie",
+      "affiliation": "School of Information Management, Nanjing University"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "version": "1.0.0",
+  "publication_date": "2026-08-16",
+  "keywords": [
+    "generative AI",
+    "platform governance",
+    "data provenance",
+    "music information",
+    "computational social science"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems",
+      "relation": "isIdenticalTo",
+      "scheme": "url"
+    }
+  ]
+}

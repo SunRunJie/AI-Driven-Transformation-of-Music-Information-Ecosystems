@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this report, code, or evidence architecture, please cite the version below."
+title: "Generative AI and Structural Change in Crowdsourced Music Information Platforms"
+type: software
+version: 1.0.0
+date-released: 2026-08-16
+authors:
+  - family-names: Sun
+    given-names: RunJie
+    affiliation: "School of Information Management, Nanjing University"
+    email: 251820093@smail.nju.edu.cn
+abstract: >-
+  A reproducible study of how generative AI may alter provenance, governance,
+  and knowledge production on crowdsourced music-information platforms, using
+  Album of the Year and Rate Your Music as motivating cases. The repository
+  separates observed archives, controlled comparisons, synthetic method
+  checks, and assumption-driven scenarios, and states the inferential limits
+  of each evidence class.
+keywords:
+  - generative AI
+  - platform governance
+  - data provenance
+  - music information
+  - computational social science
+repository-code: "https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems"
+url: "https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/"
+license: MIT
+preferred-citation:
+  type: report
+  title: "Generative AI and Structural Change in Crowdsourced Music Information Platforms: Evidence, Mechanisms, and Open Questions from AOTY and RYM"
+  authors:
+    - family-names: Sun
+      given-names: RunJie
+      affiliation: "School of Information Management, Nanjing University"
+  year: 2026
+  month: 8
+  url: "https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems"

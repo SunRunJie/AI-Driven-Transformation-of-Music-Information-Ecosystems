@@ -1,0 +1,11 @@
+.git
+.github
+.venv
+.tmp-lock-env
+.tmp-uv
+tmp
+output
+__pycache__
+*.pyc
+*.pyo
+*.ipynb_checkpoints

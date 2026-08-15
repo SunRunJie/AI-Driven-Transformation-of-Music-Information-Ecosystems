@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10201d">
   <meta name="description" content="An evidence and claim matrix for the AI-driven transformation of crowdsourced music-information platforms study.">
+  <link rel="canonical" href="https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/evidence.html">
   <title>Evidence — AI × Music Information Ecosystems</title>
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -16,7 +17,7 @@
       <a class="brand" href="index.html" aria-label="Research home"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">AI × Music Information Ecosystems</span></a>
       <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
       <div class="nav-links">
-        <a href="index.html">Overview</a><a href="evidence.html" aria-current="page">Evidence</a><a href="methods.html">Methods</a><a href="reproducibility.html">Reproduce</a><a class="repo-link" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">View repository ↗</a>
+        <a href="index.html">Overview</a><a href="evidence.html" aria-current="page">Evidence</a><a href="methods.html">Methods</a><a href="reproducibility.html">Reproduce</a><a href="cite.html">Cite</a><a class="repo-link" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">View repository ↗</a>
       </div>
     </nav>
   </header>
@@ -44,15 +45,15 @@
         <div class="source-grid reveal">
           <article class="source-card" style="color:var(--ink)">
             <div><span class="evidence-tag tag-observed">Observed archive</span><div class="number">32,358</div><h3>AOTY / Metacritic historical ratings</h3><p>Album-level critic and user-score archive covering releases through October 2020.</p></div>
-            <dl><div><dt>Role</dt><dd>Critic–user + matching</dd></div><div><dt>License</dt><dd>GPL-2.0</dd></div><div><dt>Boundary</dt><dd>Historical cross-section</dd></div></dl>
+            <dl><div><dt>Role</dt><dd>Critic–user + matching</dd></div><div><dt>License</dt><dd>GPL-2.0</dd></div><div><dt>Boundary</dt><dd>Historical cross-section</dd></div></dl><a class="card-source-link" href="sources.html#src-aoty-history">Provenance record D01 →</a>
           </article>
           <article class="source-card" style="color:var(--ink)">
             <div><span class="evidence-tag tag-observed">Observed archive</span><div class="number">5,000</div><h3>AOTY highest user-rated snapshot</h3><p>A high-score-selected album snapshot updated on 20 October 2024.</p></div>
-            <dl><div><dt>Role</dt><dd>Attention + genre</dd></div><div><dt>License</dt><dd>CC BY 3.0</dd></div><div><dt>Boundary</dt><dd>Not all AOTY albums</dd></div></dl>
+            <dl><div><dt>Role</dt><dd>Attention + genre</dd></div><div><dt>License</dt><dd>CC BY 3.0</dd></div><div><dt>Boundary</dt><dd>Not all AOTY albums</dd></div></dl><a class="card-source-link" href="sources.html#src-aoty-snapshot">Provenance record D02 →</a>
           </article>
           <article class="source-card" style="color:var(--ink)">
             <div><span class="evidence-tag tag-observed">Observed archive</span><div class="number">5,000</div><h3>RYM most-popular snapshot</h3><p>A popularity-selected album snapshot collected on 11 March 2022.</p></div>
-            <dl><div><dt>Role</dt><dd>Ratings + reviews + genre</dd></div><div><dt>License</dt><dd>Not specified</dd></div><div><dt>Boundary</dt><dd>Raw redistribution restricted</dd></div></dl>
+            <dl><div><dt>Role</dt><dd>Ratings + reviews + genre</dd></div><div><dt>License</dt><dd>Not specified</dd></div><div><dt>Boundary</dt><dd>Raw redistribution restricted</dd></div></dl><a class="card-source-link" href="sources.html#src-rym-snapshot">Provenance record D03 →</a>
           </article>
         </div>
       </div>
@@ -73,12 +74,12 @@
         </div>
         <div class="evidence-matrix reveal">
           <div class="evidence-row header-row" aria-hidden="true"><span>Result</span><span>Evidence class</span><span>Permitted interpretation</span><span>Status</span></div>
-          <article class="evidence-row" data-class="observed"><strong>AOTY–RYM user scores: Pearson r = 0.910 across 4,102 exact matches</strong><span class="evidence-tag tag-observed">Observed</span><p>The selected archives share much of the same album rank order, with different score calibration. Dates and selection rules differ.</p><span class="claim-state claim-supported">Supported</span></article>
-          <article class="evidence-row" data-class="observed"><strong>87.4% of matched albums fall within 0.5 points after rescaling</strong><span class="evidence-tag tag-observed">Observed</span><p>Close score agreement within this exact-matched sample; not evidence of platform-wide or longitudinal stability.</p><span class="claim-state claim-supported">Supported</span></article>
-          <article class="evidence-row" data-class="observed"><strong>AOTY critic–user correlation: r = 0.536 across 32,358 albums</strong><span class="evidence-tag tag-observed">Observed</span><p>Professional and community judgments overlap without reducing to the same signal in the historical archive.</p><span class="claim-state claim-supported">Supported</span></article>
-          <article class="evidence-row" data-class="observed"><strong>Rating attention is concentrated inside both selected snapshots</strong><span class="evidence-tag tag-observed">Observed</span><p>AOTY Gini = 0.617 and RYM Gini = 0.400 describe within-file inequality; files use different selection rules.</p><span class="claim-state claim-bounded">Bounded</span></article>
-          <article class="evidence-row" data-class="observed"><strong>RYM median written-review share: 1.65%</strong><span class="evidence-tag tag-observed">Observed</span><p>Written reviewing is a thin participation layer in the selected popular-album snapshot.</p><span class="claim-state claim-supported">Supported</span></article>
-          <article class="evidence-row" data-class="controlled"><strong>Controlled text study: 96.7% accuracy and AUC 0.996</strong><span class="evidence-tag tag-controlled">Controlled</span><p>Separates 15 published critic excerpts from 15 fixed assistant-style controls. It is not an AI detector evaluation or prevalence estimate.</p><span class="claim-state claim-bounded">Method only</span></article>
+          <article class="evidence-row" data-class="observed"><strong>AOTY–RYM user scores: Pearson r = 0.910 across 4,102 exact matches <a class="source-ref" href="sources.html#claim-score-agreement" aria-label="Evidence trace C01">C01</a></strong><span class="evidence-tag tag-observed">Observed</span><p>The selected archives share much of the same album rank order, with different score calibration. Dates and selection rules differ.</p><span class="claim-state claim-supported">Supported</span></article>
+          <article class="evidence-row" data-class="observed"><strong>87.4% of matched albums fall within 0.5 points after rescaling <a class="source-ref" href="sources.html#claim-score-agreement" aria-label="Evidence trace C01">C01</a></strong><span class="evidence-tag tag-observed">Observed</span><p>Close score agreement within this exact-matched sample; not evidence of platform-wide or longitudinal stability.</p><span class="claim-state claim-supported">Supported</span></article>
+          <article class="evidence-row" data-class="observed"><strong>AOTY critic–user correlation: r = 0.536 across 32,358 albums <a class="source-ref" href="sources.html#claim-critic-user" aria-label="Evidence trace C03">C03</a></strong><span class="evidence-tag tag-observed">Observed</span><p>Professional and community judgments overlap without reducing to the same signal in the historical archive.</p><span class="claim-state claim-supported">Supported</span></article>
+          <article class="evidence-row" data-class="observed"><strong>Rating attention is concentrated inside both selected snapshots <a class="source-ref" href="sources.html#claim-attention" aria-label="Evidence trace C02">C02</a></strong><span class="evidence-tag tag-observed">Observed</span><p>AOTY Gini = 0.617 and RYM Gini = 0.400 describe within-file inequality; files use different selection rules.</p><span class="claim-state claim-bounded">Bounded</span></article>
+          <article class="evidence-row" data-class="observed"><strong>RYM median written-review share: 1.65% <a class="source-ref" href="sources.html#claim-attention" aria-label="Evidence trace C02">C02</a></strong><span class="evidence-tag tag-observed">Observed</span><p>Written reviewing is a thin participation layer in the selected popular-album snapshot.</p><span class="claim-state claim-supported">Supported</span></article>
+          <article class="evidence-row" data-class="controlled"><strong>Controlled text study: 96.7% accuracy and AUC 0.996 <a class="source-ref" href="sources.html#claim-text-study" aria-label="Evidence trace C04">C04</a></strong><span class="evidence-tag tag-controlled">Controlled</span><p>Separates 15 published critic excerpts from 15 fixed assistant-style controls. It is not an AI detector evaluation or prevalence estimate.</p><span class="claim-state claim-bounded">Method only</span></article>
           <article class="evidence-row" data-class="synthetic"><strong>Break procedures recover a known late-2022 change</strong><span class="evidence-tag tag-synthetic">Synthetic</span><p>Demonstrates implementation behavior on a designed benchmark. It says nothing about an actual break on RYM or AOTY.</p><span class="claim-state claim-bounded">Method only</span></article>
           <article class="evidence-row" data-class="scenario"><strong>Trust threshold, interventions, and platform positions</strong><span class="evidence-tag tag-scenario">Scenario</span><p>Outputs follow from stated parameter values and analyst-coded scores; they are conditional mechanisms, not estimates.</p><span class="claim-state claim-open">Conditional</span></article>
           <article class="evidence-row" data-class="observed"><strong>ChatGPT caused a post-2022 structural break on RYM or AOTY</strong><span class="evidence-tag tag-observed">Missing panel</span><p>No empirical repeated series passed the provenance gate. A dated panel and alternative-explanation design are required.</p><span class="claim-state claim-open">Open claim</span></article>
@@ -103,6 +104,6 @@
     </section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">Evidence is a claim about origin before it is a claim about effect.</h2><p class="footer-copy">Source URLs, archive dates, license status, limitations, and SHA-256 checksums are retained in the repository.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="methods.html">Methods</a><a href="reproducibility.html">Reproduce</a></div><div class="footer-nav"><strong>Records</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/data/external/source_manifest.csv">Source manifest ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/figures/README.md">Figure inventory ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Raw RYM redistribution requires a separate license check</span></div></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">Evidence is a claim about origin before it is a claim about effect.</h2><p class="footer-copy">Source URLs, archive dates, license status, limitations, and SHA-256 checksums are retained in the repository.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="methods.html">Methods</a><a href="reproducibility.html">Reproduce</a><a href="cite.html">Cite</a></div><div class="footer-nav"><strong>Records</strong><a href="sources.html">Claim-level source ledger</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/data/external/source_manifest.csv">Source manifest ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/figures/README.md">Figure inventory ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Raw RYM redistribution requires a separate license check</span></div></div></footer>
 </body>
 </html>

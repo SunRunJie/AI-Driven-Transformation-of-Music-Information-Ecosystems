@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10201d">
   <meta name="description" content="Methods for cross-platform matching, structural-break analysis, controlled text comparison, and scenario modelling.">
+  <link rel="canonical" href="https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/methods.html">
   <title>Methods — AI × Music Information Ecosystems</title>
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -15,7 +16,7 @@
     <nav class="container nav-shell" aria-label="Primary navigation">
       <a class="brand" href="index.html" aria-label="Research home"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">AI × Music Information Ecosystems</span></a>
       <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
-      <div class="nav-links"><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="methods.html" aria-current="page">Methods</a><a href="reproducibility.html">Reproduce</a><a class="repo-link" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">View repository ↗</a></div>
+      <div class="nav-links"><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="methods.html" aria-current="page">Methods</a><a href="reproducibility.html">Reproduce</a><a href="cite.html">Cite</a><a class="repo-link" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">View repository ↗</a></div>
     </nav>
   </header>
 
@@ -54,7 +55,7 @@
           </details>
           <details class="method-item">
             <summary><b>M3</b><strong>Structural-change diagnostics</strong><span>Empirical design · synthetic method check</span></summary>
-            <div class="method-body"><div><span class="evidence-tag tag-synthetic">Synthetic benchmark</span></div><div><p>November 2022 is a prespecified candidate date. The implementation includes Welch pre/post comparison, a regression Chow test, detrended CUSUM with permutation-bootstrap inference, and dynamic-programming least-squares segmentation with BIC selection.</p><ul><li>The multiple-break method implements the least-squares segmentation core associated with Bai–Perron.</li><li>It does not implement supF/UDmax tests, robust covariance corrections, or breakpoint confidence intervals.</li><li>Default empirical mode returns <code>not_testable</code> because the archives contain no repeated rating timestamps.</li></ul></div></div>
+            <div class="method-body"><div><span class="evidence-tag tag-synthetic">Synthetic benchmark</span></div><div><p>November 2022 is a prespecified candidate date. The implementation includes Welch pre/post comparison, a regression Chow test, detrended CUSUM with permutation-bootstrap inference, and dynamic-programming least-squares segmentation with BIC selection. <a class="source-ref" href="sources.html#references" aria-label="Method references">R03–R04</a></p><ul><li>The multiple-break method implements the least-squares segmentation core associated with Bai–Perron.</li><li>It does not implement supF/UDmax tests, robust covariance corrections, or breakpoint confidence intervals.</li><li>Default empirical mode returns <code>not_testable</code> because the archives contain no repeated rating timestamps.</li></ul></div></div>
           </details>
           <details class="method-item">
             <summary><b>M4</b><strong>Controlled text comparison</strong><span>Hybrid corpus · pipeline inspection</span></summary>
@@ -83,6 +84,6 @@
     <section class="section"><div class="container cta-panel reveal"><div><h2>Reproduce the current baseline.</h2><p>Use the empirical pipeline to rebuild archive matches, aggregate outputs, provenance audits, and publication figures.</p></div><a class="button" href="reproducibility.html">Open reproduction guide →</a></div></section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">A method should fail visibly when the evidence is absent.</h2><p class="footer-copy">The code keeps empirical analysis, synthetic benchmarks, and assumption-driven scenarios in separate modes.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="reproducibility.html">Reproduce</a></div><div class="footer-nav"><strong>Code</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/tree/main/src/analysis">Analysis modules ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/src/data_provenance.py">Provenance gate ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Global random seed: 42</span></div></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">A method should fail visibly when the evidence is absent.</h2><p class="footer-copy">The code keeps empirical analysis, synthetic benchmarks, and assumption-driven scenarios in separate modes.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="sources.html">Sources</a><a href="reproducibility.html">Reproduce</a></div><div class="footer-nav"><strong>Code</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/tree/main/src/analysis">Analysis modules ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/src/data_provenance.py">Provenance gate ↗</a><a href="cite.html">Cite this work</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Global random seed: 42</span></div></div></footer>
 </body>
 </html>

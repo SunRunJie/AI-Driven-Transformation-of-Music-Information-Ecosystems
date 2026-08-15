@@ -329,7 +329,7 @@ REPORT_META = {
     "subtitle": "A Dual-Case Study of AOTY (Album of The Year) and RYM (RateYourMusic)",
     "framework": "Institutional analysis with reproducible data methods",
     "core_theory": "Signaling Theory - Lemons Market - Institutional Change - Second-Order Observation - Trust Paradox",
-    "version": "v2.0",
+    "version": "1.0.0",
     "generated": "",  # Filled in programmatically
 }
 
