@@ -4,6 +4,10 @@ All notable public research releases are documented here. Version numbers identi
 
 ## [1.0.0] - 2026-08-16
 
+### Archived
+
+- Zenodo record: [10.5281/zenodo.21955380](https://doi.org/10.5281/zenodo.21955380).
+
 ### Added
 
 - A public research website with separate evidence, methods, reproducibility, source, and citation views.

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import re
 import sys
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -21,6 +20,8 @@ PUBLIC_PAGES = {
     "sources.html",
     "cite.html",
 }
+VERIFIED_DOI = "10.5281/zenodo.21955380"
+DOI_URL = f"https://doi.org/{VERIFIED_DOI}"
 
 
 class PageParser(HTMLParser):
@@ -61,8 +62,8 @@ def main() -> int:
             errors.append(f"{name}: expected one h1, found {page.h1_count}")
         if len(page.canonicals) != 1:
             errors.append(f"{name}: expected one canonical URL")
-        if page.stylesheets != ["styles.css?v=5"]:
-            errors.append(f"{name}: stylesheet cache version is not v5")
+        if page.stylesheets != ["styles.css?v=6"]:
+            errors.append(f"{name}: stylesheet cache version is not v6")
 
         for href in page.hrefs:
             parts = urlsplit(href)
@@ -107,8 +108,15 @@ def main() -> int:
             errors.append(f".zenodo.json: missing {field}")
     if zenodo.get("version") != version:
         errors.append(".zenodo.json: version does not match VERSION")
-    if "doi" in zenodo or re.search(r"10\.\d{4,9}/", citation):
-        errors.append("metadata contains an unverified DOI")
+    if f"doi: {VERIFIED_DOI}" not in citation or DOI_URL not in citation:
+        errors.append("CITATION.cff: verified Zenodo DOI is missing")
+    if "doi" in zenodo:
+        errors.append(".zenodo.json: do not declare the deposit's own minted DOI as a pre-existing DOI")
+
+    for relative_path in ("README.md", "website/index.html", "website/cite.html"):
+        text = (ROOT / relative_path).read_text(encoding="utf-8")
+        if DOI_URL not in text:
+            errors.append(f"{relative_path}: verified Zenodo DOI URL is missing")
 
     pdf = WEBSITE / "assets" / "research-brief-v1.0.0.pdf"
     if not pdf.exists() or pdf.stat().st_size < 100_000:

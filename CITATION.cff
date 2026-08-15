@@ -4,6 +4,7 @@ title: "Generative AI and Structural Change in Crowdsourced Music Information Pl
 type: software
 version: 1.0.0
 date-released: 2026-08-16
+doi: 10.5281/zenodo.21955380
 authors:
   - family-names: Sun
     given-names: RunJie
@@ -34,4 +35,5 @@ preferred-citation:
       affiliation: "School of Information Management, Nanjing University"
   year: 2026
   month: 8
-  url: "https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems"
+  doi: 10.5281/zenodo.21955380
+  url: "https://doi.org/10.5281/zenodo.21955380"

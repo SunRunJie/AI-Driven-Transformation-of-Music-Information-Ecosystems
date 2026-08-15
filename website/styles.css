@@ -280,6 +280,21 @@ input {
   gap: clamp(2.5rem, 5vw, 5.5rem);
 }
 
+.hero-author {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  align-items: center;
+  margin: 1rem 0 0;
+  color: var(--ink-soft);
+  font-size: clamp(0.92rem, 1.1vw, 1.02rem);
+  line-height: 1.45;
+}
+
+.hero-author strong { color: var(--ink); font-weight: 760; }
+.hero-author a { color: var(--green); font-weight: 720; }
+.hero-author a:hover { text-decoration: underline; }
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;

@@ -17,9 +17,11 @@ Create a GitHub release from tag `v1.0.0`. Use the title `Music Information Ecos
 
 1. Sign in to Zenodo using the GitHub account that owns the repository.
 2. Enable the repository in Zenodo's GitHub integration before publishing the GitHub release.
-3. Publish the `v1.0.0` GitHub release. Zenodo will create a version DOI and a concept DOI.
+3. Publish the `v1.0.0` GitHub release. Zenodo will assign a persistent identifier to the archived record.
 4. Verify the deposit metadata against `.zenodo.json` before publishing the Zenodo record.
-5. Add the assigned DOI to `CITATION.cff`, `.zenodo.json`, `website/cite.html`, the README, and the recommended citation.
+5. Add the assigned DOI to `CITATION.cff`, `website/cite.html`, the README, and the recommended citation.
+
+Version 1.0.0 is archived at `https://doi.org/10.5281/zenodo.21955380`. The DOI is intentionally not placed in `.zenodo.json` as a pre-existing identifier: that file remains input metadata for Zenodo release ingestion, while the DOI minted by Zenodo is recorded on the public citation surfaces.
 
 Never display a DOI until the corresponding deposit resolves publicly.
 

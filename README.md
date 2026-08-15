@@ -4,6 +4,8 @@
 
 [**Download the versioned research brief (PDF) →**](https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/assets/research-brief-v1.0.0.pdf) · [**Cite this work →**](https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/cite.html)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21955380.svg)](https://doi.org/10.5281/zenodo.21955380)
+
 **Public release:** v1.0.0 · 16 August 2026
 
 This project studies how generative AI may affect the trust, governance, and
@@ -135,4 +137,4 @@ platforms, and computational social science.
 
 ## Citation and Archival Status
 
-Citation metadata are provided in `CITATION.cff`; deposit metadata are provided in `.zenodo.json`. A DOI will be displayed only after a public Zenodo or OSF deposit resolves. Until then, cite version 1.0.0 using the repository URL and the recommended format on the website.
+Version 1.0.0 is permanently archived by Zenodo as [DOI: 10.5281/zenodo.21955380](https://doi.org/10.5281/zenodo.21955380). Citation metadata are provided in `CITATION.cff`; release-deposit metadata are retained in `.zenodo.json`. Cite the archived version using the DOI and the recommended format on the website.
