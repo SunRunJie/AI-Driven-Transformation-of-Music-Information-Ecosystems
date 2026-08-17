@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10201d">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <meta name="description" content="A practical reproduction guide for the music information ecosystems research pipeline.">
   <link rel="canonical" href="https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/reproducibility.html">
   <title>Reproduce — AI × Music Information Ecosystems</title>
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -23,7 +24,7 @@
   <main id="main">
     <section class="page-hero">
       <div class="container page-hero-grid">
-        <div><p class="eyebrow">Open research infrastructure</p><h1 class="page-title">From repository to result, without hidden steps.</h1><p class="lede">The pipeline documents source identity, rejects synthetic observations in empirical mode, fixes random operations, and rebuilds aggregate evidence and figures from local archives.</p></div>
+        <div><p class="eyebrow">Open research infrastructure</p><h1 class="page-title">Reproduction workflow and verification records</h1><p class="lede">The pipeline documents source identity, rejects synthetic observations in empirical mode, fixes random operations, and rebuilds aggregate evidence and figures from local archives.</p></div>
         <div class="page-index" aria-label="Page contents"><div><strong>01</strong><span>Readiness audit</span></div><div><strong>02</strong><span>Run sequence</span></div><div><strong>03</strong><span>Known constraints</span></div></div>
       </div>
     </section>
@@ -75,28 +76,28 @@ python -m pip install --require-hashes -r requirements-lock.txt</code></div>
           <h3>4. Regenerate the complete figure set</h3>
           <div class="code-block"><button class="copy-button" type="button">Copy</button><code>python src\run_complete_analysis.py</code></div>
 
-          <h3>5. Use synthetic mode only as a declared method check</h3>
+          <h3>5. Use synthetic mode as a declared method check</h3>
           <div class="code-block"><button class="copy-button" type="button">Copy</button><code>python src\run_pipeline.py --demo</code></div>
-          <div class="note-box"><strong>Do not mix demo output with empirical evidence.</strong><p>Demo mode writes a separate synthetic time series and exists to exercise structural-break procedures on a known input.</p></div>
+          <div class="note-box"><strong>Demo output is stored separately.</strong><p>Demo mode writes a synthetic time series for checking structural-break procedures on a known input. It is excluded from empirical evidence.</p></div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="container repro-grid">
-        <div class="sticky-note reveal"><p class="eyebrow">03 · Known constraints</p><h2>Reproduction is not the same as identification</h2><p>Rebuilding the reported numbers does not widen their inferential scope. The same evidence boundaries apply after successful reproduction.</p></div>
+        <div class="sticky-note reveal"><p class="eyebrow">03 · Known constraints</p><h2>Reproducibility and inferential scope</h2><p>Successful reproduction confirms the reported computational path. The original evidence boundaries continue to define the permitted interpretation.</p></div>
         <div class="boundary-list reveal">
           <div class="boundary-item"><b>C1</b><div><strong>Live collection is currently blocked</strong><p>RYM returned HTTP 403 and AOTY returned a Cloudflare verification page in August 2026. Failures are logged; generated rows never replace unavailable observations.</p></div></div>
           <div class="boundary-item"><b>C2</b><div><strong>The RYM snapshot has no stated license</strong><p>Aggregate findings can be inspected, but raw redistribution needs a separate terms and license check.</p></div></div>
           <div class="boundary-item"><b>C3</b><div><strong>Operating-system differences can still affect rendering</strong><p>Package artifacts are hash-locked and a Linux container is supplied. Font availability and low-level numerical libraries can still cause small cross-platform differences in figure rendering.</p></div></div>
-          <div class="boundary-item"><b>C4</b><div><strong>The causal dataset does not yet exist here</strong><p>A dated repeated panel remains necessary to test post-2022 structural change and competing explanations.</p></div></div>
+          <div class="boundary-item"><b>C4</b><div><strong>The present archives lack a causal panel</strong><p>A dated repeated panel remains necessary to test post-2022 structural change and competing explanations.</p></div></div>
         </div>
       </div>
     </section>
 
-    <section class="section-tight"><div class="container cta-panel reveal"><div><h2>Audit the source, not only the summary.</h2><p>The complete report, provenance manifest, figure inventory, and analysis modules are available in the repository.</p></div><a class="button" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">Browse repository ↗</a></div></section>
+    <section class="section-tight"><div class="container cta-panel reveal"><div><h2>Review the complete research record</h2><p>The report, provenance manifest, figure inventory, and analysis modules are available in the repository.</p></div><a class="button" href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems">Browse repository ↗</a></div></section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">A scientific result should not depend on the original author’s memory.</h2><p class="footer-copy">This repository makes data origin, execution order, exact dependencies, generated outputs, and interpretive limits inspectable.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="methods.html">Methods</a><a href="cite.html">Cite</a></div><div class="footer-nav"><strong>Reproduce</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/requirements-lock.txt">Hash-locked environment ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/Dockerfile">Dockerfile ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/data/README.md">Data guide ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Reference environment: Python 3.12.10 · Default mode: empirical</span></div></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">Versioned reproduction record</h2><p class="footer-copy">This repository makes data origin, execution order, exact dependencies, generated outputs, and interpretive limits inspectable.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="methods.html">Methods</a><a href="cite.html">Cite</a></div><div class="footer-nav"><strong>Reproduce</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/requirements-lock.txt">Hash-locked environment ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/Dockerfile">Dockerfile ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/data/README.md">Data guide ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Reference environment: Python 3.12.10 · Default mode: empirical</span></div></div></footer>
 </body>
 </html>

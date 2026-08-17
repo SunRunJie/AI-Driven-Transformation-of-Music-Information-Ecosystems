@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10201d">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <meta name="description" content="A reproducible study of how generative AI may reshape trust, governance, and knowledge production on crowdsourced music-information platforms.">
   <link rel="canonical" href="https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/">
   <meta property="og:type" content="website">
@@ -38,7 +39,7 @@
   }
   </script>
   <title>AI × Music Information Ecosystems — RunJie Sun</title>
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -67,16 +68,17 @@
         <div>
           <p class="eyebrow">Computational social science · 2026</p>
           <p class="hero-author"><strong>RunJie Sun</strong><span>School of Information Management, Nanjing University</span><a href="mailto:251820093@smail.nju.edu.cn">Academic email ↗</a></p>
-          <h1 class="display-title">When text becomes cheap, <em>what sustains trust?</em></h1>
-          <p class="lede">A reproducible study of how generative AI may alter provenance, governance, and knowledge production on crowdsourced music-information platforms—using Rate Your Music and Album of the Year as motivating cases.</p>
+          <h1 class="display-title">Trust and provenance in <em>crowdsourced music knowledge</em></h1>
+          <p class="lede">This reproducible study examines Rate Your Music and Album of the Year as institutions of crowdsourced music knowledge. It maps archive coverage, cross-platform rating agreement, participation structure, and the data needed to test change after 2022.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="evidence.html">Explore the evidence <span class="arrow" aria-hidden="true">→</span></a>
             <a class="button button-secondary" href="assets/research-brief-v1.0.0.pdf">Download research brief <span class="arrow" aria-hidden="true">↓</span></a>
           </div>
         </div>
         <aside class="hero-aside" aria-label="Research status">
-          <h2>Evidence before inference.</h2>
-          <p>The repository separates observed archives, controlled benchmarks, synthetic method checks, and assumption-driven scenarios. Structural change after 2022 remains an open empirical claim.</p>
+          <p class="panel-kicker">Archive study · AOTY ↔ RYM</p>
+          <h2>Current evidence status</h2>
+          <p>The study uses observed archives, a controlled text comparison, synthetic method checks, and parameterized scenarios. The archives support descriptive claims; estimating structural change after 2022 requires repeated observations.</p>
           <div class="hero-meta">
             <div><strong>4 classes</strong><span>Evidence system</span></div>
             <div><strong>12 figures</strong><span>Labeled in-image</span></div>
@@ -87,13 +89,21 @@
       </div>
     </section>
 
-    <div class="ticker" aria-hidden="true">
+    <div class="ticker" aria-label="Study scope">
       <div class="ticker-track">
         <div class="ticker-group">
-          <span class="ticker-item">Observed archives</span><span class="ticker-item">Provenance gates</span><span class="ticker-item">Cross-platform matching</span><span class="ticker-item">Structural-break design</span><span class="ticker-item">Trust scenarios</span>
+          <span class="ticker-item"><b>Cases</b> Rate Your Music · Album of the Year</span>
+          <span class="ticker-item"><b>Empirical units</b> 42,358 album rows</span>
+          <span class="ticker-item"><b>Archive dates</b> 2020 · 2022 · 2024</span>
+          <span class="ticker-item"><b>Evidence design</b> Observed · controlled · synthetic · scenario</span>
+          <span class="ticker-item"><b>Primary open test</b> Post-2022 structural change</span>
         </div>
-        <div class="ticker-group">
-          <span class="ticker-item">Observed archives</span><span class="ticker-item">Provenance gates</span><span class="ticker-item">Cross-platform matching</span><span class="ticker-item">Structural-break design</span><span class="ticker-item">Trust scenarios</span>
+        <div class="ticker-group" aria-hidden="true">
+          <span class="ticker-item"><b>Cases</b> Rate Your Music · Album of the Year</span>
+          <span class="ticker-item"><b>Empirical units</b> 42,358 album rows</span>
+          <span class="ticker-item"><b>Archive dates</b> 2020 · 2022 · 2024</span>
+          <span class="ticker-item"><b>Evidence design</b> Observed · controlled · synthetic · scenario</span>
+          <span class="ticker-item"><b>Primary open test</b> Post-2022 structural change</span>
         </div>
       </div>
     </div>
@@ -102,20 +112,20 @@
       <div class="container">
         <div class="section-header reveal">
           <div>
-            <p class="eyebrow">01 · Structural proposition</p>
-            <h2 class="section-title">A shift in the architecture of scarcity</h2>
+            <p class="eyebrow">01 · Research framework</p>
+            <h2 class="section-title">Content supply, provenance, and platform governance</h2>
           </div>
-          <p class="section-copy">Generative systems reduce the effort required to produce coherent review-like prose. The scarce resources move upstream: toward credible origin, accountable histories, and institutional knowledge of how contributions are weighted.</p>
+          <p class="section-copy">The study considers how lower production costs for review-like prose may change the value of credible origin, accountable contributor histories, and transparent rules for weighting contributions.</p>
         </div>
         <div class="principle-grid reveal">
           <div class="principle-main">
-            <blockquote>Textual plausibility is no longer a sufficient signal of <em>effort, experience, or origin.</em></blockquote>
+            <blockquote>Lower production costs can weaken effort-based signals and increase the value of <em>origin, history, and rules.</em></blockquote>
           </div>
           <div class="principle-side">
-            <div class="principle-link"><b>01</b><div><strong>Technology</strong><span>Lower production cost changes the supply of review-like text.</span></div></div>
-            <div class="principle-link"><b>02</b><div><strong>Institution</strong><span>Contribution rules decide how uncertainty enters rankings.</span></div></div>
-            <div class="principle-link"><b>03</b><div><strong>Organization</strong><span>Detection, review, disclosure, and appeals address different risks.</span></div></div>
-            <div class="principle-link"><b>04</b><div><strong>Information value</strong><span>Scale matters alongside provenance, taxonomy, and moderation history.</span></div></div>
+            <div class="principle-link"><b>01</b><div><strong>Content production</strong><span>Lower production cost changes the supply of review-like text.</span></div></div>
+            <div class="principle-link"><b>02</b><div><strong>Contribution rules</strong><span>Weighting and eligibility rules shape ranking inputs.</span></div></div>
+            <div class="principle-link"><b>03</b><div><strong>Governance operations</strong><span>Review, disclosure, moderation, and appeals address different risks.</span></div></div>
+            <div class="principle-link"><b>04</b><div><strong>Information assets</strong><span>Provenance, taxonomy, and moderation history complement scale.</span></div></div>
           </div>
         </div>
       </div>
@@ -126,9 +136,9 @@
         <div class="section-header reveal">
           <div>
             <p class="eyebrow">02 · Evidence base</p>
-            <h2 class="section-title">A descriptive baseline with explicit limits</h2>
+            <h2 class="section-title">Archive coverage and analytical scope</h2>
           </div>
-          <p class="section-copy">Three documented third-party archives support cross-platform, attention, genre, and text analyses. None contains repeated rating timestamps, so they cannot identify a post-2022 break.</p>
+          <p class="section-copy">Three documented third-party archives support cross-platform, attention, genre, and text analyses. Their structures lack repeated rating timestamps, leaving a post-2022 break unidentified.</p>
         </div>
         <div class="stat-grid reveal">
           <article class="stat"><span class="stat-index">N · 01</span><strong class="stat-value">32,358</strong><span class="stat-label">AOTY historical album records <a class="source-ref" href="sources.html#src-aoty-history" aria-label="Source D01">D01</a></span><span class="stat-note">Releases through October 2020</span></article>
@@ -144,7 +154,7 @@
         <div class="section-header reveal">
           <div>
             <p class="eyebrow">03 · Selected findings</p>
-            <h2 class="section-title">What the archives can show</h2>
+            <h2 class="section-title">Cross-platform agreement and participation structure</h2>
           </div>
           <p class="section-copy">These are descriptive findings inside selected cross-sections. Each visual carries its evidence class and a source note directly on the figure.</p>
         </div>
@@ -160,7 +170,7 @@
             </div>
             <figure class="finding-visual">
               <img src="assets/figures/rating_distribution_evolution.png" alt="Hexbin plot and difference histogram showing AOTY and RYM score agreement across 4,102 matched albums">
-              <figcaption>Selected archives use different dates and sampling rules; association is not evidence of stability over time.</figcaption>
+              <figcaption>Selected archives use different dates and sampling rules. Stability over time remains untested.</figcaption>
             </figure>
           </article>
 
@@ -169,13 +179,13 @@
               <div>
                 <span class="evidence-tag tag-observed">Observed archive</span>
                 <h3>Attention concentrates; written participation stays thin</h3>
-                <p>The AOTY top-5,000 file has a rating-count Gini of <strong>0.617</strong>; the selected RYM file has a Gini of <strong>0.400</strong>. In the RYM snapshot, the median review-to-rating ratio is only <strong>1.65%</strong>. <a class="source-ref" href="sources.html#claim-attention" aria-label="Evidence trace C02">C02</a></p>
+                <p>The AOTY top-5,000 file has a rating-count Gini of <strong>0.617</strong>; the selected RYM file has a Gini of <strong>0.400</strong>. In the RYM snapshot, the median review-to-rating ratio is <strong>1.65%</strong>. <a class="source-ref" href="sources.html#claim-attention" aria-label="Evidence trace C02">C02</a></p>
               </div>
               <div class="finding-meta"><span class="evidence-tag tag-observed">Within-sample concentration</span><span class="evidence-tag tag-observed">Genre strata</span></div>
             </div>
             <figure class="finding-visual">
               <img src="assets/figures/genre_impact_heatmap.png" alt="Heatmap comparing score, rating attention, review density and genre coverage across AOTY and RYM snapshots">
-              <figcaption>The snapshots use different selection rules; totals are not platform-size estimates.</figcaption>
+              <figcaption>The snapshots use different selection rules. Totals describe the selected files.</figcaption>
             </figure>
           </article>
         </div>
@@ -185,14 +195,14 @@
     <section class="section-tight">
       <div class="container boundary reveal">
         <div class="boundary-lead">
-          <h2>The most important result is still open.</h2>
-          <p>Scientific restraint is part of the contribution.</p>
+          <h2>Current limits and next dataset</h2>
+          <p>These boundaries define the scope of the present study.</p>
         </div>
         <div class="boundary-list">
-          <div class="boundary-item"><b>01</b><div><strong>No causal claim about ChatGPT and platform change</strong><p>The archives are cross-sectional and contain no repeated submission timestamps.</p></div></div>
-          <div class="boundary-item"><b>02</b><div><strong>No estimate of AI-review prevalence</strong><p>The text study uses published critic excerpts and fixed assistant-style controls, not a representative platform sample.</p></div></div>
-          <div class="boundary-item"><b>03</b><div><strong>No calibrated trust-collapse forecast</strong><p>Trust, policy, and competitive-position outputs are conditional scenarios determined by stated assumptions.</p></div></div>
-          <div class="boundary-item"><b>04</b><div><strong>A dated panel is the decisive next dataset</strong><p>Repeated albums or users, rule-change records, and documented exclusions would make a structural-break test meaningful.</p></div></div>
+          <div class="boundary-item"><b>01</b><div><strong>Causal timing</strong><p>The cross-sectional archives cannot estimate the effect of generative systems on platform outcomes.</p></div></div>
+          <div class="boundary-item"><b>02</b><div><strong>Content prevalence</strong><p>The controlled text comparison uses a small constructed sample and provides no platform-level prevalence estimate.</p></div></div>
+          <div class="boundary-item"><b>03</b><div><strong>Trust scenarios</strong><p>Trust, policy, and competitive-position outputs depend on declared parameters and analyst-coded inputs.</p></div></div>
+          <div class="boundary-item"><b>04</b><div><strong>Longitudinal extension</strong><p>A dated panel of repeated albums or users, rule changes, and documented exclusions would support a structural-change test.</p></div></div>
         </div>
       </div>
     </section>
@@ -200,8 +210,8 @@
     <section class="section">
       <div class="container cta-panel reveal">
         <div>
-          <h2>Inspect every claim at its proper evidence level.</h2>
-          <p>The evidence matrix connects each reported result to its source class, permitted interpretation, and remaining uncertainty.</p>
+          <h2>Review the claim matrix</h2>
+          <p>Each reported result is linked to its source class, permitted interpretation, and remaining uncertainty.</p>
         </div>
         <a class="button" href="evidence.html">Open evidence matrix →</a>
       </div>

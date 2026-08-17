@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10201d">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <meta name="description" content="Methods for cross-platform matching, structural-break analysis, controlled text comparison, and scenario modelling.">
   <link rel="canonical" href="https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/methods.html">
   <title>Methods — AI × Music Information Ecosystems</title>
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -23,7 +24,7 @@
   <main id="main">
     <section class="page-hero">
       <div class="container page-hero-grid">
-        <div><p class="eyebrow">Analytical design</p><h1 class="page-title">Methods built to refuse the wrong data.</h1><p class="lede">The default pipeline is empirical. Provenance gates exclude synthetic and unclassified rows; longitudinal tests return <code>not_testable</code> when no repeated observed series exists.</p></div>
+        <div><p class="eyebrow">Analytical design</p><h1 class="page-title">Methods matched to the available evidence</h1><p class="lede">The default pipeline is empirical. Provenance gates exclude synthetic and unclassified rows; longitudinal tests return <code>not_testable</code> when no repeated observed series exists.</p></div>
         <div class="page-index" aria-label="Page contents"><div><strong>01</strong><span>Research pipeline</span></div><div><strong>02</strong><span>Analytical modules</span></div><div><strong>03</strong><span>Next design</span></div></div>
       </div>
     </section>
@@ -43,7 +44,7 @@
 
     <section class="section">
       <div class="container">
-        <div class="section-header reveal"><div><p class="eyebrow">02 · Analytical modules</p><h2 class="section-title">Four forms of analysis, four scopes of inference</h2></div><p class="section-copy">Open each module to inspect its input, computation, output, and non-claim.</p></div>
+        <div class="section-header reveal"><div><p class="eyebrow">02 · Analytical modules</p><h2 class="section-title">Analytical modules and inferential scope</h2></div><p class="section-copy">Open each module to inspect its input, computation, output, and stated boundary.</p></div>
         <div class="method-list reveal">
           <details class="method-item" open>
             <summary><b>M1</b><strong>Cross-platform entity matching</strong><span>Observed archive · descriptive</span></summary>
@@ -51,7 +52,7 @@
           </details>
           <details class="method-item">
             <summary><b>M2</b><strong>Attention and genre structure</strong><span>Observed archive · within-sample</span></summary>
-            <div class="method-body"><div><span class="evidence-tag tag-observed">Observed</span></div><div><p>Rating-count Gini coefficients and top-share measures characterize concentration within each selected file. Genre strings are split and the twelve shared genres with strongest minimum coverage are retained.</p><ul><li>Cell values remain in original units.</li><li>Heatmap colour is standardized within each metric.</li><li>High-rating-selected AOTY and popularity-selected RYM files are not direct market-size comparators.</li></ul></div></div>
+            <div class="method-body"><div><span class="evidence-tag tag-observed">Observed</span></div><div><p>Rating-count Gini coefficients and top-share measures characterize concentration within each selected file. Genre strings are split and the twelve shared genres with strongest minimum coverage are retained.</p><ul><li>Cell values remain in original units.</li><li>Heatmap colour is standardized within each metric.</li><li>Different selection rules limit cross-platform comparison to within-file structure.</li></ul></div></div>
           </details>
           <details class="method-item">
             <summary><b>M3</b><strong>Structural-change diagnostics</strong><span>Empirical design · synthetic method check</span></summary>
@@ -59,11 +60,11 @@
           </details>
           <details class="method-item">
             <summary><b>M4</b><strong>Controlled text comparison</strong><span>Hybrid corpus · pipeline inspection</span></summary>
-            <div class="method-body"><div><span class="evidence-tag tag-controlled">Controlled</span></div><div><p>Fifteen source-diverse published critic excerpts are compared with fifteen fixed, manually authored assistant-style controls. Five-fold stratified out-of-fold TF–IDF classification avoids train/test leakage.</p><ul><li>The controls are not outputs from a documented generative model.</li><li>There is no platform-user holdout or external validation.</li><li>Accuracy and AUC describe separation between two deliberately contrasted groups—not AI authorship detection.</li></ul></div></div>
+            <div class="method-body"><div><span class="evidence-tag tag-controlled">Controlled</span></div><div><p>Fifteen source-diverse published critic excerpts are compared with fifteen fixed, manually authored control texts. Five-fold stratified out-of-fold TF–IDF classification avoids train/test leakage.</p><ul><li>The controls have no documented generative-model source.</li><li>There is no platform-user holdout or external validation.</li><li>Accuracy and AUC describe separation between two deliberately contrasted groups. AI authorship detection remains outside the exercise.</li></ul></div></div>
           </details>
           <details class="method-item">
             <summary><b>M5</b><strong>Trust, policy, and platform scenarios</strong><span>Assumption-driven · conditional</span></summary>
-            <div class="method-body"><div><span class="evidence-tag tag-scenario">Scenario</span></div><div><p>Trust curves, user-group differences, intervention comparisons, and platform positions are deterministic outputs under selected parameters or analyst-coded ordinal scores.</p><ul><li>Sensitivity figures show how outputs move as assumptions change.</li><li>Values do not estimate current AI penetration, user trust, policy effects, or organizational readiness.</li><li>The modules clarify mechanisms and measurement targets for later empirical work.</li></ul></div></div>
+            <div class="method-body"><div><span class="evidence-tag tag-scenario">Scenario</span></div><div><p>Trust curves, user-group differences, intervention comparisons, and platform positions are deterministic outputs under selected parameters or analyst-coded ordinal scores.</p><ul><li>Sensitivity figures show how outputs move as assumptions change.</li><li>Current AI penetration, user trust, policy effects, and organizational readiness remain unestimated.</li><li>The modules clarify mechanisms and measurement targets for later empirical work.</li></ul></div></div>
           </details>
         </div>
       </div>
@@ -71,7 +72,7 @@
 
     <section class="section-tight">
       <div class="container boundary reveal">
-        <div class="boundary-lead"><h2>The decisive design is longitudinal.</h2><p>A causal timing claim needs repeated, provenance-rich observations.</p></div>
+        <div class="boundary-lead"><h2>Requirements for a longitudinal design</h2><p>A causal timing claim needs repeated, provenance-rich observations.</p></div>
         <div class="boundary-list">
           <div class="boundary-item"><b>D1</b><div><strong>Repeat the same albums or users</strong><p>Preserve rating counts, review counts, score distributions, and contribution activity across dated snapshots.</p></div></div>
           <div class="boundary-item"><b>D2</b><div><strong>Record rule and interface changes</strong><p>Ranking, moderation, export, visibility, and chart-weight changes can independently shift outcomes.</p></div></div>
@@ -84,6 +85,6 @@
     <section class="section"><div class="container cta-panel reveal"><div><h2>Reproduce the current baseline.</h2><p>Use the empirical pipeline to rebuild archive matches, aggregate outputs, provenance audits, and publication figures.</p></div><a class="button" href="reproducibility.html">Open reproduction guide →</a></div></section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">A method should fail visibly when the evidence is absent.</h2><p class="footer-copy">The code keeps empirical analysis, synthetic benchmarks, and assumption-driven scenarios in separate modes.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="sources.html">Sources</a><a href="reproducibility.html">Reproduce</a></div><div class="footer-nav"><strong>Code</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/tree/main/src/analysis">Analysis modules ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/src/data_provenance.py">Provenance gate ↗</a><a href="cite.html">Cite this work</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Global random seed: 42</span></div></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">Empirical, benchmark, and scenario modules</h2><p class="footer-copy">The code keeps empirical analysis, synthetic benchmarks, and assumption-driven scenarios in separate modes.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="evidence.html">Evidence</a><a href="sources.html">Sources</a><a href="reproducibility.html">Reproduce</a></div><div class="footer-nav"><strong>Code</strong><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/tree/main/src/analysis">Analysis modules ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/src/data_provenance.py">Provenance gate ↗</a><a href="cite.html">Cite this work</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Global random seed: 42</span></div></div></footer>
 </body>
 </html>

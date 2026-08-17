@@ -368,6 +368,16 @@ input {
   line-height: 1.2;
 }
 
+.hero-aside .panel-kicker {
+  margin: 0 0 0.75rem;
+  color: var(--green-bright);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .hero-aside p {
   margin: 0.9rem 0 0;
   color: rgba(255, 255, 255, 0.68);
@@ -403,47 +413,54 @@ input {
 .hero-meta span {
   margin-top: 0.2rem;
   color: rgba(255, 255, 255, 0.56);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .ticker {
+  width: 100%;
+  max-width: 100vw;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  overflow: hidden;
+  background: rgba(255, 255, 255, 0.3);
+  contain: paint;
+  overflow-x: clip;
 }
 
 .ticker-track {
   display: flex;
   width: max-content;
-  animation: ticker 32s linear infinite;
+  animation: ticker 38s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
 }
 
 .ticker-group {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   flex: none;
 }
 
 .ticker-item {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  padding: 1rem 2rem;
+  gap: 0.65rem;
+  padding: 1rem 1.8rem;
   color: var(--ink-soft);
   font-family: var(--mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  font-size: 0.84rem;
+  border-right: 1px solid var(--line);
+  white-space: nowrap;
 }
 
-.ticker-item::after {
-  width: 0.4rem;
-  height: 0.4rem;
-  content: "";
-  background: var(--orange);
-  border-radius: 50%;
+.ticker-item b {
+  color: var(--green);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 @keyframes ticker {
@@ -607,7 +624,7 @@ input {
   display: block;
   margin-top: 1rem;
   color: rgba(255, 255, 255, 0.72);
-  font-size: 0.9rem;
+  font-size: 0.94rem;
   line-height: 1.45;
 }
 
@@ -615,7 +632,7 @@ input {
   display: block;
   margin-top: 0.45rem;
   color: rgba(255, 255, 255, 0.4);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   line-height: 1.45;
 }
 
@@ -673,7 +690,7 @@ input {
   width: fit-content;
   padding: 0.38rem 0.62rem;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   line-height: 1.2;
@@ -719,7 +736,7 @@ input {
   padding: 0.55rem 0.75rem;
   color: rgba(255, 255, 255, 0.78);
   background: rgba(16, 32, 29, 0.88);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   border-radius: 0.35rem;
 }
 
@@ -901,14 +918,14 @@ input {
 }
 
 .evidence-row strong {
-  font-size: 0.9rem;
+  font-size: 0.96rem;
   line-height: 1.35;
 }
 
 .evidence-row p {
   margin: 0;
   color: var(--ink-soft);
-  font-size: 0.86rem;
+  font-size: 0.92rem;
   line-height: 1.5;
 }
 
@@ -916,7 +933,7 @@ input {
   width: fit-content;
   padding: 0.34rem 0.55rem;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 700;
   border-radius: 0.35rem;
 }
@@ -939,6 +956,7 @@ input {
   padding: 1.5rem;
   background: #f8f5ed;
   border: 1px solid rgba(255, 255, 255, 0.28);
+  border-top: 3px solid rgba(115, 242, 182, 0.72);
   border-radius: var(--radius);
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
 }
@@ -963,7 +981,7 @@ input {
 
 .source-card dl {
   margin: 1.8rem 0 0;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
 }
 
 .source-card dl div {
@@ -976,7 +994,7 @@ input {
 
 .source-card dt { color: #4d5d59; }
 .source-card dd { margin: 0; text-align: right; }
-.card-source-link { display: inline-block; margin-top: 1rem; color: var(--green); font-family: var(--mono); font-size: 0.78rem; font-weight: 760; }
+.card-source-link { display: inline-block; margin-top: 1rem; color: var(--green); font-family: var(--mono); font-size: 0.84rem; font-weight: 760; }
 
 .method-flow {
   position: relative;
@@ -1078,7 +1096,7 @@ input {
 .method-body p,
 .method-body li {
   color: var(--ink-soft);
-  font-size: 0.88rem;
+  font-size: 0.95rem;
 }
 
 .method-body ul {
@@ -1088,7 +1106,7 @@ input {
 
 .method-body code {
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: 0.84rem;
 }
 
 .repro-grid {
@@ -1115,7 +1133,7 @@ input {
 .sticky-note p {
   margin: 1rem 0 0;
   color: var(--ink-soft);
-  font-size: 0.86rem;
+  font-size: 0.94rem;
 }
 
 .checklist {
@@ -1142,9 +1160,9 @@ input {
   border-radius: 50%;
 }
 
-.check-item strong { display: block; font-size: 0.88rem; }
-.check-item p { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.82rem; }
-.check-item small { color: var(--ink-soft); font-family: var(--mono); font-size: 0.78rem; }
+.check-item strong { display: block; font-size: 0.98rem; }
+.check-item p { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
+.check-item small { color: var(--ink-soft); font-family: var(--mono); font-size: 0.82rem; }
 
 .code-block {
   position: relative;
@@ -1175,7 +1193,7 @@ input {
   border-radius: 0.35rem;
   cursor: pointer;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
 }
 
 .note-box {
@@ -1185,7 +1203,7 @@ input {
 }
 
 .note-box strong { display: block; }
-.note-box p { margin: 0.45rem 0 0; color: var(--ink-soft); font-size: 0.8rem; }
+.note-box p { margin: 0.45rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
 
 .source-ref {
   display: inline-flex;
@@ -1229,7 +1247,7 @@ input {
 .trace-id {
   color: var(--green);
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 760;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -1243,7 +1261,7 @@ input {
 }
 
 .citation-code { margin-top: 1rem; }
-.micro-note { margin: 1rem 0 0; color: rgba(255, 255, 255, 0.72); font-size: 0.83rem; }
+.micro-note { margin: 1rem 0 0; color: rgba(255, 255, 255, 0.72); font-size: 0.9rem; }
 
 .profile-grid {
   display: grid;
@@ -1301,6 +1319,7 @@ input {
   padding: 1.5rem;
   background: rgba(255, 255, 255, 0.54);
   border: 1px solid var(--line);
+  border-top: 3px solid rgba(13, 107, 87, 0.52);
   border-radius: var(--radius);
 }
 
@@ -1314,7 +1333,7 @@ input {
   display: inline-flex;
   padding: 0.28rem 0.55rem;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 760;
   border-radius: 999px;
 }
@@ -1339,9 +1358,9 @@ input {
 
 .material-link:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 .material-link.featured { color: var(--white); background: var(--green); }
-.material-link span { font-family: var(--mono); font-size: 0.77rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.material-link span { font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .material-link strong { margin-top: 1.5rem; font-family: var(--serif); font-size: clamp(1.35rem, 2.5vw, 2rem); font-weight: 500; line-height: 1.1; }
-.material-link small { margin-top: 0.65rem; color: var(--ink-soft); font-size: 0.84rem; }
+.material-link small { margin-top: 0.65rem; color: var(--ink-soft); font-size: 0.9rem; }
 .material-link.featured small { color: rgba(255, 255, 255, 0.76); }
 
 .publication-strip {
@@ -1371,18 +1390,18 @@ input {
 
 .ledger-id { color: var(--green-bright); font-family: var(--mono); font-size: 0.92rem; font-weight: 760; }
 .ledger-record h3 { margin: 0.5rem 0 0; color: var(--white); font-family: var(--serif); font-size: 1.45rem; font-weight: 500; }
-.ledger-record p { margin: 0.5rem 0 0; color: rgba(255, 255, 255, 0.76); font-size: 0.88rem; }
-.ledger-record dl { margin: 0; font-size: 0.8rem; }
+.ledger-record p { margin: 0.5rem 0 0; color: rgba(255, 255, 255, 0.76); font-size: 0.94rem; }
+.ledger-record dl { margin: 0; font-size: 0.86rem; }
 .ledger-record dl div { display: grid; grid-template-columns: 4rem 1fr; gap: 0.75rem; padding: 0.3rem 0; }
 .ledger-record dt { color: rgba(255, 255, 255, 0.58); }
 .ledger-record dd { margin: 0; color: rgba(255, 255, 255, 0.88); }
-.ledger-record > a { color: var(--green-bright); font-size: 0.82rem; font-weight: 720; }
+.ledger-record > a { color: var(--green-bright); font-size: 0.86rem; font-weight: 720; }
 .manifest-link { margin: 1.4rem 0 0; color: var(--green-bright); font-size: 0.88rem; }
 
 .trace-grid { grid-template-columns: repeat(2, 1fr); }
 .trace-card p strong { color: var(--ink); }
 .trace-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
-.trace-links a { padding: 0.38rem 0.55rem; color: var(--green); background: rgba(13, 107, 87, 0.08); border-radius: 0.35rem; font-family: var(--mono); font-size: 0.72rem; text-decoration: none; }
+.trace-links a { padding: 0.42rem 0.62rem; color: var(--green); background: rgba(13, 107, 87, 0.08); border-radius: 0.35rem; font-family: var(--mono); font-size: 0.8rem; text-decoration: none; }
 
 .reference-list { border-top: 1px solid var(--line-strong); }
 .reference-list > a {
@@ -1402,7 +1421,7 @@ input {
 
 .reference-layout { display: grid; grid-template-columns: 0.65fr 1.35fr; gap: clamp(2rem, 7vw, 7rem); align-items: start; }
 .bibliography { margin: 0; padding-left: 1.5rem; }
-.bibliography li { padding: 0.7rem 0 0.7rem 0.5rem; color: var(--ink-soft); border-bottom: 1px solid var(--line); font-size: 0.88rem; }
+.bibliography li { padding: 0.7rem 0 0.7rem 0.5rem; color: var(--ink-soft); border-bottom: 1px solid var(--line); font-size: 0.94rem; }
 .bibliography a { color: var(--green); font-weight: 700; }
 
 .site-footer {
@@ -1431,7 +1450,7 @@ input {
 .footer-copy {
   max-width: 34rem;
   margin: 1rem 0 0;
-  font-size: 0.86rem;
+  font-size: 0.9rem;
 }
 
 .footer-nav strong {
@@ -1448,7 +1467,7 @@ input {
   display: block;
   width: fit-content;
   margin: 0.5rem 0;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   text-decoration: none;
 }
 
@@ -1461,7 +1480,7 @@ input {
   margin-top: 3rem;
   padding-top: 1.2rem;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
@@ -1535,7 +1554,7 @@ input {
   .nav-links .repo-link { margin-top: 0.5rem; text-align: center; }
   .brand-text { max-width: 12rem; }
   .hero { padding-top: 3.5rem; }
-  .display-title { font-size: clamp(3.25rem, 17vw, 5rem); }
+  .display-title { font-size: clamp(2.8rem, 13.5vw, 4rem); }
   .principle-grid,
   .boundary,
   .cta-panel {

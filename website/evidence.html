@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10201d">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <meta name="description" content="An evidence and claim matrix for the AI-driven transformation of crowdsourced music-information platforms study.">
   <link rel="canonical" href="https://sunrunjie.github.io/AI-Driven-Transformation-of-Music-Information-Ecosystems/evidence.html">
   <title>Evidence — AI × Music Information Ecosystems</title>
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -26,9 +27,9 @@
     <section class="page-hero">
       <div class="container page-hero-grid">
         <div>
-          <p class="eyebrow">Evidence architecture</p>
-          <h1 class="page-title">Know what each result can carry.</h1>
-          <p class="lede">The project treats provenance as a first-class analytical variable. Observed descriptions, controlled comparisons, method checks, and scenarios remain visibly separate from one another.</p>
+          <p class="eyebrow">Evidence design</p>
+          <h1 class="page-title">Evidence classes and inferential scope</h1>
+          <p class="lede">Provenance is recorded as an analytical variable. Observed descriptions, controlled comparisons, method checks, and scenarios are reported in separate evidence classes.</p>
         </div>
         <div class="page-index" aria-label="Page contents">
           <div><strong>01</strong><span>Source archives</span></div><div><strong>02</strong><span>Claim matrix</span></div><div><strong>03</strong><span>Research boundary</span></div>
@@ -49,7 +50,7 @@
           </article>
           <article class="source-card" style="color:var(--ink)">
             <div><span class="evidence-tag tag-observed">Observed archive</span><div class="number">5,000</div><h3>AOTY highest user-rated snapshot</h3><p>A high-score-selected album snapshot updated on 20 October 2024.</p></div>
-            <dl><div><dt>Role</dt><dd>Attention + genre</dd></div><div><dt>License</dt><dd>CC BY 3.0</dd></div><div><dt>Boundary</dt><dd>Not all AOTY albums</dd></div></dl><a class="card-source-link" href="sources.html#src-aoty-snapshot">Provenance record D02 →</a>
+            <dl><div><dt>Role</dt><dd>Attention + genre</dd></div><div><dt>License</dt><dd>CC BY 3.0</dd></div><div><dt>Boundary</dt><dd>High-rated selection</dd></div></dl><a class="card-source-link" href="sources.html#src-aoty-snapshot">Provenance record D02 →</a>
           </article>
           <article class="source-card" style="color:var(--ink)">
             <div><span class="evidence-tag tag-observed">Observed archive</span><div class="number">5,000</div><h3>RYM most-popular snapshot</h3><p>A popularity-selected album snapshot collected on 11 March 2022.</p></div>
@@ -63,7 +64,7 @@
       <div class="container">
         <div class="section-header reveal">
           <div><p class="eyebrow">02 · Claim matrix</p><h2 class="section-title">From evidence to permitted interpretation</h2></div>
-          <p class="section-copy">Filter the matrix by evidence class. “Supported” means the selected archive supports the narrow descriptive statement—not a broader causal or platform-wide conclusion.</p>
+          <p class="section-copy">Filter the matrix by evidence class. “Supported” refers to the narrow descriptive statement shown; causal, longitudinal, and platform-wide interpretations remain outside the archive design.</p>
         </div>
         <div class="filter-bar reveal" role="group" aria-label="Filter evidence matrix">
           <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">All classes</button>
@@ -75,14 +76,14 @@
         <div class="evidence-matrix reveal">
           <div class="evidence-row header-row" aria-hidden="true"><span>Result</span><span>Evidence class</span><span>Permitted interpretation</span><span>Status</span></div>
           <article class="evidence-row" data-class="observed"><strong>AOTY–RYM user scores: Pearson r = 0.910 across 4,102 exact matches <a class="source-ref" href="sources.html#claim-score-agreement" aria-label="Evidence trace C01">C01</a></strong><span class="evidence-tag tag-observed">Observed</span><p>The selected archives share much of the same album rank order, with different score calibration. Dates and selection rules differ.</p><span class="claim-state claim-supported">Supported</span></article>
-          <article class="evidence-row" data-class="observed"><strong>87.4% of matched albums fall within 0.5 points after rescaling <a class="source-ref" href="sources.html#claim-score-agreement" aria-label="Evidence trace C01">C01</a></strong><span class="evidence-tag tag-observed">Observed</span><p>Close score agreement within this exact-matched sample; not evidence of platform-wide or longitudinal stability.</p><span class="claim-state claim-supported">Supported</span></article>
-          <article class="evidence-row" data-class="observed"><strong>AOTY critic–user correlation: r = 0.536 across 32,358 albums <a class="source-ref" href="sources.html#claim-critic-user" aria-label="Evidence trace C03">C03</a></strong><span class="evidence-tag tag-observed">Observed</span><p>Professional and community judgments overlap without reducing to the same signal in the historical archive.</p><span class="claim-state claim-supported">Supported</span></article>
+          <article class="evidence-row" data-class="observed"><strong>87.4% of matched albums fall within 0.5 points after rescaling <a class="source-ref" href="sources.html#claim-score-agreement" aria-label="Evidence trace C01">C01</a></strong><span class="evidence-tag tag-observed">Observed</span><p>Close score agreement within the exact-matched sample. Platform-wide and longitudinal stability remain untested.</p><span class="claim-state claim-supported">Supported</span></article>
+          <article class="evidence-row" data-class="observed"><strong>AOTY critic–user correlation: r = 0.536 across 32,358 albums <a class="source-ref" href="sources.html#claim-critic-user" aria-label="Evidence trace C03">C03</a></strong><span class="evidence-tag tag-observed">Observed</span><p>Professional and community judgments show a moderate association in the historical archive.</p><span class="claim-state claim-supported">Supported</span></article>
           <article class="evidence-row" data-class="observed"><strong>Rating attention is concentrated inside both selected snapshots <a class="source-ref" href="sources.html#claim-attention" aria-label="Evidence trace C02">C02</a></strong><span class="evidence-tag tag-observed">Observed</span><p>AOTY Gini = 0.617 and RYM Gini = 0.400 describe within-file inequality; files use different selection rules.</p><span class="claim-state claim-bounded">Bounded</span></article>
           <article class="evidence-row" data-class="observed"><strong>RYM median written-review share: 1.65% <a class="source-ref" href="sources.html#claim-attention" aria-label="Evidence trace C02">C02</a></strong><span class="evidence-tag tag-observed">Observed</span><p>Written reviewing is a thin participation layer in the selected popular-album snapshot.</p><span class="claim-state claim-supported">Supported</span></article>
-          <article class="evidence-row" data-class="controlled"><strong>Controlled text study: 96.7% accuracy and AUC 0.996 <a class="source-ref" href="sources.html#claim-text-study" aria-label="Evidence trace C04">C04</a></strong><span class="evidence-tag tag-controlled">Controlled</span><p>Separates 15 published critic excerpts from 15 fixed assistant-style controls. It is not an AI detector evaluation or prevalence estimate.</p><span class="claim-state claim-bounded">Method only</span></article>
-          <article class="evidence-row" data-class="synthetic"><strong>Break procedures recover a known late-2022 change</strong><span class="evidence-tag tag-synthetic">Synthetic</span><p>Demonstrates implementation behavior on a designed benchmark. It says nothing about an actual break on RYM or AOTY.</p><span class="claim-state claim-bounded">Method only</span></article>
-          <article class="evidence-row" data-class="scenario"><strong>Trust threshold, interventions, and platform positions</strong><span class="evidence-tag tag-scenario">Scenario</span><p>Outputs follow from stated parameter values and analyst-coded scores; they are conditional mechanisms, not estimates.</p><span class="claim-state claim-open">Conditional</span></article>
-          <article class="evidence-row" data-class="observed"><strong>ChatGPT caused a post-2022 structural break on RYM or AOTY</strong><span class="evidence-tag tag-observed">Missing panel</span><p>No empirical repeated series passed the provenance gate. A dated panel and alternative-explanation design are required.</p><span class="claim-state claim-open">Open claim</span></article>
+          <article class="evidence-row" data-class="controlled"><strong>Controlled text study: 96.7% accuracy and AUC 0.996 <a class="source-ref" href="sources.html#claim-text-study" aria-label="Evidence trace C04">C04</a></strong><span class="evidence-tag tag-controlled">Controlled</span><p>Separates 15 published critic excerpts from 15 fixed control texts. Authorship detection and prevalence estimation remain outside the evaluation.</p><span class="claim-state claim-bounded">Method only</span></article>
+          <article class="evidence-row" data-class="synthetic"><strong>Break procedures recover a known late-2022 change</strong><span class="evidence-tag tag-synthetic">Synthetic</span><p>Demonstrates implementation behavior on a designed benchmark. Structural change on RYM or AOTY remains untested.</p><span class="claim-state claim-bounded">Method only</span></article>
+          <article class="evidence-row" data-class="scenario"><strong>Trust threshold, interventions, and platform positions</strong><span class="evidence-tag tag-scenario">Scenario</span><p>Outputs are conditional mechanisms derived from stated parameter values and analyst-coded scores.</p><span class="claim-state claim-open">Conditional</span></article>
+          <article class="evidence-row" data-class="observed"><strong>Post-2022 structural change attributed to ChatGPT</strong><span class="evidence-tag tag-observed">Missing panel</span><p>No empirical repeated series passed the provenance gate. A dated panel and alternative-explanation design are required.</p><span class="claim-state claim-open">Open claim</span></article>
         </div>
       </div>
     </section>
@@ -91,19 +92,19 @@
       <div class="container">
         <div class="finding-card reveal">
           <div class="finding-copy">
-            <div><span class="evidence-tag tag-observed">Official dates + observed archives</span><h3>From an external shock to an evidence-building sequence</h3><p>The project places verified policy and AOTY product dates beside the evidence actually available. Product changes are documented; the changelog does not attribute them to generative AI.</p></div>
+            <div><span class="evidence-tag tag-observed">Official dates + observed archives</span><h3>Timeline of platform, policy, and archive records</h3><p>Verified policy and AOTY product dates are shown alongside the available evidence. The changelog documents product changes without assigning a cause.</p></div>
             <div class="finding-meta"><a class="button button-secondary" href="https://www.albumoftheyear.org/changelog/">AOTY changelog ↗</a></div>
           </div>
-          <figure class="finding-visual"><img src="assets/figures/ai_impact_timeline.png" alt="Timeline of ChatGPT release, policy dates, AOTY product changes, and the observed archive evidence base"><figcaption>Archive counts are not platform totals; policy and product dates do not identify a causal effect.</figcaption></figure>
+          <figure class="finding-visual"><img src="assets/figures/ai_impact_timeline.png" alt="Timeline of ChatGPT release, policy dates, AOTY product changes, and the observed archive evidence base"><figcaption>Archive counts describe selected files. Policy and product dates provide context while causal attribution remains open.</figcaption></figure>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="container cta-panel reveal"><div><h2>See how each analytical module is implemented.</h2><p>The method page distinguishes descriptive estimators, longitudinal tests, controlled text analysis, and assumption-driven simulations.</p></div><a class="button" href="methods.html">Inspect methods →</a></div>
+      <div class="container cta-panel reveal"><div><h2>Review the analytical design</h2><p>The method page distinguishes descriptive estimators, longitudinal tests, controlled text analysis, and assumption-driven simulations.</p></div><a class="button" href="methods.html">Inspect methods →</a></div>
     </section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">Evidence is a claim about origin before it is a claim about effect.</h2><p class="footer-copy">Source URLs, archive dates, license status, limitations, and SHA-256 checksums are retained in the repository.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="methods.html">Methods</a><a href="reproducibility.html">Reproduce</a><a href="cite.html">Cite</a></div><div class="footer-nav"><strong>Records</strong><a href="sources.html">Claim-level source ledger</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/data/external/source_manifest.csv">Source manifest ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/figures/README.md">Figure inventory ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Raw RYM redistribution requires a separate license check</span></div></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-title">Evidence classes and source records</h2><p class="footer-copy">Source URLs, archive dates, license status, limitations, and SHA-256 checksums are retained in the repository.</p></div><div class="footer-nav"><strong>Research</strong><a href="index.html">Overview</a><a href="methods.html">Methods</a><a href="reproducibility.html">Reproduce</a><a href="cite.html">Cite</a></div><div class="footer-nav"><strong>Records</strong><a href="sources.html">Claim-level source ledger</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/data/external/source_manifest.csv">Source manifest ↗</a><a href="https://github.com/SunRunJie/AI-Driven-Transformation-of-Music-Information-Ecosystems/blob/main/figures/README.md">Figure inventory ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> RunJie Sun · MIT License</span><span>Raw RYM redistribution requires a separate license check</span></div></div></footer>
 </body>
 </html>
