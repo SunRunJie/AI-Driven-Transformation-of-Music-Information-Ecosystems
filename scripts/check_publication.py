@@ -22,6 +22,7 @@ PUBLIC_PAGES = {
 }
 VERIFIED_DOI = "10.5281/zenodo.21955380"
 DOI_URL = f"https://doi.org/{VERIFIED_DOI}"
+STYLESHEET_HREF = "styles.css?v=7"
 
 
 class PageParser(HTMLParser):
@@ -62,8 +63,11 @@ def main() -> int:
             errors.append(f"{name}: expected one h1, found {page.h1_count}")
         if len(page.canonicals) != 1:
             errors.append(f"{name}: expected one canonical URL")
-        if page.stylesheets != ["styles.css?v=6"]:
-            errors.append(f"{name}: stylesheet cache version is not v6")
+        if page.stylesheets != [STYLESHEET_HREF]:
+            errors.append(
+                f"{name}: expected stylesheet {STYLESHEET_HREF}, "
+                f"found {page.stylesheets or 'none'}"
+            )
 
         for href in page.hrefs:
             parts = urlsplit(href)
