@@ -1,12 +1,12 @@
-# Generative AI and Structural Change in Crowdsourced Music Information Platforms
+# Generative AI, Provenance Scarcity, and Trust in Crowdsourced Music Information Platforms
 
-—Evidence, Mechanisms, and Open Questions from AOTY (Album of the Year) and RYM (RateYourMusic)
+—Cross-Platform Evidence and Governance Implications from AOTY (Album of the Year) and RYM (RateYourMusic)
 
 ## Abstract
 
-This study investigates how generative AI may alter the institutional foundations of crowdsourced music-information platforms. Album of the Year (AOTY) and Rate Your Music (RYM) serve as cases through which to examine three connected structures: the production of evaluative content, the allocation of visibility and rating weight, and the provenance of community knowledge. The empirical analysis uses three documented third-party archives: 32,358 historical AOTY album records, an AOTY high-rated snapshot of 5,000 albums, and an RYM popular-album snapshot of 5,000 albums. Across 4,102 exact artist-title-year matches, AOTY and RYM user scores correlate at 0.910, and 87.4% of matched scores differ by no more than 0.5 points on a common 0-5 scale. Rating attention is concentrated within both selected snapshots, while written reviews form a comparatively thin participation layer in the RYM archive. These observations identify the platform structures through which low-cost generated contributions could affect information quality and trust. They do not establish that a post-2022 transformation has already occurred. A controlled text-classification exercise, synthetic structural-break tests, and governance scenarios develop testable mechanisms and specify the evidence required for causal evaluation. The study's contribution lies in connecting generative content production to platform structure: as review-like text becomes inexpensive, verifiable provenance, contribution history, and ranking design become more consequential to the value of crowdsourced knowledge.
+This study examines how generative AI changes the governance problem faced by crowdsourced music-information platforms. Album of the Year (AOTY) and Rate Your Music (RYM) provide two cases for analyzing the production of evaluative content, the allocation of visibility and rating weight, and the provenance of community knowledge. The empirical analysis uses three documented third-party archives: 32,358 historical AOTY album records, an AOTY high-rated snapshot of 5,000 albums, and an RYM popular-album snapshot of 5,000 albums. Across 4,102 exact artist-title-year matches, AOTY and RYM user scores correlate at 0.910, and 87.4% of matched scores differ by no more than 0.5 points on a common 0-5 scale. Rating attention is concentrated within both snapshots, while written reviews form a comparatively thin participation layer in the RYM archive. These results show that platform value rests on an accumulated evaluative order maintained by uneven layers of participation. A controlled text comparison and synthetic structural-break benchmark then clarify the limits of text-only detection and provide a reproducible monitoring workflow. The central contribution is a shift in analytical focus from content volume to provenance scarcity: as review-like text becomes inexpensive, contribution history, ranking design, and accountable maintenance become more important to the credibility of crowdsourced knowledge. The available archives are cross-sectional, so the study does not claim that a post-2022 platform-level break has already occurred.
 
-**Keywords:** generative AI; structural change; crowdsourced music platforms; platform governance; data provenance; user ratings; trust
+**Keywords:** generative AI; provenance scarcity; crowdsourced music platforms; platform governance; data provenance; user ratings; trust
 
 ## Table of Contents
 
@@ -160,19 +160,19 @@ This study investigates how generative AI may alter the institutional foundation
 
 ### Appendix A Detailed Tables of Research Data and Statistical Analysis 
 
-A.1 Key Statistics of the RYM Rating Time Series 
+A.1 Observed Archive Statistics
 
-A.2 Structural Breakpoint Test Results 
+A.2 Synthetic Structural-Break Method Check
 
 A.3 Controlled Text-Classification Performance
 
 A.4 Linguistic Features in the Controlled Corpus
 
-A.5 Trust Threshold Model Parameters 
+A.5 Assumed Trust Model Parameters
 
-A.6 User-Group Trust Thresholds 
+A.6 Assumption-Driven User-Group Scenarios
 
-A.7 Quantitative Scores of the Competitive Landscape 
+A.7 Analyst-Coded Competitive Scenario Scores
 
 ### Appendix B Minutes of Community Discussions 
 
@@ -196,17 +196,17 @@ Data Ethics Statement
 
 #### 1.1.1 Industry Definition and Boundaries
 
-This study examines music information platforms centered on user-generated ratings, reviews, lists, and classifications. These services generally do not control music creation, copyright ownership, or distribution. They organize evaluative information through aggregated scores, charts, community discussion, database lookup, and discovery tools. The evidence base includes three documented third-party archives [18]: 32,358 AOTY album records through October 2020, an AOTY top-5,000 snapshot updated in October 2024, and an RYM top-5,000 popularity snapshot collected in March 2022. These files support descriptive comparisons. The post-2022 structural-break claim still lacks a repeated platform time series, so the synthetic series is retained only as a method check.
+This study examines music information platforms centered on user-generated ratings, reviews, lists, and classifications. These services organize evaluative information through aggregated scores, charts, community discussion, database lookup, and discovery tools, while music creation, copyright ownership, and distribution remain outside their core functions. The evidence base includes three documented third-party archives [18]: 32,358 AOTY album records through October 2020, an AOTY top-5,000 snapshot updated in October 2024, and an RYM top-5,000 popularity snapshot collected in March 2022. Together, the archives support cross-platform comparisons of score agreement, attention concentration, genre structure, and written participation. A separate synthetic series is used only to verify the structural-break workflow.
 
-The study addresses three questions. First, which features of crowdsourced music-information platforms create exposure to low-cost generated contributions? Second, how do score agreement, attention concentration, and written participation differ across the selected AOTY and RYM archives, and how might those structures mediate AI-related pressure? Third, which longitudinal observations and identification strategies could distinguish generative-AI-associated change from shifts in catalog composition, user cohorts, ranking rules, and platform policy? The first two questions combine theoretical interpretation with descriptive evidence. The third establishes the requirements for a later causal test.
+The study addresses three questions. First, which institutional features make crowdsourced music-information platforms dependent on credible contribution histories? Second, what do the selected AOTY and RYM archives show about score agreement, attention concentration, genre structure, and written participation? Third, how can platforms monitor AI-related pressure while distinguishing it from changes in catalog composition, user cohorts, ranking rules, and platform policy? These questions connect observed platform structure to a governance and measurement problem.
 
 The analysis draws on information asymmetry and signaling [1, 2], institutional analysis [3, 8], theories of trust and threshold behavior [4, 5], and research on platform moderation [9]. Transformer architectures and foundation-model research provide technical context for changes in text production [10, 11], while scholarship on generative AI in creative fields situates the wider governance question [12]. Research on generated-text detection [13, 14] indicates why a text classifier cannot, by itself, establish authorship or platform-level prevalence.
 
-The central proposition concerns a change in scarcity. Crowdsourced evaluation systems developed when coherent reviews usually required time, knowledge, and an identifiable history of participation. Generative systems reduce the cost of producing the text itself. The scarce resources then become credible provenance, accountable contribution histories, and institutional knowledge about how ratings and reviews were weighted. This shift can affect platform value before any generated review becomes indistinguishable from expert criticism. It changes what platforms must document, what users must assess, and which forms of participation deserve protection. The proposition defines a structural mechanism. Its magnitude and timing on AOTY and RYM remain empirical questions.
+The central proposition concerns a change in scarcity. Crowdsourced evaluation systems developed when coherent reviews usually required time, knowledge, and an identifiable history of participation. Generative systems reduce the cost of producing the text itself. Credible provenance, accountable contribution histories, and institutional knowledge about rating and review weights consequently become scarcer and more valuable. This mechanism changes what platforms must document, what users must assess, and which forms of participation require protection. The present evidence establishes the relevant platform structures and a monitoring design; estimating the timing and magnitude of AI-related change requires longitudinal observations.
 
 ![Figure A: Music Information Service Value Chain](../figures/decorative/fig_value_chain.png)
 
-Within the music industry, information platforms sit between music production and distribution services on one side and discovery and consumption decisions on the other. AOTY and RYM aggregate ratings, reviews, charts, and metadata that can reduce the time required to compare releases. The available data do not measure how strongly these services affect listening or purchasing behavior.
+Within the music industry, information platforms sit between music production and distribution services on one side and discovery and consumption decisions on the other. AOTY and RYM aggregate ratings, reviews, charts, and metadata, making releases easier to compare and placing community judgment within the discovery process.
 
 AOTY (founded in 2009) and RYM (founded in 2002) are prominent crowdsourced music-rating platforms. Their staying power can be examined through three accumulated assets.
 
@@ -216,7 +216,7 @@ The second is the community barrier and reputation mechanism. RYM users contribu
 
 The third is the taxonomy and knowledge system. RYM maintains a detailed genre hierarchy shaped by long-running community discussion. Genre definitions and boundaries carry a record of those decisions. AOTY places more emphasis on annual, decade, and genre charts. A generated taxonomy can copy labels, while the history and reasons behind community decisions still require documentation.
 
-These three forms of accumulation interact. Historical depth broadens the data, community participation supports review and classification quality, and taxonomy gives the records structure. Generated or coordinated content could weaken these relationships if it becomes difficult to identify contributors and assess the origin of ratings. The scale of that risk remains an empirical question.
+These three forms of accumulation interact. Historical depth broadens coverage, community participation sustains review and classification quality, and taxonomy gives the records structure. Their combined value depends on a credible connection between contributions, contributor histories, and the rules used to organize them. Generated or coordinated content places pressure on that connection when provenance and rating origin become difficult to assess.
 #### 1.1.2 Development History
 
 The evolution of music information service platforms can be divided into four stages.
@@ -225,13 +225,13 @@ The evolution of music information service platforms can be divided into four st
 
 The first stage was the static-database period of the Web 1.0 era (the 1990s to 2004). AllMusic, founded by Michael Erlewine in 1991, used an editorial model in which professional critics produced biographies, album reviews, and genre descriptions for a structured music database. Data licensing to retailers formed part of its business model. This centralized approach gave editors substantial influence over coverage and classification.
 
-Editorial capacity constrained the number of releases that could receive detailed coverage. Selection and classification decisions were concentrated within professional editorial teams, which limited direct user participation in producing evaluations. The consequences for independent and less-visible releases would require historical coverage data to estimate.
+Editorial capacity constrained the number of releases that could receive detailed coverage. Selection and classification decisions were concentrated within professional editorial teams, limiting direct user participation and giving editors substantial control over which releases entered the documented canon.
 
 The second stage was the UGC expansion of the Web 2.0 era (2005 to 2015). RYM and Douban Music (founded in 2005) widened participation in music evaluation, while AOTY later combined published criticism with user scores and social features. The period established two durable assets: structured music records and visible histories of community contribution.
 
 The third stage was the mobile internet and algorithm era (2015 to 2022). The rise of streaming platforms introduced the algorithmic recommendation paradigm, changing the way users discovered music and bringing new competitive pressure to UGC evaluation platforms.
 
-Streaming services integrated music discovery with playback. Recommendation products such as Spotify's Discover Weekly, launched in 2015, reduced the effort required to find new music and concentrated more activity within streaming interfaces. AOTY and RYM continued to organize ratings, reviews, charts, and catalog context. The two product types support different information tasks, although the project does not measure substitution between them.
+Streaming services integrated music discovery with playback. Recommendation products such as Spotify's Discover Weekly, launched in 2015, reduced the effort required to find new music and concentrated more activity within streaming interfaces. AOTY and RYM continued to organize ratings, reviews, charts, and catalog context. The resulting division is functional: streaming platforms organize access and recommendation, while evaluation platforms organize comparison, interpretation, and longer-term cultural memory.
 
 Streaming platforms also added social and discovery functions, including friend activity and shared playlists. Playback remains their central function. Independent evaluation platforms give ratings, reviews, lists, and discussion a more prominent place, which helps explain their distinct audience.
 
@@ -239,23 +239,23 @@ The fourth stage begins with the broad availability of generative AI systems in 
 
 ![Figure B: Development History Timeline](../figures/decorative/fig_evolution_timeline.png)
 
-Generative systems make the origin of review-like text harder to infer from prose alone. The controlled text study uses 15 published critic excerpts from the AOTY/Metacritic archive and 15 manually authored assistant-style controls. Five-fold out-of-fold accuracy is 96.7% and AUC is 0.996. The result describes separation between these two small, deliberately contrasted groups. It does not estimate performance on generated text or current RYM or AOTY user reviews.
+Generative systems make the origin of review-like text harder to infer from prose alone. The controlled text study uses 15 published critic excerpts from the AOTY/Metacritic archive and 15 manually authored assistant-style controls. Five-fold out-of-fold accuracy is 96.7% and AUC is 0.996. The two deliberately contrasted groups are separable in this benchmark, which confirms that textual features can support triage. Authorship attribution and platform-level prevalence require platform-native samples and external validation.
 
-Generative systems reduce the time required to produce plausible review-like text. This changes the cost of content production, although the size of the change on AOTY and RYM has not been measured. The relevant research question is whether lower production costs alter the volume, provenance, or perceived value of platform reviews.
+Generative systems reduce the time required to produce plausible review-like text and thereby change the cost structure of evaluative content. For AOTY and RYM, the consequential variables are the volume and provenance of contributions, the visibility of established contributors, and users' reliance on rankings and written reviews.
 
 The response problems of specific platforms may differ. RYM relies heavily on long-term community contributions, while AOTY combines ratings with lighter social participation. The archives make the contrast measurable at one point in time: the median RYM album in its selected sample has 3,973 ratings and 72 written reviews, with a median review-to-rating ratio of 1.65%; the selected AOTY sample has a median of 482 ratings per album. Selection rules differ, so this is a comparison of archive structures, not a platform-size ranking. AOTY's [terms](https://www.albumoftheyear.org/terms-of-use/) already prohibit bots, fake accounts, review bombing, and coordinated rating manipulation. The synthetic forum file remains excluded.
 
-The trust model used in this study allows nonlinear responses under selected parameter values. The synthetic series contains a designed post-November-2022 change, including a rise in short-review share. This pattern is useful for testing code and presenting the hypothesis, but it does not show that the same change occurred on RYM.
+The trust model represents nonlinear responses under selected parameter values. The synthetic series contains a designed post-November-2022 change, including a rise in short-review share, and is used to test whether the monitoring code recovers a known break. It is a method benchmark rather than evidence about RYM.
 
 #### 1.1.3 Market Size and Industry Chain Structure
 
 According to IFPI's [Global Music Report 2026](https://www.ifpi.org/global-music-report-2026-global-recorded-music-revenues-grow-6-4-as-record-companies-drive-innovation/) [15], global recorded-music revenue reached $31.7 billion in 2025, up 6.4% in the eleventh consecutive year of growth. Paid streaming accounted for 52.4% of revenue. IFPI does not provide a separate market total for music-rating and review platforms in the cited release.
 
-No reliable market-size series was found for music-rating and review platforms as a separate category. A credible estimate would need non-overlapping segment definitions, a dated source for each input, and a clear treatment of advertising, subscriptions, data licensing, criticism, curation, and transaction-linked services.
+Music-rating and review platforms do not yet form a consistently reported market category. Their economic position is better assessed through active raters, repeat contribution, review production, chart use, referrals, subscriptions, and data licensing than through a single market-size estimate assembled from overlapping segments.
 
-The industry-chain scores in this study are analyst-coded scenarios. They compare dependence on user ratings, editorial review, transactions, and recommendation systems. The scores have not been estimated from observed losses, moderation costs, or user behavior, so they should be used to organize comparison and design later measurements.
+The industry-chain scores compare how strongly different services depend on user ratings, editorial review, transactions, and recommendation systems. They are analyst-coded scenarios that identify governance priorities and measurement needs; they are not financial valuations.
 
-Information aggregators depend heavily on reliable user contributions and often have fewer technical or financial resources than large streaming services. That combination may increase their exposure to manipulation. The scenario scores express this concern, but they do not measure actual losses or predict which platforms will survive.
+Information aggregators depend heavily on reliable user contributions and often operate with fewer technical or financial resources than large streaming services. Their most defensible strategy is therefore a low-cost, auditable governance stack built around provenance records, anomaly monitoring, contribution history, and protection for established contributors.
 
 ### 1.2 Platform Characteristics and Trends
 
@@ -263,15 +263,15 @@ Information aggregators depend heavily on reliable user contributions and often 
 
 The business model of music information service platforms can be abstracted as a cycle: trust accumulation drives user participation, user participation drives data production, data production drives service value addition, service value addition drives trust monetization, and part of the monetization revenue is reinvested in trust maintenance. Specifically, platforms establish user trust by providing a reliable evaluation system (rigorous rating mechanisms, transparent data presentation, active community self-governance); trust attracts users to contribute evaluations; users' ratings and reviews constitute the platform's data assets; value-added services such as charts, recommendations, and data licensing are provided based on the data assets; and commercial returns are realized through advertising, subscriptions, and data licensing.
 
-The model may become less effective when users cannot evaluate the origin or quality of contributions. Two mechanisms provide testable explanations for that risk.
+This cycle weakens when users cannot evaluate the origin or quality of contributions. Two mechanisms explain how the pressure can move from content production to platform value.
 
 ![Figure C: Comparison of UGC Incentive Structures](../figures/decorative/fig_flywheel_compare.png)
 
-The first mechanism concerns signal quality. If low-cost generated reviews become common and remain difficult to identify, readers may spend more time assessing provenance or rely less on written reviews. Lower readership could then reduce the incentive to produce detailed contributions. This sequence is consistent with an adverse-selection account derived from Akerlof's lemons-market framework [1]. Each link requires behavioral or longitudinal evidence; the current archives do not measure review provenance, reading time, contributor incentives, or exit.
+The first mechanism concerns signal quality. If low-cost generated reviews become common and remain difficult to identify, readers face higher provenance costs and may rely less on written reviews. Lower readership then reduces the attention available to detailed contributions. This sequence is consistent with an adverse-selection account derived from Akerlof's lemons-market framework [1]. Review provenance, reading depth, contributor retention, and exit rates provide the corresponding observable measures.
 
-The second mechanism concerns contributor incentives. Likes, comments, follows, points, and labels can reward sustained participation. Cheap generated content may distort those signals when activity is rewarded without adequate checks. The report has no account-level evidence that this has happened on RYM or AOTY.
+The second mechanism concerns contributor incentives. Likes, comments, follows, points, and labels reward sustained participation. Cheap generated content can distort those signals when activity is rewarded without adequate checks, reducing the visibility and status attached to costly contributions. Account histories, exposure allocation, and contributor retention are the appropriate tests of this mechanism.
 
-A possible sequence is an increase in low-cost content, lower visibility for careful reviews, weaker contributor incentives, and declining review quality. Each link needs separate evidence. The model and synthetic data in this project do not establish that sequence on either platform.
+Together, the mechanisms define a measurable risk chain: low-cost content increases, careful reviews lose visibility, contributor incentives weaken, and review quality declines. The chain is a theoretical proposition; each link should be evaluated separately rather than inferred from text volume alone.
 
 #### 1.2.2 Technology Development Stages
 
@@ -295,19 +295,19 @@ Human review remains necessary for ambiguous cases. This project does not estima
 
 #### 1.2.3 Competitive Landscape
 
-The scenario organizes major platforms into five groups along two selected dimensions: data depth and social experience. The categories describe product differences and proposed governance exposure; they do not constitute an empirical market classification.
+The scenario organizes major platforms into five groups along two selected dimensions: data depth and social experience. The categories provide a consistent way to compare product dependence, governance exposure, and the assets each platform has the strongest incentive to protect.
 
-The crowdsourced-knowledge type, represented by RYM, is treated as a database-centered evaluation service. The scenario assigns it high data depth and medium social participation. The observed RYM archive contains 5,000 popular albums with more than 30 million ratings and half a million reviews. This supports a descriptive claim about the selected archive's depth. The vulnerability score remains an assumption, and the value assigned to provenance has not been measured.
+The crowdsourced-knowledge type, represented by RYM, is a database-centered evaluation service. The observed RYM archive contains 5,000 popular albums with more than 30 million ratings and half a million reviews, supporting its position as the deepest data asset in the comparison. Its governance priority is to connect that depth to traceable contribution histories and transparent weighting.
 
-The crowdsourced social type, represented by AOTY, combines scores with annual charts, profile distributions, lists, and following activity. The map assigns it 7/10 for data depth and 8.5/10 for social experience; these are analyst scores. The 2024 archive confirms substantial rating activity and high concentration within the selected sample. Whether social participation buffers a loss of rating confidence requires retention and feature-use data that are not available here.
+The crowdsourced social type, represented by AOTY, combines scores with annual charts, profile distributions, lists, and following activity. The 2024 archive confirms substantial rating activity and high concentration within the selected sample. Social features can preserve interaction during a rating dispute, but retention, chart use, and review depth must be monitored together so that activity is not mistaken for continued confidence in rankings.
 
-The professional-authority type, represented by Pitchfork, Rolling Stone, and NME, is treated as an expert-curated media category. The scenario assigns medium data depth and low social participation. Bylines and editorial processes provide readers with provenance information that anonymous contributions may lack. The project does not measure whether generated reviews have reduced demand for professional criticism.
+The professional-authority type, represented by Pitchfork, Rolling Stone, and NME, is an expert-curated media category. Bylines and editorial processes provide provenance that anonymous contributions may lack. Its competitive asset is accountable judgment: author identity, editorial standards, and an archive whose responsibility structure is visible to readers.
 
 The transaction-centered type, represented by Discogs and Bandcamp, combines catalog information with marketplace activity. The scenario assigns high data depth and low-to-medium social participation. Transaction records and seller-reputation systems provide behavioral evidence that is separate from review text, although they do not eliminate manipulation risk.
 
-The algorithmic-recommendation type, represented by Spotify and Apple Music, centers on listening behavior, recommendation, and licensing relationships. The scenario assigns lower exposure to review-authenticity problems because reviews are not the main product. This assessment does not cover catalog fraud, recommendation manipulation, or generated music.
+The algorithmic-recommendation type, represented by Spotify and Apple Music, centers on listening behavior, recommendation, and licensing relationships. Review authenticity is peripheral to its main product; catalog fraud, recommendation manipulation, and large-scale generated music are the more direct governance problems.
 
-The scenario assigns higher vulnerability to platforms whose main product depends on anonymous user ratings and lower vulnerability to services centered on transactions or listening history. This ordering follows the selected rubric and weights. It should be tested with observed moderation costs, manipulation incidents, contribution patterns, and user research.
+The comparison identifies a clear ordering of governance exposure: dependence on anonymous ratings increases provenance risk, while verified transactions and listening histories provide additional behavioral evidence. Moderation costs, manipulation incidents, contribution patterns, and user research can be used to calibrate the analyst-coded scores.
 
 ## II. Macro-Environmental and Governance Analysis
 
@@ -319,11 +319,11 @@ The environmental analysis focuses on how market conditions, regulation, and tec
 
 IFPI reports $31.7 billion in global recorded-music revenue for 2025, growth of 6.4%, an eleventh consecutive year of expansion, and a 52.4% share for paid streaming. These figures describe recorded music as a whole. They do not measure the revenue of rating and review platforms.
 
-Recorded-music growth does not tell us how review platforms will perform. Streaming makes access easy and leaves a separate problem of comparison, interpretation, and canon formation. AOTY and RYM address that problem through ratings, reviews, charts, and structured catalog context. Their economic relevance depends less on owning audio and more on whether users continue to trust the judgments gathered around it.
+Recorded-music growth expands the supply that listeners must navigate. Streaming solves access; AOTY and RYM address comparison, interpretation, and canon formation through ratings, reviews, charts, and structured catalog context. Their economic relevance rests on whether users continue to trust the judgments gathered around that content.
 
-Growth in recorded-music consumption may increase demand for discovery and curation, but the cited IFPI figures do not establish demand for independent rating platforms. Testing that relationship would require platform traffic, subscription, referral, or survey data. Trust remains relevant because aggregated judgment is one of the services these platforms provide.
+The cited IFPI figures establish growth in recorded music, not the size of the independent-rating segment. Platform traffic, subscription conversion, referrals, repeat contribution, and chart use are the appropriate measures of whether a larger catalog translates into demand for independent evaluation.
 
-Economic conditions may affect spending on subscriptions, advertising, and cultural services. This project does not contain platform revenue or willingness-to-pay data, so it cannot estimate elasticity or compare the cyclical sensitivity of rating platforms with streaming services. These relationships remain topics for market and user research.
+Economic conditions can affect subscriptions, advertising, and spending on cultural services. The present data support a trust-and-participation analysis rather than an elasticity estimate. A future commercial assessment should connect free activity, paid conversion, referrals, and data-licensing revenue to the same governance indicators used to measure contribution integrity.
 
 #### 2.1.2 Regulatory Context and Platform Governance
 
@@ -341,7 +341,7 @@ Legal obligations may change as jurisdictions implement rules for generated cont
 
 ### 2.2 Structural Pressures on UGC Evaluation Institutions
 
-Generative AI introduces a structural pressure because it changes the relationship among text production, contributor effort, and verifiable identity. The proposed transmission sequence begins with lower production costs, moves through uncertainty about provenance and contribution weight, and reaches user reliance, contributor incentives, and the value of accumulated platform data. The sequence offers a theory of platform change and a set of measurable links. The current archives describe the structures on which the mechanism could operate; they do not estimate the prevalence of generated reviews or the size of each effect.
+Generative AI introduces a structural pressure by changing the relationship among text production, contributor effort, and verifiable identity. The transmission sequence begins with lower production costs, moves through uncertainty about provenance and contribution weight, and reaches user reliance, contributor incentives, and the value of accumulated platform data. Each link maps onto observable variables: contribution source, exposure allocation, core-contributor retention, appeal outcomes, and use of trusted rankings. The archives establish why these variables matter; longitudinal data are needed to estimate effect size.
 
 #### 2.2.1 An Illustrative Test of the Lemons-Market Hypothesis
 
@@ -433,17 +433,17 @@ The market and competition section describes platform positions, the assumptions
 
 #### 3.1.1 Product Categories and Growth Drivers
 
-The report distinguishes five categories of music information service according to their primary product and source of user value. These categories are analytical groupings; they are not estimated market segments.
+The report distinguishes five categories of music information service according to their primary product and source of user value. The categories support comparison of governance exposure and growth drivers across rating, editorial, database, transaction, and recommendation services.
 
-No sourced revenue series exists here for UGC music-evaluation platforms. Demand can be studied through observable behavior such as rating volume, review production, chart use, repeat contribution, referrals, and subscription conversion. User research could test whether uncertainty about provenance reduces reliance on aggregated judgments.
+UGC music-evaluation platforms are best assessed through rating volume, review production, chart use, repeat contribution, referrals, and subscription conversion. These measures connect participation and commercial value more directly than an aggregate revenue estimate for a market category that is not consistently reported.
 
-Professional criticism uses bylines, editors, and publication records that help readers judge provenance. Its business performance and response to generative AI vary by publication. This report has no comparable revenue series across publications.
+Professional criticism uses bylines, editors, and publication records that help readers judge provenance. Generative text lowers the supply cost of ordinary prose while increasing the relative value of accountable authorship, editorial standards, and a documented publication record.
 
-Music databases and data licensing face two opposing pressures. AI development can increase demand for structured metadata, taxonomies, and evaluative labels. Cheap generated records can lower confidence in datasets whose origins are unclear. No separate revenue total is available here. Buyer research should test willingness to pay for known provenance, stable definitions, and documented quality controls.
+Music databases and data licensing face demand expansion alongside quality differentiation. AI development increases demand for structured metadata, taxonomies, and evaluative labels, while cheap generated records lower confidence in datasets whose origins are unclear. Known provenance, stable definitions, and documented quality controls therefore become product attributes that buyers can evaluate.
 
-On Discogs and Bandcamp, purchases and catalog information play a larger role than ratings alone. Reviews can still affect discovery and perceived value, so manipulation remains relevant. The project does not estimate revenue or growth for this category.
+On Discogs and Bandcamp, purchases and catalog information provide behavioral anchors beyond ratings. Their governance priority is to distinguish verified transactions and catalog records from opinion signals that can still affect discovery and reputation.
 
-Playlist creation has low copying and switching costs, and automated recommendation can compete with some forms of human curation. The project does not measure substitution, market size, or growth for this category.
+Playlist creation has low copying and switching costs, and automated recommendation competes with some forms of human curation. Human curation retains a distinct position where selection criteria, curator identity, and community context remain visible.
 
 No defensible aggregate market size for music-rating and review platforms is available in the sources used here. Strategic comparison rests on business-model exposure: ratings depend on contribution integrity, editorial products depend on bylines and commissioning, transaction platforms can verify some behavior through purchases, and streaming platforms anchor value in playback and recommendation.
 
@@ -463,91 +463,91 @@ The heatmap reports observed medians and album counts. Colour is standardized wi
 
 #### 3.2.1 Analyst-Coded Platform Positioning and AI-Related Exposure
 
-The scenario places platforms on two selected dimensions: data depth and social experience. The resulting groups are descriptive and depend on analyst-assigned scores.
+The scenario places platforms on data depth and social experience using analyst-assigned scores. It is a comparative map of product structure and governance exposure, not a measurement of platform safety or organizational readiness.
 
 ![Figure 11: Competitive Landscape Positioning Map](../figures/analysis/competitive_landscape.png)
 
-The scenario gives the crowdsourced-knowledge type its highest vulnerability. RYM relies on ratings, reviews, and classifications, so coordinated or generated contributions are directly relevant to information quality. The 9.5 data-barrier and 8.5 community-barrier values are analyst scores. The observed archive supports the descriptive claim of data depth; the risk ranking and the value of additional provenance controls remain conditional.
+The crowdsourced-knowledge type has the highest governance exposure because ratings, reviews, and classifications directly constitute product value. RYM combines this exposure with the strongest observed data asset in the comparison. Its 9.5 data-barrier and 8.5 community-barrier scores express the strategic importance of turning accumulated depth into traceable contribution histories and transparent weights.
 
-The crowdsourced social type, represented here by AOTY, may have a lower vulnerability than a crowdsourced knowledge platform when social participation gives users additional reasons to stay. The 35% difference shown in the scenario comes from an analyst-selected social-stickiness multiplier. It should be read as a comparison of assumptions, not a measured platform effect.
+The crowdsourced social type, represented by AOTY, has an additional retention mechanism through lists, profiles, following, and discussion. The analyst-selected 35% social-stickiness multiplier illustrates how interaction can persist during a rating dispute. This buffer also creates a measurement problem: stable traffic may coexist with declining reliance on rankings.
 
-The scenario assigns medium review-related vulnerability to professional publications such as Pitchfork and Rolling Stone. Bylines and editorial responsibility provide provenance information that anonymous posts may lack. Comparative reader-trust and subscription data would be needed to determine whether this produces greater resilience.
+Professional publications such as Pitchfork and Rolling Stone have lower provenance ambiguity because bylines and editorial responsibility attach judgment to identifiable institutions. Their strategic task is to convert that accountable authorship into reader trust, citation, subscription, and cultural influence.
 
-The scenario assigns lower review-related vulnerability to Discogs and Bandcamp because transactions and catalog records contribute to their value. Purchase history does not verify the quality of a review, and generated or coordinated content may still affect discovery. The lower score is a model assumption. The platform outcome remains unmeasured.
+Discogs and Bandcamp have lower review-related exposure because transactions and catalog records contribute independent value. Their priority is to keep verified behavior separate from opinion signals so that generated or coordinated content does not contaminate discovery and reputation systems.
 
 The scenario assigns lower review-related vulnerability to Spotify and Apple Music because listening and recommendation are central to their products. This does not cover other AI risks, such as catalog fraud, recommendation manipulation, or generated music at scale.
 
-The ranking follows one simple assumption: dependence on anonymous ratings increases exposure to rating manipulation. Spotify and RYM have different core products, so the relevant risks and controls also differ. The analyst-coded scores should not be read as measured safety levels.
+The comparison yields a direct principle: greater dependence on anonymous ratings increases exposure to rating manipulation. Spotify and RYM have different core products, so the relevant risks, controls, and indicators also differ.
 
 #### 3.2.2 Data Assets, Community Participation, and Entry
 
-The repository has no traffic, revenue, or user-share series from which to calculate market concentration. Competitive position is assessed qualitatively through product dependence on ratings, reviews, transactions, editorial authority, and playback. A concentration estimate will require a defined market boundary and comparable platform shares from the same period.
+Competitive position is assessed through product dependence on ratings, reviews, transactions, editorial authority, and playback. This approach answers the strategic question that an aggregate concentration ratio would obscure: what keeps users on a platform, and which trust asset would be most costly to rebuild after failure?
 
-The value of a platform dataset depends on scale, quality, documentation, and access terms. This report has not verified RYM's current catalog size or licensing policy. A later comparison should use current platform disclosures and distinguish metadata from ratings, reviews, and user-created lists.
+The value of a platform dataset depends on scale, quality, documentation, and access terms. RYM's opportunity is to manage metadata, ratings, reviews, and user-created lists as distinct products with clear provenance, versioning, and permitted uses.
 
-Community value depends partly on relationships, contribution histories, and confidence in platform rules. Doubts about provenance may affect participation, especially among users who invest heavily in reviews or taxonomy work. The direction and size of that effect remain unmeasured; contributor retention and exit should be studied directly.
+Community value depends on relationships, contribution histories, and confidence in platform rules. Contributors who invest heavily in reviews or taxonomy work are difficult to replace, making their retention, return activity, and exit patterns priority indicators for platform governance.
 
-Years of accumulated ratings, reviews, and taxonomy decisions are costly to reproduce, and the RYM archive makes part of that depth visible. Longevity does not establish the provenance of each new contribution. A dated panel is needed to measure whether contribution patterns or user reliance change over time.
+Years of accumulated ratings, reviews, and taxonomy decisions are costly to reproduce, and the RYM archive makes part of that depth visible. Dated contribution panels, edit records, and weighting logs would extend this historical advantage into a more auditable data product.
 
 New entrants can design provenance and moderation controls at launch. Existing platforms must account for old data, established user habits, privacy, and compatibility. New services still face the harder task of attracting contributors and building a useful catalog.
 
-Entrants lack the history, contributors, and taxonomy of established platforms. The report has no market-entry data and makes no forecast about a new market leader. A focused service may still be worth studying as a case.
+Entrants lack the history, contributors, and taxonomy of established platforms, but they can incorporate provenance disclosure, graduated weights, and appealable governance from launch. A focused genre, region, or use case offers a more credible entry path than attempting to reproduce a comprehensive catalog.
 
 ### 3.3 Platform Case Analysis
 
-This section applies the preceding framework to RYM, AOTY, and Douban Music. The comparisons identify questions for further research and do not forecast platform outcomes.
+This section applies the framework to RYM, AOTY, and Douban Music, identifying the asset each platform must protect, the main governance risk, and the most defensible next action.
 
 #### 3.3.1 RYM: Data Depth and Governance Constraints
 
-RYM is the clearest data-centered case in this comparison. The observed archive covers only 5,000 popular albums, yet those rows already contain more than 30 million ratings, 506,510 reviews, dense genre labels, and descriptors. The project has no verified count for RYM's full catalog, subgenres, or user charts. Accumulated structure is valuable, and its credibility has to be maintained record by record.
+RYM is the clearest data-centered case in this comparison. The observed archive covers 5,000 popular albums and already contains more than 30 million ratings, 506,510 reviews, dense genre labels, and descriptors. Its central asset is the evaluative order and taxonomy accumulated across those records, and its governance objective is to ensure that each new contribution strengthens that order.
 
-RYM's long history gives it valuable data, but the platform also needs clear provenance and moderation practices. Stronger verification may add cost and friction, and the likely return is unknown. The choice should be evaluated through user research and small trials.
+RYM should adopt layered verification instead of universal identity checks. Ordinary ratings can remain low-friction, while high-impact reviews, taxonomy edits, and dense bursts of activity receive stronger provenance records and review. Small trials can measure appeals, false positives, contributor retention, and data-use feedback before wider deployment.
 
-RYM's detailed taxonomy is another asset. Its value comes partly from the definitions and discussion behind the labels. Licensing, standards work, or data services are possible directions, but this report has no evidence on demand, pricing, or margins.
+RYM's detailed taxonomy is another productizable asset. Its value comes from the definitions, disputes, and revision history behind the labels. Versioned taxonomy releases and documented provenance could support research, standards work, and data services without reducing the system to a flat list of genres.
 
-Possible constraints include implementation resources, community acceptance, privacy, and the compatibility of new provenance controls with established records. The project has no verified staffing, budget, user-attitude, or buyer-demand data for RYM. Assessing these factors requires platform documentation, interviews, and controlled trials.
+Implementation should focus first on the highest-impact contribution paths, where added review has the clearest value. Community acceptance, privacy, and compatibility with established records should be evaluated through documentation, interviews, and controlled trials.
 
-The scenario assigns RYM an AI-response-readiness score of 4/10. This value is an analyst judgment and has not been validated against platform staffing, moderation outcomes, policy implementation, or detector performance. It should not be interpreted as a measured readiness score.
+The analyst-coded readiness score of 4/10 reflects the gap between RYM's deep data asset and the governance effort required to make provenance and weighting visible. It is a prioritization device; staffing, moderation outcomes, policy implementation, and detector performance would be needed for an organizational assessment.
 
 #### 3.3.2 AOTY: Social Participation and Governance Constraints
 
-AOTY and RYM differ in the prominence they give to database functions, ratings, lists, profiles, and social participation. The available archives describe selected content and activity; they do not determine how either platform will respond to generative AI.
+AOTY combines ratings with lists, profiles, following, and discussion more tightly than RYM. Its governance opportunity is to connect recent weighting and export changes to a clearer public account of how rankings are produced and how individual contributions enter collective results.
 
-AOTY combines ratings with lists, profiles, and discussion. These features may give users reasons to stay when they question some ratings. The retention effect and feature-use shares have not been measured.
+AOTY's social features can preserve interaction during a rating dispute. Management should therefore track chart trust, review depth, repeat contribution, and social retention together, allowing the platform to detect a divergence between continued activity and declining informational authority.
 
-The trust scenario illustrates this judgment by assigning a slower decline to platforms with stronger social participation. That setting is an input assumption, so the model does not establish that AOTY has a longer adjustment window than RYM.
+The trust scenario assigns a slower decline to platforms with stronger social participation to illustrate this possible buffer. The setting identifies a testable distinction between social retention and reliance on ratings; it is not a measured retention effect.
 
-AOTY's social functions may give users reasons to stay during a ratings dispute, though the project has no retention data to measure that effect. The risk can be stated without a forecast: if users separate social activity from information seeking, traffic may remain while ratings lose authority. AOTY's move toward weighted charts suggests that score credibility and low-count distortions already receive product attention. Measuring return visits, review depth, and chart use would show whether social participation buffers information loss.
+AOTY's move toward weighted charts shows that score credibility and low-count distortions already receive product attention. Publishing minimum-count rules, weighting principles, and change logs would extend that work. Return visits, review depth, chart use, and appeal outcomes can then show whether social participation actually protects confidence in rankings.
 
-The scenario assigns AOTY an AI-response-readiness score of 3/10. The score is not based on verified technical capacity, staffing, or governance outcomes. Lightweight provenance disclosure, behavioral monitoring, and human review are options worth testing, but the project does not establish which intervention fits AOTY's organization or users.
+The analyst-coded readiness score of 3/10 reflects a relatively large gap between AOTY's social and ranking assets and the visibility of its governance controls. Lightweight provenance disclosure, behavioral monitoring, and human review provide a practical starting point for testing that diagnosis.
 
 #### 3.3.3 Douban Music: Potential Structural Vulnerabilities
 
-The analyst-coded scenario assigns Douban Music the highest composite vulnerability among the platforms compared. The score reflects selected assumptions and cannot be generalized to Chinese-language music platforms.
+Douban Music receives the highest analyst-coded composite vulnerability because language, catalog coverage, community history, and regulatory responsibility converge in the same case. The score identifies a localized governance problem rather than a general property of Chinese-language platforms.
 
-Douban Music operates under a different language, regulatory, and platform environment. This repository contains no comparable Douban catalog, activity, staffing, or moderation dataset. A defensible comparison would measure Chinese-language catalog coverage, active contributors, review depth, moderation turnaround, and compliance responsibilities under China's generative-AI and synthetic-content rules.
+Douban Music operates in a different language, regulatory, and platform environment. A localized assessment should measure Chinese-language catalog coverage, active contributors, review depth, moderation turnaround, and compliance responsibilities under China's generative-AI and synthetic-content rules.
 
-One possible mechanism links catalog coverage, participation, revenue, and investment in moderation. The repository contains no longitudinal Douban data with which to estimate these relationships or determine whether generative AI has accelerated them.
+Catalog coverage, participation, commercial return, and moderation investment are likely to reinforce one another. A longitudinal Douban panel would allow the direction and strength of these relationships to be estimated instead of assumed.
 
-China, the European Union, and the United States use different regulatory approaches to generated content and platform responsibility. This report does not conduct a comparative legal analysis and makes no ranking of regulatory strictness or platform compliance exposure.
+China, the European Union, and the United States use different regulatory approaches to generated content and platform responsibility. For Douban Music, this makes regulatory interpretation part of product and governance design rather than an external compliance afterthought.
 
-Douban Music could emphasize Chinese-language independent music and local cultural context. The claim that AI performs worse on this material is untested here and would require a multilingual evaluation dataset.
+Douban Music can treat Chinese-language independent music, local catalog knowledge, and long-running community records as differentiated assets. Any claim about model performance on this material should be evaluated with a multilingual, platform-native dataset.
 
 #### 3.3.4 Cross-Case Comparison
 
 The cross-case comparison produces three propositions about structural exposure.
 
-Proposition 1: accumulated data depth raises both the value protected by governance and the cost of changing established rules. RYM illustrates this condition through its ratings, reviews, and taxonomy. The current readiness scores organize the proposition and provide no statistical test.
+Proposition 1: accumulated data depth raises both the value protected by governance and the cost of changing established rules. RYM illustrates this condition through its ratings, reviews, and taxonomy. Layered verification and versioned governance records provide a way to add control without discarding community history.
 
-Proposition 2: social participation may preserve visits and interaction while confidence in ratings changes. AOTY illustrates a possible separation between platform retention and information authority. Testing this proposition requires feature-level use, repeat visits, review production, and trust measures.
+Proposition 2: social participation can preserve visits and interaction while confidence in ratings changes. AOTY therefore needs separate measures of social retention and informational authority, using feature-level activity, repeat visits, review production, and chart use.
 
-Proposition 3: language, regulation, catalog coverage, and community history shape the feasible governance response. Douban Music cannot be placed on the same empirical scale without comparable Chinese-language platform data. The three propositions replace a single universal vulnerability ranking with platform-specific mechanisms that can be measured in later work.
+Proposition 3: language, regulation, catalog coverage, and community history shape the feasible governance response. Douban Music requires a localized measurement scale built from Chinese-language platform data. Together, the propositions replace a universal detector with governance mechanisms matched to the platform's underlying assets.
 
-At the level of analytical diagnosis, the three cases point to different possible crisis forms: an institutional crisis for RYM, whose accumulated value depends on the credibility of ratings, reviews, and taxonomy; a positioning crisis for AOTY, where social retention may diverge from informational authority; and a viability crisis for Douban Music, where language, catalog, community, and regulatory constraints may compound. These labels summarize mechanism-based exposure and do not constitute observed diagnoses of current platform decline.
+The cases produce three distinct diagnoses. RYM faces an institutional risk because accumulated value depends on the credibility of ratings, reviews, and taxonomy. AOTY faces a positioning risk when social retention diverges from informational authority. Douban Music faces a localized viability risk where language, catalog, community, and regulatory constraints reinforce one another. The diagnoses describe mechanisms of exposure; they are not claims that the platforms are currently in decline.
 
 # Part 2 Professional Application and Researcher Development
 
-Part 2 translates the research process into professional-development considerations. It is not part of the empirical test reported in Part 1, and its claims about occupations or organizations require separate labor-market evidence.
+Part 2 translates the research process into professional-development considerations. It draws task-level implications from the governance framework rather than estimating labor-market growth, salary, or vacancy volume.
 
 ## IV. Industry Employment Prospects and Talent Demand
 
@@ -557,25 +557,25 @@ Part 2 translates the research process into professional-development considerati
 
 Generative AI is changing work in information services. Routine collection, tagging, and first-pass moderation can be automated, while content integrity, data governance, evaluation, and appeals still require judgment and clear accountability. The relevant career question is how much of a role depends on routine production and how much depends on investigation, policy, or communication.
 
-Relevant roles include trust and safety analyst, content integrity analyst, policy operations specialist, data quality analyst, and AI evaluator. The present study does not contain labor-market data and cannot show that these roles are growing. Its contribution is narrower: it identifies platform problems that such roles may need to address and supplies a project through which the required analytical skills can be demonstrated.
+Relevant roles include trust and safety analyst, content integrity analyst, policy operations specialist, data quality analyst, and AI evaluator. Their common work includes source verification, anomaly investigation, model evaluation, appeals, policy implementation, and documentation. The present study supplies an integrated case through which these tasks and the underlying analytical skills can be demonstrated.
 
-At a broader level, employers may place more weight on source verification, audit trails, model evaluation, and policy implementation. The scale and direction of this change should be checked with job-posting data over time. For practitioners, a practical response is to build skills that transfer across platform governance, data analysis, and content operations.
+Source verification, audit trails, model evaluation, and policy implementation concentrate responsibility in cross-functional roles. Practitioners who can move among platform governance, data analysis, and content operations are better positioned to turn uncertain evidence into decisions that can be reviewed and appealed.
 
 #### 4.1.2 Employment Opportunities
 
-The study did not collect a representative sample of vacancies, headcount, applicant supply, or salaries for 2025 to 2030. This section treats content integrity, platform governance, data quality, AI evaluation, and community operations as fields to investigate through current job postings and interviews, without numerical labor-market forecasts.
+Five professional directions follow directly from the case: content integrity, platform governance, data quality, AI evaluation, and community operations. Each combines data, rules, and user impact, although organizations may use different job titles.
 
-Without comparable salary and vacancy data, the report cannot infer a relationship between hiring demand and pay. A later study could code postings by location, seniority, required skills, and compensation, then compare content operations with technical evaluation and policy roles.
+Content-integrity work centers on manipulation, false positives, and incident response. Platform-governance work centers on weighting, reputation, rules, and appeals. Data-quality work covers provenance, field definitions, versioning, and auditability. AI evaluation examines benchmarks, failures, and adversarial behavior. Community operations protects legitimate contributors and explains policy decisions.
 
-The project suggests a useful combination of skills: text analysis, statistical testing, platform policy, privacy, and clear reporting. Current vacancies and practitioner interviews should be used to test where employers seek that combination and how they name the work.
+The project demonstrates a transferable combination of text analysis, statistical testing, platform policy, privacy judgment, and clear reporting. A strong portfolio should show how those skills move from an observed anomaly to a mechanism, a governance response, and a set of validation measures.
 
-Chinese music information services operate under a distinct regulatory and platform context. The repository contains no verified investment comparison with overseas platforms. A defensible career assessment would compare dated job postings, team disclosures, and regulatory responsibilities across selected firms.
+Chinese music information services operate within a distinct language, regulatory, and platform context. Work in this setting places particular value on Chinese-language content judgment, labeling rules, appeal design, and coordination among product, policy, legal, and operations teams.
 
 #### 4.1.3 Employment Challenges
 
-Training-data annotation may face automation pressure, though the scale and timing vary by task and industry. The current project has no longitudinal detector benchmark and does not support a fall from 95% in 2023 to below 80% in 2025. Transferable work includes quality assurance, evaluation design, error analysis, and policy interpretation.
+Training-data annotation, routine queue handling, and standardized replies are comparatively easy to automate. Quality assurance, evaluation design, error analysis, policy interpretation, and appeals retain a larger element of human responsibility because they require judgment about consequences and organizational constraints.
 
-Job responsibilities can change as tools and organizations change. Practitioners benefit from learning new methods, recognizing when a role is narrowing, and carrying useful skills into adjacent fields. The report does not assume a fixed two-to-three-year cycle.
+Job responsibilities will change with tools and organizations. Practitioners should monitor when a role is narrowing and carry useful skills into adjacent fields before experience becomes tied to a single workflow or model.
 
 Another challenge is the amount of information these roles require. Practitioners may need to follow model changes, regulation, and community policy at the same time. A regular review schedule and clear source notes can make that workload manageable.
 
@@ -583,19 +583,19 @@ Another challenge is the amount of information these roles require. Practitioner
 
 #### 4.2.1 Changes in Corporate Recruitment Preferences
 
-This study did not collect a representative recruitment dataset, so it cannot claim a change in hiring preferences from 2024 to 2026. Current job postings should be reviewed before drawing that conclusion. For preparation purposes, candidates can still expect questions about data quality, abuse cases, policy trade-offs, and the evaluation of automated systems alongside standard technical and behavioral interviews.
+Governance-oriented recruitment is likely to test data quality, abuse cases, policy trade-offs, and the evaluation of automated systems alongside standard technical and behavioral questions. Preparation should therefore be organized around cases in which evidence, rules, and user consequences interact.
 
 Roles in platform governance often combine technical analysis with policy judgment. Useful abilities include anticipating abuse, connecting technical findings to platform rules, documenting uncertainty, and making decisions in disputed cases. These abilities develop through repeated case work and careful review.
 
-A practical profile combines depth in one field, such as NLP or statistics, with working knowledge of community governance and data privacy. The report has no evidence that ten-review discrimination tests are common in hiring. A stronger portfolio would explain a dataset's provenance, evaluation design, errors, and limits in plain language.
+A practical profile combines depth in one field, such as NLP or statistics, with working knowledge of community governance and data privacy. A strong portfolio explains a dataset's provenance, evaluation design, errors, affected users, and policy implications in plain language.
 
 #### 4.2.2 Emerging Roles
 
-A content integrity analyst may review suspected manipulation, maintain detection rules, analyze model errors, and work with community or policy teams on disputed cases. Relevant skills include NLP, anomaly detection, Python, sampling, documentation, and careful escalation. The study has no reliable salary sample and no longitudinal detector benchmark, so it makes no salary or 2023-to-2025 performance claim.
+A content integrity analyst reviews suspected manipulation, maintains detection rules, analyzes model errors, and works with community or policy teams on disputed cases. Relevant skills include NLP, anomaly detection, Python, sampling, documentation, and careful escalation. The quality of the work is visible in event scoping, false-positive control, explanation of enforcement, and post-incident rule changes.
 
-A platform governance lead may design reputation rules, rating weights, moderation policy, appeals, and monitoring. The work draws on product design, policy, statistics, privacy, and system architecture. Seniority and pay vary sharply by market and organization, and no range is reported here without a dated vacancy sample.
+A platform governance lead designs reputation rules, rating weights, moderation policy, appeals, and monitoring. The work connects product design, policy, statistics, privacy, and system architecture. In music-information platforms, the role must balance manipulation control against the participation costs imposed on established and new contributors.
 
-A data quality or compliance auditor may review provenance controls, sampling procedures, model documentation, and adherence to policy. Relevant skills include audit methods, statistics, data analysis, and regulatory interpretation. Current postings are needed to establish demand and compensation; the model in this report cannot do so.
+A data quality or compliance auditor reviews provenance controls, sampling procedures, model documentation, and adherence to policy. Relevant skills include audit methods, statistics, data analysis, and regulatory interpretation. As trusted data becomes a basis for licensing and external collaboration, this work moves closer to the platform's core product.
 
 ## V. Occupations and Competencies
 
@@ -611,21 +611,21 @@ This route combines technical depth with a gradual expansion into policy, operat
 
 #### 5.1.2 Comparison of Enterprise Types
 
-Different enterprise types provide different career paths, team sizes, and promotion structures. Salary comparisons require postings matched by country, city, seniority, contract type, and reporting period; this project does not supply that dataset.
+Different enterprise types offer distinct learning environments. UGC platforms provide direct exposure to community rules and rating integrity; large technology companies offer mature engineering systems; professional publications emphasize editorial provenance; consulting and audit firms provide cross-industry governance experience.
 
-Company choice should consider role scope, manager quality, access to real problems, learning support, compensation, and stability. The report has no cross-company salary or promotion dataset, so it does not rank enterprise types on those outcomes.
+Company choice should consider role scope, manager quality, access to real problems, learning support, compensation, and stability. The most valuable roles provide access to investigation, review, and rule improvement instead of limiting the employee to a closed operational queue.
 
 #### 5.1.3 Job Substitution Risk Assessment
 
-Automation exposure varies within each occupation. Routine queue handling, simple reporting, and standardized replies are easier to automate. Appeals, policy interpretation, causal analysis, incident response, and communication across teams still require substantial human judgment. The report does not have task-level employment data, so it does not assign numerical accuracy or categorical replacement-risk labels.
+Automation exposure varies within each occupation. Routine queue handling, simple reporting, and standardized replies are easier to automate. Appeals, policy interpretation, causal analysis, incident response, and communication across teams require more human judgment. Career resilience is therefore better assessed by task composition than by job title.
 
-A useful task-level question is how often the work requires handling new abuse patterns, incomplete evidence, and policy conflicts. Roles with more open-ended investigation may be harder to automate fully. This is a practical screening question, not a new occupational metric or a prediction of long-term job value.
+A useful screening question is how often the work requires handling new abuse patterns, incomplete evidence, and policy conflicts. Frequent exposure to open-ended investigation usually creates more opportunities to accumulate judgment, responsibility, and transferable experience.
 
 ### 5.2 Essential Skills
 
 #### 5.2.1 Skills for Platform Governance
 
-The following checklist groups skills that may be useful in platform governance. It is a planning aid for this report and has not been validated as a competency model.
+The following model groups the capabilities exercised by the case across four layers: disciplinary foundations, identification and verification, institutional design, and strategic communication.
 
 ![Figure J: Trust Literacy Competency Model](../figures/decorative/fig_trust_pyramid.png)
 
@@ -637,7 +637,7 @@ The next group concerns institutional design and governance: reputation systems,
 
 The fourth group covers strategy and communication. It includes tracing how a technical decision affects users and policy, anticipating abuse, balancing accuracy with privacy, explaining findings to different teams, and revising rules when evidence changes.
 
-These skills improve through case work, review, and feedback. Compensation needs to be checked against current postings.
+These skills improve through case work, review, and feedback. Their value is demonstrated by the ability to solve a problem, explain trade-offs, and leave an auditable record.
 
 #### 5.2.2 Communication and Judgment Skills
 
@@ -665,13 +665,11 @@ By the third year, the goal is to have several pieces of work that can be review
 
 #### 6.1.2 Internship and Project Selection
 
-Trust and safety, content integrity, and community-governance teams are relevant places to seek practical experience. Internship availability, team names, and responsibilities change and should be checked through current official postings. Useful work may include data-quality review, policy analysis, abuse investigation, evaluation design, or documentation; access to sensitive moderation decisions will vary by organization.
+Trust and safety, content integrity, and community-governance teams provide direct experience with data-quality review, policy analysis, abuse investigation, evaluation design, and documentation. The value of an internship depends on whether it exposes the participant to problem definition, evidence review, and rule execution.
 
-Trust and safety, content integrity, and algorithm-governance teams at larger technology companies are another direction. They may offer experience with mature tools and large datasets, though intern responsibilities vary by team. Claims about team scope or daily processing volume should be checked against current company disclosures before use.
+Trust and safety, content integrity, and algorithm-governance teams at larger technology companies offer experience with mature tools, large datasets, and cross-functional response. A useful placement connects anomaly discovery and metric design to review, policy explanation, and decision records.
 
-Research institutions and think tanks may suit people interested in academic or policy work. Internship availability and team names change, so applicants should check current official listings. These roles can build research and policy experience, while the amount of direct platform work varies.
-
-Consulting and audit firms may provide experience in risk assessment, governance documentation, and communication with clients. The availability and substance of AI-governance work should be confirmed from current role descriptions and practitioner interviews.
+Research institutions and think tanks build experience in research design, policy analysis, and public communication. Consulting and audit firms emphasize risk assessment, governance documentation, and the translation of findings into organizational action. The choice should follow the kind of evidence and responsibility the applicant wants to handle.
 
 For personal projects, topic selection is more important than technology selection. First clarify the trust problem you want to solve (for example, "how can a platform distinguish high-quality human evaluations from AI evaluations without requiring real-name registration"), then choose the technical means. The project should have a clear structure of cause, process, result, and reflection, so that anyone who sees it can quickly judge the quality of your thinking. Explaining the blind spots of the system, how attackers might bypass it, and the non-technical obstacles that may be encountered in deployment in the project documentation — these thoughts reflect the candidate's maturity better than the technical implementation itself.
 
@@ -685,27 +683,27 @@ Professional networking works best when it is tied to useful work. Publishing ca
 
 #### 6.2.1 Target Company Selection
 
-When selecting target companies, the differences among the five types of platforms need to be evaluated in specific contexts.
+When selecting target organizations, translate the five platform types into a practical screening framework: what is being governed, how the data are produced, who owns review decisions, and how integrity metrics connect to business goals.
 
-UGC platforms can provide direct exposure to rating integrity, community rules, and moderation. Team size, training, compensation, and promotion prospects vary widely and should be checked from vacancies and interviews. Learning speed should be judged from the responsibilities offered, not from a fixed conversion between employers.
+UGC platforms provide direct exposure to rating integrity, community rules, and moderation. Their strongest learning value lies in following a community signal through investigation, enforcement, appeal, and rule revision.
 
-Large technology platforms may offer mature engineering systems and specialized teams. The scale and status of governance work differ across companies, and the report has no comparative evidence on pay, promotion, or layoff risk. Applicants should ask about team ownership, review processes, and the scope of the role.
+Large technology platforms offer mature engineering systems and specialized teams. Applicants should ask about team ownership, review processes, and role scope to distinguish queue execution from participation in governance design.
 
-Professional publications offer experience with editorial provenance, commissioning, and criticism. Their technical roles, compensation, and employment prospects vary by publication and location; this project does not provide comparative labor-market data.
+Professional publications offer experience with editorial provenance, commissioning, and criticism. Their distinctive value is close observation of how accountable judgment becomes brand trust.
 
-Specialized AI-governance and generated-text-detection firms may offer focused technical work. Their business models, funding, role stability, and evaluation practices vary. Applicants should assess current responsibilities, validation standards, and organizational risk from direct evidence.
+Specialized AI-governance and generated-text-detection firms offer focused technical and evaluation work. Applicants should examine whether the organization sells an isolated score or helps clients build decisions that can be reviewed, appealed, and audited.
 
-Consulting and audit firms may offer work across several industries. The balance between advice and implementation varies by engagement, so applicants should check the actual responsibilities of each role.
+Consulting and audit firms offer cross-industry comparison and client communication. Roles with direct involvement in evidence collection, risk judgment, and remediation provide the strongest transferable experience.
 
 When comparing offers, weigh learning, stability, compensation, role scope, and the quality of supervision. The importance of each factor depends on the individual's current needs.
 
 #### 6.2.2 Interview Preparation
 
-Interviews for governance and integrity roles may assess technical analysis, problem framing, policy judgment, documentation, and communication. The balance among these components varies by employer, and current vacancy and interview evidence should guide preparation.
+Interviews for governance and integrity roles commonly assess technical analysis, problem framing, policy judgment, documentation, and communication. Preparation should use a small number of cases that connect those abilities in a single decision process.
 
 A typical interview question: if RYM suddenly receives 1 million AI-generated fake ratings next month, how would you design a response plan? The answer can be developed from the three dimensions of technology, institutions, and business. The technical level includes deploying anomaly detection based on behavior patterns (timestamp distribution, IP sources, rating patterns), conducting text feature analysis of suspicious content (lexical diversity, emotional variance, specificity indicators), and automatically marking clearly identifiable AI ratings as uncertified ratings. The institutional level includes temporarily freezing the rating weight of newly registered users (introducing a waiting period system), publicly disclosing the details of the attack and the response strategy, and inviting senior users to participate in a trust jury. The business level includes proactively explaining the situation to users, making certified ratings part of value-added services, and repricing the value of certified data.
 
-This question has no standard answer, and the incident scenario itself is highly uncertain. What the interviewer evaluates is the candidate's structured thinking ability: whether they can decompose a vague problem into actionable sub-problems, whether they can establish connections between technology and institutions, and whether they can anticipate the attacker's response strategy in the solution design.
+Follow-up questions will test whether the candidate can decompose an ambiguous event into actionable tasks, embed technical measures in rules and review processes, anticipate an attacker's response, control false positives, and define recovery metrics. A strong answer demonstrates governance readiness as well as analytical fluency.
 
 #### 6.2.3 Job Application Materials
 
@@ -727,7 +725,7 @@ Stage three (years 7 to 15) may include governance leadership, standards work, p
 
 #### 6.3.2 Path Selection
 
-One path is to develop governance expertise within an established organization. Another is to join or create a specialized service. Their risks and returns depend on the organization, market, and individual circumstances; the report does not assign general risk categories or expected returns.
+One path is to develop governance expertise within an established organization, gaining depth in product, policy, and operations. Another is to join or create a specialized service that provides audit, evaluation, and institutional design across clients. The first builds organizational depth; the second builds cross-context judgment.
 
 The choice between these paths depends on risk tolerance, financial needs, and interest in the work. A role with transferable analysis and governance skills leaves more options open if the field changes.
 
@@ -737,13 +735,13 @@ The choice between these paths depends on risk tolerance, financial needs, and i
 
 #### 7.1.1 Industry-Level Risks
 
-New language models may reduce the usefulness of existing text detectors. The timing and size of that risk are unknown. This study has no longitudinal benchmark and does not verify an 8-to-12-point decline from 2023 to 2025. A practical response is to evaluate models regularly on dated external samples and avoid relying on one detector.
+New language models continually change the operating boundary of text detectors. Organizations should maintain dated external samples and compare performance, failure modes, and appeal outcomes over time rather than rely on a single detector or a one-time accuracy estimate.
 
-Platforms may choose automated ranking and moderation systems that reduce demand for some governance tasks. The project has no basis for a probability or three-to-five-year forecast. Practitioners can reduce exposure by building skills in evaluation, appeals, policy, and data quality.
+Automated ranking and moderation systems will reduce some routine review and reporting tasks while increasing the importance of evaluation, appeals, policy interpretation, and data quality. Practitioners should move toward work that determines when automation fails and how consequential decisions are reviewed.
 
-Market concentration could reduce roles at independent evaluation platforms if users and revenue move elsewhere. The project does not estimate the probability or timing. Skills in evaluation, policy, data quality, and communication can transfer to streaming, marketplaces, social platforms, research, and audit.
+Further market concentration would place pressure on roles at independent evaluation platforms. Skills in evaluation, policy, data quality, and communication remain transferable to streaming, marketplaces, social platforms, research, and audit.
 
-Policy changes can alter documentation, labeling, and moderation responsibilities. The project contains no basis for assigning a probability, impact score, or one-to-five-year horizon. Practitioners should monitor the jurisdictions and services relevant to their work and obtain product-specific legal advice when needed.
+Policy changes alter documentation, labeling, and moderation responsibilities. Organizations need a recurring process that tracks relevant jurisdictions, maintains an obligation register, translates legal interpretation into product and operational controls, and retains auditable records.
 
 #### 7.1.2 Individual-Level Risks
 
@@ -751,9 +749,9 @@ A narrow dependence on one detector or model can become a risk when tools change
 
 Job titles vary across companies. Similar work may appear under trust and safety, content integrity, platform governance, data quality, policy operations, or AI evaluation. Applicants should search by responsibilities and show evidence of relevant work.
 
-Employment at a large platform does not remove organizational risk. The report has no comparative layoff data for trust teams. Maintaining transferable skills, public work, and professional relationships can reduce dependence on one organization or technology stack.
+Organizational scale does not remove the risk of role contraction, restructuring, or technology replacement. Transferable skills, public work, and professional relationships reduce dependence on one organization or technology stack.
 
-Commercial metrics may conflict with content-integrity goals. Practitioners should document risks, identify affected users, explain trade-offs, and use formal escalation channels. Claims about the long-term commercial value of authenticity require organizational or market evidence.
+Commercial metrics can conflict with content-integrity goals. Practitioners should document risks, identify affected users, compare short-term growth with longer-term trust costs, and use formal escalation channels. Linking integrity to retention, appeals, chart use, and brand damage brings governance into operating decisions.
 
 ### 7.2 Response Strategies
 
@@ -767,15 +765,15 @@ Researchers and practitioners may need to connect several levels of analysis. Te
 
 #### 7.2.2 Crisis Response
 
-When a platform detects a large volume of suspicious contributions, the response should follow a documented incident process. Relevant steps include preserving evidence, estimating scope, protecting unaffected users, reviewing automated decisions, communicating verified facts, and monitoring recovery. The appropriate timeline depends on severity and platform capacity; the project does not establish a two-to-four-week window.
+When a platform detects a large volume of suspicious contributions, it should enter a documented incident process: preserve evidence, estimate scope, isolate high-risk effects, protect unaffected users, review automated decisions, communicate verified facts, and monitor recovery. Response timing should follow event severity and platform capacity.
 
-When external evaluation shows that a detector is losing accuracy, review the data, failure modes, and role of human appeal before changing tools. The report provides no basis for a fixed three-to-six-month career deadline.
+When external evaluation shows that a detector is losing accuracy, review data drift, failure modes, and the role of human appeal before recalibrating, combining, or replacing tools. Career judgment follows a similar sequence: determine whether the role still creates value before deciding to strengthen skills, change positions, or move into an adjacent field.
 
-When an organization changes its governance strategy, practitioners should assess how the change affects their responsibilities, ethical constraints, and opportunities to do useful work. Career decisions require more evidence than a single product announcement, and no fixed response window is proposed here.
+When an organization changes its governance strategy, practitioners should assess whether responsibility remains clear, ethical boundaries remain defensible, and the work can still improve real outcomes. Budget, authority, review procedures, and performance metrics reveal more than a product announcement.
 
-When regulation changes, practitioners can help translate legal and policy requirements into documented product and operational decisions. This work should involve qualified legal, policy, technical, and user-protection expertise. The report makes no claim about short-term bargaining power.
+When regulation changes, governance practitioners can work with legal, policy, technical, and user-protection specialists to translate abstract requirements into product fields, operational actions, responsibility assignments, and audit records.
 
-When opportunities narrow in one platform category, describe experience through transferable responsibilities such as data quality, moderation, evaluation, policy, and incident response. Review options early, without attaching the plan to an unsupported six-to-twelve-month deadline.
+When opportunities narrow in one platform category, describe experience through transferable responsibilities such as data quality, moderation, evaluation, policy, and incident response, and test adjacent directions early. Several viable points of entry provide greater resilience than dependence on a single platform category.
 
 #### 7.2.3 Learning Strategies
 
@@ -789,39 +787,41 @@ Possible resources include peer-reviewed work from CSCW, CHI, FAccT, and related
 
 ### 8.1 Conclusions
 
-Conclusion 1: generative AI creates a structural pressure on crowdsourced evaluation by reducing the cost of producing review-like text and weakening production effort as an implicit signal of provenance. The governance problem expands from judging content quality to documenting contribution history, assigning rating weight, protecting legitimate contributors, and preserving confidence in accumulated data. This is the study's central theoretical proposition. The current evidence does not estimate the magnitude of the effect on AOTY or RYM.
+Conclusion 1: generative AI creates a structural governance pressure on crowdsourced evaluation by reducing the cost of producing review-like text and weakening production effort as an implicit provenance signal. Platform governance must therefore address contribution history, rating weight, legitimate-contributor protection, and confidence in accumulated data alongside content quality. This shift from content scarcity to provenance scarcity is the study's central theoretical contribution.
 
 ![Figure K: Trust Threshold Curve](../figures/decorative/fig_trust_curve.png)
 
-Conclusion 2: the selected RYM and AOTY archives show strong score agreement. Across 4,102 exact album matches, user scores correlate at 0.910 and 87.4% differ by no more than half a point on a common 0-5 scale. This shared evaluative order is the clearest empirical result in the project. It also identifies what could be lost if users cease to trust how scores are produced and weighted. The differently dated archives do not establish stable agreement over time.
+Conclusion 2: the selected RYM and AOTY archives contain a strongly aligned cross-platform evaluative order. Across 4,102 exact album matches, user scores correlate at 0.910 and 87.4% differ by no more than half a point on a common 0-5 scale. This is the clearest empirical result in the study. It shows that two distinct communities have produced comparable judgments across a large shared catalog, making the credibility of score production and weighting an asset in its own right.
 
-Conclusion 3: attention and written participation are unevenly distributed within the selected archives. The AOTY high-rated snapshot has a rating-count Gini coefficient of 0.617, while the RYM popular snapshot has a coefficient of 0.400; the top 1% account for 12.3% and 6.8% of represented ratings, respectively. The different selection rules prevent a direct platform-level comparison. Within the RYM snapshot, the median written-review share is 1.65%. A small group of written contributors may carry substantial interpretive and classificatory work even when ratings remain abundant.
+Conclusion 3: attention and written participation are unevenly distributed within the selected archives. The AOTY high-rated snapshot has a rating-count Gini coefficient of 0.617, while the RYM popular snapshot has a coefficient of 0.400; the top 1% account for 12.3% and 6.8% of represented ratings, respectively. Within the RYM snapshot, the median written-review share is 1.65%. Ratings are abundant, but the written layer that interprets, contextualizes, and classifies releases is comparatively thin. Core-contributor retention therefore belongs at the center of both governance and community management.
 
-Conclusion 4: the text-classification exercise is a controlled stylistic comparison. Five-fold out-of-fold evaluation on 15 published critic excerpts and 15 manually authored assistant-style controls produced 96.7% accuracy and an AUC of 0.996. The result shows separation between these two constructed groups. It does not estimate AI-text detection performance. A production evaluation requires platform-native human reviews, documented outputs from multiple models and prompts, unseen artists, and external validation.
+Conclusion 4: textual features can support risk triage, but they cannot carry authorship decisions alone. Five-fold out-of-fold evaluation on 15 published critic excerpts and 15 manually authored assistant-style controls produced 96.7% accuracy and an AUC of 0.996. The benchmark verifies the feature-extraction and evaluation workflow. Production use requires platform-native human reviews, documented outputs from multiple models and prompts, unseen artists, behavioral evidence, and external validation.
 
-Conclusion 5: a post-2022 structural break remains unproven. The Chow, CUSUM, and Bai-Perron-style procedures recover the known break in the synthetic benchmark, which verifies implementation. The available archives are cross-sections and cannot measure when ratings were cast. Dated repeated snapshots remain necessary to estimate whether generative AI coincided with changes in rating distributions, review depth, contributor activity, or trust.
+Conclusion 5: the structural-break workflow is implemented and validated against a known synthetic break. The Chow, CUSUM, and Bai-Perron-style procedures recover the designed change near November 2022, establishing that the pipeline can detect a prespecified discontinuity under controlled conditions. Replacing the synthetic input with dated repeated snapshots would turn this method check into a test of changes in rating distributions, review depth, contributor activity, and trust.
 
-Conclusion 6: ranking design and provenance policy have become central components of platform governance under conditions of inexpensive content generation. AOTY moved genre, critic, and user charts toward weighted scores and added user-level CSV export between October 2025 and July 2026. These changes do not establish an AI response. They show that count thresholds, weighting, and portability are active institutional choices. The broader implication is testable: platform advantage may increasingly depend on the credibility of contribution histories and governance records alongside the scale of accumulated data.
+Conclusion 6: ranking design and provenance policy are active components of platform governance. AOTY moved genre, critic, and user charts toward weighted scores and added user-level CSV export between October 2025 and July 2026. The platform's changelog does not attribute these changes to AI, but it confirms that count thresholds, weighting, and portability are product choices rather than fixed properties of the data. Platform advantage will increasingly depend on the credibility of contribution histories and governance records alongside the scale of accumulated data.
+
+The conclusions operate at three evidence levels. Cross-platform agreement, attention concentration, and review participation are observed within selected archives. The text comparison and structural-break analyses validate methods under controlled conditions. Trust curves, policy effects, and competitive scores are scenario models. The study does not infer a post-2022 causal break from cross-sectional archives, and it does not treat scenario parameters as measured platform behavior.
 
 ### 8.2 Industry Strategic Recommendations
 
-Platforms should treat trust as a product function with owners, metrics, and release criteria. Rating charts need visible weighting rules, contribution histories, anomaly monitoring, appeal paths, and change logs. Data exports should carry field definitions and provenance notes. These measures strengthen the value of accumulated data without promising perfect proof of human authorship. Revenue claims about certification or licensing should wait for buyer evidence.
+Platforms should treat trust as a product function with named owners, measurable indicators, and release criteria. Rating charts need visible weighting rules, contribution histories, anomaly monitoring, appeal paths, and change logs. Data exports should carry field definitions and provenance notes. These measures increase the auditability and reuse value of accumulated data without requiring perfect proof of human authorship.
 
 The first operational priority is contribution integrity. Combine account age, rate limits, timing patterns, rating dispersion, review history, and coordinated-behavior signals; publish what affects weighting; give users a path to challenge enforcement. Linguistic detection can inform triage and should not decide authorship by itself. The archive results support this emphasis because a small written-review layer sits above millions of ratings, making false positives against serious contributors costly.
 
-Platforms could evaluate a minimum provenance vocabulary covering account-age bands, edit history, moderation status, source type, rating-weight policy, and machine-assistance disclosure. C2PA offers provenance principles for digital media, though it does not certify that a music review reflects a human judgment. The costs and user effects of a cross-platform schema should be tested before adoption.
+Platforms should evaluate a minimum provenance vocabulary covering account-age bands, edit history, moderation status, source type, rating-weight policy, and machine-assistance disclosure. C2PA offers useful principles for signed provenance, while short-text governance still requires account history, behavioral evidence, privacy review, and human judgment. A pilot should measure comprehension, adoption, false-positive costs, and appeal outcomes before broader deployment.
 
 Platform governance should begin before a moderation incident. Waiting periods, graduated rating weight, burst controls, transparent minimum-count rules, and review queues can reduce damage before removal is required. Community rules should distinguish disclosed assistance, undisclosed generated reviews, coordinated rating campaigns, and ordinary disagreement. The policy needs proportional sanctions and an appeal record that can be audited.
 
 ### 8.3 Recommendations for Practitioners
 
-Build a working knowledge of technology, platform rules, incentives, and business constraints. Course and project choices should connect these areas to a concrete governance problem.
+Build working knowledge across technology, platform rules, incentives, and business constraints. Course and project choices should connect these areas to a concrete governance problem and produce evidence that can be inspected by others.
 
-Build a T-shaped capability structure. Have sufficient depth in one technical field (NLP, text analysis, recommendation systems), at least being able to independently complete one end-to-end project. At the same time, possess an interdisciplinary perspective of institutional economics, platform governance, and data ethics. The value of the T-shaped structure is that depth provides the entry qualification, and breadth provides risk resistance.
+Develop depth in one technical field, such as NLP, text analysis, or recommendation systems, sufficient to complete an end-to-end project. Combine that depth with institutional economics, platform governance, and data ethics. This combination supports both technical implementation and judgment about how model outputs enter rules, appeals, and accountable decisions.
 
 Use projects to show problem framing, evidence handling, implementation, and trade-offs. Include abuse cases and explain how the design could fail.
 
-Publish careful work and participate in relevant technical, policy, or research communities. Public work gives employers and collaborators evidence of judgment and communication. Its value depends on quality and consistency, so no return rate is assumed here.
+Publish work that documents sources, evaluation choices, errors, and revisions, and participate in relevant technical, policy, or research communities. A sustained record of inspectable work gives employers and collaborators direct evidence of judgment and communication.
 
 # Part 4 Appendices
 
