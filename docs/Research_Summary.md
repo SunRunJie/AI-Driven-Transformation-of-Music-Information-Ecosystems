@@ -1,6 +1,6 @@
 # Research Summary
 
-## Generative AI and Structural Change in Crowdsourced Music Information Platforms
+## Generative AI, Provenance Scarcity, and Trust in Crowdsourced Music Information Platforms
 
 This project studies how generative AI may change the institutional conditions
 under which RateYourMusic (RYM) and Album of the Year (AOTY) produce and govern

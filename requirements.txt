@@ -1,5 +1,5 @@
 # ============================================================
-# Dependencies - AI Impact on Music Review Platforms
+# Dependencies - Music Information Ecosystems Research
 # ============================================================
 # Install: pip install -r requirements.txt
 

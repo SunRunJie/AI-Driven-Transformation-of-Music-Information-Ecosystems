@@ -149,16 +149,16 @@ py src\data_collection\download_archived_datasets.py
 py src\analysis\observed_archive_analysis.py
 
 # Default analysis with observed archives and provenance checks
-py -3.14 src\run_pipeline.py
+py -3.12 src\run_pipeline.py
 
 # Attempt live public-page collection
-py -3.14 src\run_pipeline.py --collect
+py -3.12 src\run_pipeline.py --collect
 
 # Explicit synthetic method demonstration
-py -3.14 src\run_pipeline.py --demo
+py -3.12 src\run_pipeline.py --demo
 
 # Generate all twelve analysis figures
-py -3.14 src\run_complete_analysis.py
+py -3.12 src\run_complete_analysis.py
 ```
 
 ## 11. Next Data Requirement

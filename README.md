@@ -8,6 +8,8 @@
 
 **Public release:** v1.0.0 · 16 August 2026
 
+**Repository status:** the default branch contains unreleased revisions made after v1.0.0. The DOI identifies the frozen v1.0.0 release; cite later revisions by commit until the next version is archived. See [Versioning and Archival Releases](docs/ARCHIVING.md).
+
 This project studies how generative AI may affect the trust, governance, and
 knowledge-production functions of crowdsourced music-information platforms,
 using RateYourMusic (RYM) and Album of the Year (AOTY) as motivating cases.

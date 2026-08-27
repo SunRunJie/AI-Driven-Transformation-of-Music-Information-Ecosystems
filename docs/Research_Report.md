@@ -4,7 +4,7 @@
 
 ## Abstract
 
-This study examines how generative AI changes the governance problem faced by crowdsourced music-information platforms. Album of the Year (AOTY) and Rate Your Music (RYM) provide two cases for analyzing the production of evaluative content, the allocation of visibility and rating weight, and the provenance of community knowledge. The empirical analysis uses three documented third-party archives: 32,358 historical AOTY album records, an AOTY high-rated snapshot of 5,000 albums, and an RYM popular-album snapshot of 5,000 albums. Across 4,102 exact artist-title-year matches, AOTY and RYM user scores correlate at 0.910, and 87.4% of matched scores differ by no more than 0.5 points on a common 0-5 scale. Rating attention is concentrated within both snapshots, while written reviews form a comparatively thin participation layer in the RYM archive. These results show that platform value rests on an accumulated evaluative order maintained by uneven layers of participation. A controlled text comparison and synthetic structural-break benchmark then clarify the limits of text-only detection and provide a reproducible monitoring workflow. The central contribution is a shift in analytical focus from content volume to provenance scarcity: as review-like text becomes inexpensive, contribution history, ranking design, and accountable maintenance become more important to the credibility of crowdsourced knowledge. The available archives are cross-sectional, so the study does not claim that a post-2022 platform-level break has already occurred.
+This study examines how generative AI changes the governance problem faced by crowdsourced music-information platforms. Album of the Year (AOTY) and Rate Your Music (RYM) provide two cases for analyzing the production of evaluative content, the allocation of visibility and rating weight, and the provenance of community knowledge. The empirical analysis uses three documented third-party archives: 32,358 historical AOTY album records, an AOTY high-rated snapshot of 5,000 albums, and an RYM popular-album snapshot of 5,000 albums. Across 4,102 exact artist-title-year matches, AOTY and RYM user scores correlate at 0.910, and 87.4% of matched scores differ by no more than 0.5 points on a common 0-5 scale. Rating attention is concentrated within both snapshots, while written reviews form a comparatively thin participation layer in the RYM archive. Together, these findings describe an accumulated evaluative order maintained by uneven layers of participation. A controlled text comparison and synthetic structural-break benchmark then clarify the limits of text-only detection and provide a reproducible monitoring workflow. The central contribution is a shift in analytical focus from content volume to provenance scarcity: as review-like text becomes inexpensive, contribution history, ranking design, and accountable maintenance become more important to the credibility of crowdsourced knowledge. The available archives are cross-sectional, so the study does not claim that a post-2022 platform-level break has already occurred.
 
 **Keywords:** generative AI; provenance scarcity; crowdsourced music platforms; platform governance; data provenance; user ratings; trust
 
@@ -174,7 +174,7 @@ A.6 Assumption-Driven User-Group Scenarios
 
 A.7 Analyst-Coded Competitive Scenario Scores
 
-### Appendix B Minutes of Community Discussions 
+### Appendix B Proposed Community-Discussion Coding Scheme
 
 ### Appendix C Methodology and Technical Route 
 
@@ -365,7 +365,7 @@ Akerlof's lemons-market model [1] offers one explanation for how uncertainty abo
 
 The text comparison provides a limited empirical observation. Published critic excerpts use longer sentences on average than the manually authored assistant-style controls (22.8 versus 12.9 words), while lexical diversity is also higher in the critic sample. These corpus-specific differences motivate a larger provenance study. They provide no estimate of AI prevalence, detector accuracy on model-generated text, adverse selection, or contributor exit.
 
-The strongest observed result lies elsewhere. Among 4,102 exact artist-title-year matches, AOTY and RYM user scores correlate at 0.910; 87.4% sit within half a point after both scales are put on 0-5. AOTY scores remain a median 0.34 points higher. The two communities largely agree on rank order while using different score calibrations. This establishes a durable cross-platform baseline and does not identify an AI effect.
+The strongest observed result lies elsewhere. Among 4,102 exact artist-title-year matches, AOTY and RYM user scores correlate at 0.910; 87.4% sit within half a point after both scales are put on 0-5. AOTY scores remain a median 0.34 points higher. The two communities largely agree on rank order while using different score calibrations. This establishes a substantial cross-platform baseline and does not identify an AI effect.
 
 ![Figure 4: Comparison of Rating Distribution Evolution](../figures/analysis/rating_distribution_evolution.png)
 
@@ -671,7 +671,7 @@ Trust and safety, content integrity, and algorithm-governance teams at larger te
 
 Research institutions and think tanks build experience in research design, policy analysis, and public communication. Consulting and audit firms emphasize risk assessment, governance documentation, and the translation of findings into organizational action. The choice should follow the kind of evidence and responsibility the applicant wants to handle.
 
-For personal projects, topic selection is more important than technology selection. First clarify the trust problem you want to solve (for example, "how can a platform distinguish high-quality human evaluations from AI evaluations without requiring real-name registration"), then choose the technical means. The project should have a clear structure of cause, process, result, and reflection, so that anyone who sees it can quickly judge the quality of your thinking. Explaining the blind spots of the system, how attackers might bypass it, and the non-technical obstacles that may be encountered in deployment in the project documentation — these thoughts reflect the candidate's maturity better than the technical implementation itself.
+For personal projects, begin with the governance problem and then choose the technical method. A project might ask how a platform can assess the provenance and reliability of machine-assisted reviews without imposing real-name registration. The write-up should explain the evidence, implementation, results, failure modes, likely evasions, and nontechnical deployment constraints. These choices reveal more about a candidate's judgment than technical complexity alone.
 
 #### 6.1.3 Professional Network Building
 
@@ -701,7 +701,7 @@ When comparing offers, weigh learning, stability, compensation, role scope, and 
 
 Interviews for governance and integrity roles commonly assess technical analysis, problem framing, policy judgment, documentation, and communication. Preparation should use a small number of cases that connect those abilities in a single decision process.
 
-A typical interview question: if RYM suddenly receives 1 million AI-generated fake ratings next month, how would you design a response plan? The answer can be developed from the three dimensions of technology, institutions, and business. The technical level includes deploying anomaly detection based on behavior patterns (timestamp distribution, IP sources, rating patterns), conducting text feature analysis of suspicious content (lexical diversity, emotional variance, specificity indicators), and automatically marking clearly identifiable AI ratings as uncertified ratings. The institutional level includes temporarily freezing the rating weight of newly registered users (introducing a waiting period system), publicly disclosing the details of the attack and the response strategy, and inviting senior users to participate in a trust jury. The business level includes proactively explaining the situation to users, making certified ratings part of value-added services, and repricing the value of certified data.
+A typical interview question is: if RYM receives one million suspicious automated ratings in a month, how should the platform respond? A strong plan would preserve evidence, estimate the affected releases and accounts, separate suspicious clusters from unaffected activity, and reduce the ranking weight of high-risk contributions while the incident is reviewed. Detection should combine timing, account history, rating dispersion, network patterns, and any associated text instead of treating prose as proof of authorship. The governance response should define review authority, an appeal path, disclosure of verified facts, and criteria for restoring normal weighting. Recovery metrics should cover chart stability, false positives, appeal reversals, contributor retention, and renewed manipulation attempts.
 
 Follow-up questions will test whether the candidate can decompose an ambiguous event into actionable tasks, embed technical measures in rules and review processes, anticipate an attacker's response, control false positives, and define recovery metrics. A strong answer demonstrates governance readiness as well as analytical fluency.
 
@@ -842,11 +842,11 @@ Publish work that documents sources, evaluation choices, errors, and revisions, 
 
 ### A.2 Synthetic Structural-Break Method Check
 
-| Test method | Detected breakpoint | Confidence interval (95%) | Statistic | p value |
+| Test method | Recovered breakpoint | Benchmark interpretation | Statistic | Inference status |
 | --- | --- | --- | --- | --- |
-| Bai-Perron-style segmentation | November 2022 | Synthetic target window | Least-squares/BIC result | Recompute on empirical panel |
-| Descriptive CUSUM | December 2022 | — | Detrended residual path | Permutation-bootstrap inference |
-| Regression Chow test (split at 2022.11) | November 2022 | — | Split-versus-pooled regression F | Recompute on empirical panel |
+| Bai-Perron-style segmentation | November 2022 | Recovers the designed change window | Least-squares/BIC result | Synthetic benchmark only |
+| Descriptive CUSUM | December 2022 | Falls close to the designed change | Detrended residual path | Permutation bootstrap on synthetic input |
+| Regression Chow test (split at 2022.11) | November 2022 | Tests the prespecified designed split | Split-versus-pooled regression F | Synthetic benchmark only |
 
 ### A.3 Controlled Text-Classification Performance
 
@@ -905,7 +905,7 @@ Publish work that documents sources, evaluation choices, errors, and revisions, 
 | Douban Music | 6.5 | 7.0 | 3.0 | 6.5 | 7.0 | 8.0 | 5.60 |
 | Last.fm | 8.0 | 5.0 | 4.0 | 8.0 | 5.0 | 6.0 | 5.50 |
 
-## Appendix B Minutes of Community Discussions
+## Appendix B Proposed Community-Discussion Coding Scheme
 
 The RYM forum file in this repository is synthetic. Its titles, topic labels, dates, and yearly counts were generated from templates. They cannot be described as forum archives or used to estimate changes in community attention. This appendix records the intended coding scheme for future collection: topic, date, reply count, sentiment, and moderation response.
 

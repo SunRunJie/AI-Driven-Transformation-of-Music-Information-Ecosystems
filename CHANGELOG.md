@@ -2,6 +2,14 @@
 
 All notable public research releases are documented here. Version numbers identify the report, website, code, and provenance records as one research object.
 
+## [Unreleased]
+
+### Changed
+
+- Reframed the current research report around provenance scarcity and platform trust while retaining its empirical boundaries.
+- Clarified the distinction between the current branch and the archived Version 1.0.0 research object.
+- Corrected documentation for the Python reference environment and the manually authored text controls.
+
 ## [1.0.0] - 2026-08-16
 
 ### Archived

@@ -8,8 +8,8 @@ one synthetic method check, and explicit scenario analyses.
 |:--|:--|:--|
 | `structural_break_analysis.png` | Illustrative synthetic data | Method benchmark around a prespecified date |
 | `rating_distribution_evolution.png` | Third-party observed archives | Score agreement and calibration across 4,102 exact AOTY-RYM matches |
-| `ai_vs_human_review_features.png` | Observed human text + controlled AI text | Standardized feature differences in 15+15 texts |
-| `feature_correlation_heatmap.png` | Observed human text + controlled AI text | Exploratory correlations in the same hybrid corpus |
+| `ai_vs_human_review_features.png` | Published critic text + manually authored controls | Standardized feature differences in 15+15 texts |
+| `feature_correlation_heatmap.png` | Published critic text + manually authored controls | Exploratory correlations in the same controlled corpus |
 | `trust_threshold_model.png` | Assumption-driven scenario | Logistic trust mechanism under default parameters |
 | `heterogeneous_trust.png` | Assumption-driven scenario | Parameterized user-group differences |
 | `policy_intervention.png` | Assumption-driven scenario | Outcomes implied by assumed intervention multipliers |
